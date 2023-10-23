@@ -1,4 +1,5 @@
-@use "../scss/base/variables";
+@import './base/base';
+@import './base/variables';
 
 .story-wrap {
   position: absolute;
@@ -113,7 +114,7 @@ rt {
   letter-spacing: 0.08rem;
   font-style: italic;
   &:active {
-    @include variables.push;
+   @include variables.push;
   }
 }
 
@@ -195,7 +196,7 @@ rt {
   letter-spacing: 0.08rem;
   margin: 4%;
   &:active {
-    @include variables.push;
+   @include variables.push;
   }
   @media screen and (min-width: 900px) {
     width: 30%;
@@ -250,7 +251,7 @@ rt {
   transform: translateX(-100%);
   width: 100%;
   height: 100%;
-  @include variables.center-center;
+ @include variables.center-center;
   h2 {
     overflow: hidden;
     font-size: 1.5rem;
@@ -360,7 +361,7 @@ $ziku-color: rgb(28, 119, 28);
 //   border-radius: 10px;
 //   cursor: pointer;
 //   background: linear-gradient(to top, #fdeb71, #ffffff);
-//   @include variables.btn-Inline($inColor: #fffbde);
+//  @include variables.btn-Inline($inColor: #fffbde);
 //   animation: toright 0.3s ease-in-out;
 //   h3 {
 //     font-size: 1.8rem;
@@ -374,7 +375,7 @@ $ziku-color: rgb(28, 119, 28);
 //     margin: 0 6% 0 3%;
 //   }
 //   &:active {
-//     @include variables.push;
+//    @include variables.push;
 //   }
 // }
 

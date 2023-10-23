@@ -2,6 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import "../../scss/story.scss";
 
 const Story = ({ storyHidden }) => {
+  const getImage = (filePath: string): string => {
+    return new URL(`../assets/${filePath}`, import.meta.url).href;
+  };
   const [showModal, setShowModal] = useState(true);
   const [makimono, setMakimono] = useState(true);
   const [next, setNext] = useState(true);
@@ -14,13 +17,13 @@ const Story = ({ storyHidden }) => {
   const serifwrapRef = useRef(null);
 
   const img1 = new Image();
-  img1.src = "/images/komari.png";
+  img1.src = getImage('komari.png');
   const img2 = new Image();
-  img2.src = "/images/egao.png";
+  img2.src = getImage('egao.png');
   const img3 = new Image();
-  img3.src = "/images/sinken.png";
+  img3.src = getImage('sinken.png');
   const img4 = new Image();
-  img4.src = "/images/odoroki.png";
+  img4.src = getImage('odoroki.png');
 
   setTimeout(() => {
     setMakimono(false);

@@ -17,13 +17,17 @@ export default defineConfig({
     },
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "@/assets/scss/index.scss";`,
+        additionalData: [
+
+        ]
       },
     },
   },
   resolve: {
     alias: {
       '@/': path.join(__dirname, './src/'),
+      '@assets': path.join(__dirname, './src/assets/'),
+      '@scss': path.join(__dirname, './src/assets/scss/'),
     },
   },
 })

@@ -1,9 +1,10 @@
-@use "../scss/base/variables";
+@import './base/base';
+@import './base/reset';
 
 .home-btn {
   position: absolute;
   top: 1.1%;
-  left: 1.5%;
+  right: 1.5%;
   width: 6.4rem;
   height: 6.4rem;
   background: #fff;
@@ -11,15 +12,16 @@
   border-radius: 10px;
   z-index: 1;
   cursor: pointer;
-  @include variables.transition;
-  @include variables.center-center;
-  @include variables.btn-Inline();
+  // @include variables.transition;
+  // @include variables.center-center;
+  // @include variables.btn-Inline();
   img {
-    width: 60%;
-    height: 60%;
+    width: 100%;
+    height: 100%;
+    padding: 15%; 
   }
   &:active {
-    @include variables.push;
+    // @include variables.push;
   }
   @media screen and (min-width: 900px) {
     width: 6.5rem;
@@ -81,12 +83,12 @@
   bottom: 1.7%;
   width: 40%;
   height: 15%;
-  @include variables.btn-Gradation(#fdeb71, #ffdd33);
+  // @include variables.btn-Gradation(#fdeb71, #ffdd33);
   border: 3px solid #555577;
   border-radius: 10px;
   cursor: pointer;
-  @include variables.btn-Inline($inColor: #fff49a);
-  @include variables.transition;
+  // @include variables.btn-Inline($inColor: #fff49a);
+  // @include variables.transition;
   h2 {
     font-size: 2rem;
     text-align: center;
@@ -100,7 +102,7 @@
     margin-top: 3%;
   }
   &:active {
-    @include variables.push;
+    // @include variables.push;
   }
 }
 
@@ -110,12 +112,12 @@
   bottom: 1.7%;
   width: 40%;
   height: 15%;
-  @include variables.btn-Gradation(#abdcff, #44ddff);
+  // @include variables.btn-Gradation(#abdcff, #44ddff);
   border: 3px solid #555577;
   border-radius: 10px;
   cursor: pointer;
-  @include variables.btn-Inline($inColor: #b8f2ff);
-  @include variables.transition;
+  // @include variables.btn-Inline($inColor: #b8f2ff);
+  // @include variables.transition;
   h2 {
     font-size: 2rem;
     text-align: center;
@@ -129,7 +131,7 @@
     margin-top: 3%;
   }
   &:active {
-    @include variables.push;
+    // @include variables.push;
   }
 }
 
@@ -150,8 +152,8 @@
   border-radius: 10px;
   cursor: pointer;
   background: linear-gradient(to top, #fdeb71, #ffffff);
-  @include variables.btn-Inline($inColor: #fffbde);
-  @include variables.center-center;
+  // @include variables.btn-Inline($inColor: #fffbde);
+  // @include variables.center-center;
   animation: toright 0.3s ease-in-out;
   position: relative;
   h2 {
@@ -181,13 +183,13 @@
     padding-bottom: 2%;
   }
   &:active {
-    @include variables.push;
+    // @include variables.push;
   }
 }
 
 .story-start {
   background: linear-gradient(to top, #abdcff, #ffffff);
-  @include variables.btn-Inline($inColor: #deeffc);
+  // @include variables.btn-Inline($inColor: #deeffc);
   img {
     width: 10%;
     padding-bottom: 0%;
@@ -282,7 +284,7 @@
   letter-spacing: 0.08rem;
   margin: 4%;
   &:active {
-    @include variables.push;
+    // @include variables.push;
   }
   @media screen and (min-width: 900px) {
     width: 30%;
