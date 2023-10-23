@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { supabase } from './supabaseClient'
-import Auth from './components/Auth'
-import Account from './components/Account'
-import './App.css'
+import { supabase } from '../supabaseClient'
+import Auth from '../components/Auth'
+import Account from '../components/Account'
+import '../App.css'
 
-function App() {
+function index() {
   const [session, setSession] = useState(null)
 
   useEffect(() => {
@@ -24,4 +24,4 @@ function App() {
   )
 }
 
-export default App
+export default index
