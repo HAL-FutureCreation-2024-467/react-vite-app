@@ -4,6 +4,7 @@ import "../../src/assets/scss/home.scss";
 import Keikoku from "../components/Keikoku";
 import Live2d from "../components/Live2d";
 import Story from "../components/Story";
+import Modal from "../components/ConfigModal";
 
 function App() {
   const getImage = (filePath: string): string => {
@@ -21,33 +22,20 @@ function App() {
   const [clearF, setCrearF] = useState("no");
   const displayStyle = clearF === "ok" ? {} : { display: "none" };
   const modelUrl = "/Live2dModels/rutika-model/runtime/rutika.model3.json";
+
   useEffect(() => {
     setCrearF(flag);
   }, []);
   useEffect(() => {
     localStorage.setItem("flag", clearF);
   }, [clearF]);
+  
+  const [showConfigModal, setShowModal] = useState(false); // Modalコンポーネントの表示の状態を定義する
 
-  const storyCheck = () => {
-    if (clearF == "ok") {
-      //ストーリー開始
-      setHome(false);
-      setTimeout(() => {
-        setStoryVisible(true);
-      }, 500);
-    } else {
-      setStoryModal(!storyModal);
-    }
+  const ShowModal = () => {
+    setShowModal(true);
   };
-  const qstartBtn = () => {
-    setHome(false);
-    setTimeout(() => {
-      setquizVisible(true);
-    }, 500);
-  };
-  const changeF = () => {
-    setCrearF("ok");
-  };
+
   return (
     modelUrl && (
       <>
@@ -57,11 +45,7 @@ function App() {
             <div className={storyModal ? "overlay-add" : "overlay"}></div>
             <div
               className="home-btn"
-              onClick={() => {
-                setLogo(true);
-                setQstart(false);
-                setSstart(false);
-              }}
+              onClick={ShowModal}
             >
               <img src={getImage('line_menu.png')} alt="" />
             </div>
@@ -70,6 +54,9 @@ function App() {
             </div>
             <div className="home-text-wrap">
               <p className="home-text">~タップして始める~</p>
+            </div>
+            <div> 
+              <Modal showFlag={showConfigModal} setShowModal={setShowModal} />
             </div>
           </section>
         </div>

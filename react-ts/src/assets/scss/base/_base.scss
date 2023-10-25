@@ -26,11 +26,11 @@ img {
   box-shadow: 0 0 30px 3px rgba(110, 90, 70, 0.7);
   width: 100vw;
   max-width: 500px;
-  margin: auto;
+  margin: 0 auto;
   height: 100vh;
   height: 100dvh;
   position: relative;
-  background-image: url(/images/sougen.jpg);
+  background-image: url(@assets/sougen.jpg);
   overflow: hidden;
 }
 
@@ -59,4 +59,15 @@ img {
     //スマホ
     display: none;
   }
+}
+
+.home-text-wrap{
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  margin-top: 110%;
+}
+.home-text-wrap > .home-text{
+  font-size: 32px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
