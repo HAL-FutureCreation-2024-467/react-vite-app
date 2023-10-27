@@ -5,6 +5,10 @@ import Keikoku from "../components/Keikoku";
 import Live2d from "../components/Live2d";
 import Story from "../components/Story";
 import Modal from "../components/ConfigModal";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 
 function App() {
   const getImage = (filePath: string): string => {
@@ -16,8 +20,6 @@ function App() {
   const [qstart, setQstart] = useState(false);
   const [sstart, setSstart] = useState(false);
   const [storyModal, setStoryModal] = useState(false);
-  const [storyVisible, setStoryVisible] = useState(false);
-  const [quizVisible, setquizVisible] = useState(false);
   const [home, setHome] = useState(true);
   const [clearF, setCrearF] = useState("no");
   const displayStyle = clearF === "ok" ? {} : { display: "none" };
@@ -31,9 +33,11 @@ function App() {
   }, [clearF]);
   
   const [showConfigModal, setShowModal] = useState(false); // Modalコンポーネントの表示の状態を定義する
+  const [menuBar, setMenu] = useState('line_menu.png');
 
   const ShowModal = () => {
     setShowModal(true);
+    setMenu('line_cross.png');
   };
 
   return (
@@ -47,7 +51,7 @@ function App() {
               className="home-btn"
               onClick={ShowModal}
             >
-              <img src={getImage('line_menu.png')} alt="" />
+              <img src={getImage(menuBar)} alt="" />
             </div>
             <div className={logo ? "logo-wrap" : "logo-diss"}>
               <img className="logo-img" src={getImage('logo.png')} alt="" />
@@ -56,11 +60,11 @@ function App() {
               <p className="home-text">~タップして始める~</p>
             </div>
             <div> 
-              <Modal showFlag={showConfigModal} setShowModal={setShowModal} />
+              <Modal showFlag={showConfigModal} menuFlag={menuBar} setShowModal={setShowModal} setMenu={setMenu} />
             </div>
           </section>
         </div>
-        <Keikoku />
+        {/* <Keikoku /> */}
       </>
     )
   );
