@@ -1,14 +1,7 @@
 import { useEffect, useState } from "react";
 import "../../src/assets/scss/style.scss";
 import "../../src/assets/scss/home.scss";
-import Keikoku from "../components/Keikoku";
-import Live2d from "../components/Live2d";
-import Story from "../components/Story";
 import Modal from "../components/ConfigModal";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
 
 function App() {
   const getImage = (filePath: string): string => {
@@ -16,9 +9,6 @@ function App() {
   };
   const appState = localStorage.getItem("flag");
   const flag = appState ? appState : "no";
-  const [logo, setLogo] = useState(true);
-  const [qstart, setQstart] = useState(false);
-  const [sstart, setSstart] = useState(false);
   const [storyModal, setStoryModal] = useState(false);
   const [home, setHome] = useState(true);
   const [clearF, setCrearF] = useState("no");
@@ -53,7 +43,7 @@ function App() {
             >
               <img src={getImage(menuBar)} alt="" />
             </div>
-            <div className={logo ? "logo-wrap" : "logo-diss"}>
+            <div className="logo-wrap">
               <img className="logo-img" src={getImage('logo.png')} alt="" />
             </div>
             <div className="home-text-wrap">
