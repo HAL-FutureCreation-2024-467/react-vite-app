@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import "../../scss/story.scss";
+import { supabase } from "../supabaseClient";
 
 const Story = ({ storyHidden }) => {
   const getImage = (filePath: string): string => {
@@ -101,6 +102,9 @@ const Story = ({ storyHidden }) => {
       "",
     ];
 
+    const [ MainText, setMainText ] = useState([
+      supabase.from
+    ]);
     phina.define("MainScene", {
       superClass: "DisplayScene",
 

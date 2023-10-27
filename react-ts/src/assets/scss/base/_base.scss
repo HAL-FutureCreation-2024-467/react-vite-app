@@ -72,10 +72,12 @@ img {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-.modalContainer > div{
-  margin: 3% 0%;
-  // padding: %;
-  font-size: 18px;
+.modalContainer {
+  div{
+    margin: 3% 0%;
+    // padding: %;
+    font-size: 18px;
+  }
 }
 
 .modalBtn a {
