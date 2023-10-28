@@ -22,11 +22,11 @@ function App() {
     localStorage.setItem("flag", clearF);
   }, [clearF]);
   
-  const [showConfigModal, setShowModal] = useState(false); // Modalコンポーネントの表示の状態を定義する
+  const [showConfigModal, setShowModal] = useState(0); // Modalコンポーネントの表示の状態を定義する 0 ~ 5
   const [menuBar, setMenu] = useState('line_menu.png');
 
   const ShowModal = () => {
-    setShowModal(true);
+    setShowModal(1);
     setMenu('line_cross.png');
   };
 
