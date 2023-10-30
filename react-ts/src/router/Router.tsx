@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Route, Routes } from "react-router-dom";
 import Index from "../routes/index";
-import Login from "../routes/login";
+// import Login from "../routes/login";
 import Home from "../routes/home";
 import Story from "../routes/story";
 import SignUp from "../components/auth/SingUp";
