@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { supabase } from '../../supabaseClient'
 import { useState } from "react";
 
@@ -63,82 +62,29 @@ export default function SignUp(){
             <input type="email"
               required value={email}
               onChange={e => setEmail(e.target.value)}
-=======
-import { useState } from "react"
-import { supabase } from "@/supabaseClient"
-
-function SignUp() {
-
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [passwordConf, setPasswordConf] = useState("")
-  
-    //ユーザーの登録
-    const onSubmit = async (e) => {
-      e.preventDefault()
-  
-      const { data, error } = await supabase.auth.signUp({
-        email: email,
-        password: password,
-      })
-  
-      if (error) {
-        throw error;
-      }
-    }
-  
-    return (
-      <section>
-        <form onSubmit={onSubmit}>
-          <div>
-            <label>メールアドレス</label>
-            <input type="email" 
-              required value={email} 
-              onChange={e => setEmail(e.target.value)} 
->>>>>>> 5284b872d2b265ad62ae494168af71d89d2e1898
             />
           </div>
           <div>
             <label>パスワード</label>
-<<<<<<< HEAD
             <input type="password"
               required value={password}
               onChange={e => setPassword(e.target.value)}
-=======
-            <input type="password" 
-              required value={password} 
-              onChange={e => setPassword(e.target.value)} 
->>>>>>> 5284b872d2b265ad62ae494168af71d89d2e1898
             />
           </div>
           <div>
             <label>パスワード（確認）</label>
-<<<<<<< HEAD
             <input type="password"
               required value={passwordConf}
               onChange={e => setPasswordConf(e.target.value)}
-=======
-            <input type="password" 
-              required value={passwordConf} 
-              onChange={e => setPasswordConf(e.target.value)} 
->>>>>>> 5284b872d2b265ad62ae494168af71d89d2e1898
             />
           </div>
           <div>
             <button type="submit">サインアップ</button>
           </div>
         </form>
-<<<<<<< HEAD
         </div>
       </div> 
       </div>
     </>
   )
 }
-=======
-      </section>
-    )
-  }
-  
-  export default SignUp;
->>>>>>> 5284b872d2b265ad62ae494168af71d89d2e1898
