@@ -1,3 +1,6 @@
+import { FormEvent, useState } from "react";
+import { supabase } from "@/supabaseClient";
+
 function PasswordReset() {
     const [email, setEmail] = useState("")
   

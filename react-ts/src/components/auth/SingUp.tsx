@@ -20,8 +20,7 @@ const overlay = {
   justifyContent: "center",
 };
 
-
-export default function SignUp(){
+ const SignUp = (props: any) => {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -49,10 +48,11 @@ export default function SignUp(){
 
   return (
     <>
-      <div id="overlay" style={overlay}>
-          <div id="modalContent" style={modalContent} className="modalContainer">
+      <div id="overlay" className="modalBack">
+        <div id="modalContent" className="modalContainer">
             <div>
               <p>新規登録</p>
+              <button onClick={props.toggleInUp} type="button">ログイン</button>
             </div>
             <hr />
       <div >
@@ -80,6 +80,7 @@ export default function SignUp(){
           </div>
           <div>
             <button type="submit">サインアップ</button>
+            <button onClick={props.closeModal} type="button">閉じる</button>
           </div>
         </form>
         </div>
@@ -88,3 +89,5 @@ export default function SignUp(){
     </>
   )
 }
+
+export default SignUp;

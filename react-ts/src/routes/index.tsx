@@ -22,11 +22,11 @@ function App() {
     localStorage.setItem("flag", clearF);
   }, [clearF]);
   
-  const [showConfigModal, setShowModal] = useState(0); // Modalコンポーネントの表示の状態を定義する 0 ~ 5
+  const [showConfigModal, setShowModal] = useState(false); // Modalコンポーネントの表示の状態を定義する 0 ~ 5
   const [menuBar, setMenu] = useState('line_menu.png');
 
   const ShowModal = () => {
-    setShowModal(1);
+    setShowModal(true);
     setMenu('line_cross.png');
   };
 
@@ -34,8 +34,8 @@ function App() {
     modelUrl && (
       <>
         <div className="App">
-          <div className={home ? "black" : "black black-add"}></div>
-          <section className={home ? "home-wrap" : "home-diss"}>
+          <div className={"black"}></div>
+          <section className={"home-wrap"}>
             <div className={storyModal ? "overlay-add" : "overlay"}></div>
             <div
               className="home-btn"
