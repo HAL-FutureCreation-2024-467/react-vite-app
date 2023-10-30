@@ -27,9 +27,19 @@ const Modal = (props:  any) => {
         ) : (
           props.info.showLogin ? (
             props.info.toggleInUp ? (
-              <SignIn toggleSign={props.toggleSign} closeModal={props.closeModal} setLogin={props.setLogin} toggleInUpFunc={props.toggleInUpFunc}/>
+              <SignIn 
+                toggleSign={props.toggleSign} 
+                closeModal={props.closeModal} 
+                setLogin={props.setLogin} 
+                toggleInUpFunc={props.toggleInUpFunc}
+                />
             ) : (
-              <SignUp toggleSign={props.toggleSign} closeModal={props.closeModal} setLogin={props.setLogin} toggleInUpFunc={props.toggleInUpFunc}/>
+              <SignUp 
+                toggleSign={props.toggleSign} 
+                closeModal={props.closeModal} 
+                setLogin={props.setLogin} 
+                toggleInUpFunc={props.toggleInUpFunc}
+                />
             )
           ):( 
             <div id="overlay" className="modalBack">
