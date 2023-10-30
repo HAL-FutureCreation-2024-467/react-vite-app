@@ -113,6 +113,13 @@ img {
   background: white;
   padding : 10px;
   border-radius: 3px;
+  div {
+    display: flex;
+    button {
+      margin-right: 0;
+      justify-content: center;
+    }
+  }
 }
 
 .modalBack{

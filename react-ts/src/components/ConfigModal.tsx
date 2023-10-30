@@ -2,36 +2,11 @@ import { useState } from "react";
 import SignIn from "./auth/SingIn";
 import SignUp from "./auth/SingUp";
 
-const Modal = (props) => {
-  
-  const [username, setUserName] = useState("")
-
-  const [showNo, setNo] = useState(false); //Nologinの画面表示用
-  const [showLogin, setLogin] = useState(false); //Loginの画面表示用
-  const [toggleInUp, setToggleInUp] = useState(true); // false = SignIn, true = SignUp
-
-  const closeModal = () => {
-    props.setShowModal(false);
-    props.setMenu('line_menu.png');
-
-    setNo(false);
-    setLogin(false);
-    setToggleInUp(false);
-  };
-
-  const onSubmit = () => {
-    //ユーザーネームのみを登録してhomeに遷移する
-    console.log(username + "の登録が完了しました");
-  };
-
-  const onNologin = () => {setNo(!showNo);};
-  const toggleSign = () => {setLogin(!showLogin);};
-  const toggleInUpFunc = () => {setToggleInUp(!toggleInUp)};
-
+const Modal = (props:  any) => {
   return (
     <>
-     {!props.showFlag ? null :
-        showNo ? (
+     {!props.info.showConfigModal ? null :
+        props.info.showNo ? (
           <div id="overlay" className="modalBack">
             <div id="modalContent" className="modalContainer">
               <div>
@@ -40,21 +15,21 @@ const Modal = (props) => {
               <hr />
               <div className="modalBtn">
                 <input type="text"
-                  required value={username}
-                  onChange={e => setUserName(e.target.value)}
+                  required value={props.info.username}
+                  onChange={e => props.setUserName(e.target.value)}
                 />
               </div>
               <div>
-                <button onClick={onNologin}>閉じる</button>
+                <button onClick={props.onNologin}>閉じる</button>
               </div>
             </div>
           </div>
         ) : (
-          showLogin ? (
-            toggleInUp ? (
-              <SignIn setNo={setNo} closeModal={toggleSign} toggleInUp={toggleInUpFunc}/>
+          props.info.showLogin ? (
+            props.info.toggleInUp ? (
+              <SignIn toggleSign={props.toggleSign} closeModal={props.closeModal} setLogin={props.setLogin} toggleInUpFunc={props.toggleInUpFunc}/>
             ) : (
-              <SignUp onSubmit={onSubmit} setNo={setNo} closeModal={toggleSign} toggleInUp={toggleInUpFunc}/>
+              <SignUp toggleSign={props.toggleSign} closeModal={props.closeModal} setLogin={props.setLogin} toggleInUpFunc={props.toggleInUpFunc}/>
             )
           ):( 
             <div id="overlay" className="modalBack">
@@ -67,13 +42,13 @@ const Modal = (props) => {
                   <p>登録すると、進行状態を保存できます</p>
                 </div>
                 <div className="modalBtn">
-                  <button onClick={onNologin}>登録せずに進む</button>
+                  <button onClick={props.onNologin}>登録せずに進む</button>
                 </div>
                 <div className="modalBtn">
-                  <button onClick={toggleSign}>ログイン</button>
+                  <button onClick={props.toggleSign}>ログイン</button>
                 </div>
                 <div>
-                  <button onClick={closeModal}>閉じる</button>
+                  <button onClick={props.closeModal}>閉じる</button>
                 </div>
               </div>
             </div> 

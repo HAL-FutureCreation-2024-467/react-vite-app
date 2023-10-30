@@ -20,8 +20,12 @@ const overlay = {
   justifyContent: "center",
 };
 
-const SignIn = (props: any) => {
+// interface SignInProps {
+//   closeModal: () => void;
+//   toggleInUp: () => void;
+// }
 
+const SignIn = (props: any) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
@@ -44,6 +48,7 @@ const SignIn = (props: any) => {
         <div id="modalContent" className="modalContainer">
           <div>
             <p>ログイン</p>
+            <button onClick={props.toggleInUpFunc} type="button">新規作成</button>
           </div>
           <hr />
           <div>
@@ -64,8 +69,7 @@ const SignIn = (props: any) => {
               </div>
               <div>
                 <button type="submit">ログイン</button>
-                <button onClick={props.closeModal} type="button">閉じる</button>
-                <button onClick={props.toggleInUp} type="button">新規作成</button>
+                <button onClick={props.toggleSign} type="button">閉じる</button>
               </div>
             </form>
           </div>

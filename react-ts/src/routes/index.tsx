@@ -23,7 +23,30 @@ function App() {
   }, [clearF]);
   
   const [showConfigModal, setShowModal] = useState(false); // Modalコンポーネントの表示の状態を定義する 0 ~ 5
-  const [menuBar, setMenu] = useState('line_menu.png');
+  const [menuBar, setMenu] = useState("line_menu.png"); //menuの画像を変える
+  const [username, setUserName] = useState("")
+
+  const [showNo, setNo] = useState(false); //Nologinの画面表示用
+  const [showLogin, setLogin] = useState(false); //Loginの画面表示用
+  const [toggleInUp, setToggleInUp] = useState(true); // false = SignIn, true = SignUp
+
+  const toggleModal = () => {
+    setShowModal(!showConfigModal);
+    
+    if(!showConfigModal){//modalの状態でcross か barを変える
+      setMenu('line_cross.png');
+    }else{
+      setMenu('line_menu.png');
+    }
+
+    setNo(false);
+    setLogin(false);
+    setToggleInUp(false);
+  };
+
+  const onNologin = () => {setNo(!showNo);};
+  const toggleSign = () => {setLogin(!showLogin);};
+  const toggleInUpFunc = () => {setToggleInUp(!toggleInUp)};
 
   const ShowModal = () => {
     setShowModal(true);
@@ -39,7 +62,7 @@ function App() {
             <div className={storyModal ? "overlay-add" : "overlay"}></div>
             <div
               className="home-btn"
-              onClick={ShowModal}
+              onClick={toggleModal}
             >
               <img src={getImage(menuBar)} alt="" />
             </div>
@@ -50,7 +73,15 @@ function App() {
               <p className="home-text">~タップして始める~</p>
             </div>
             <div> 
-              <Modal showFlag={showConfigModal} menuFlag={menuBar} setShowModal={setShowModal} setMenu={setMenu} />
+              <Modal 
+                setUserName={setUserName} 
+                onNologin={onNologin}
+                setLogin={setLogin}
+                toggleSign={toggleSign}
+                toggleInUpFunc={toggleInUpFunc}
+                closeModal={toggleModal}
+                info={{showConfigModal , showNo, showLogin, toggleInUp, username}}
+                 />
             </div>
           </section>
         </div>
