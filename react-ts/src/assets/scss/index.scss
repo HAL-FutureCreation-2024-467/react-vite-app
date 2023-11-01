@@ -39,24 +39,11 @@
     background-color: #bbbbbb;
 }
   
-.modalContainer{
-    background: white;
-    padding : 10px;
-    border-radius: 3px;
-    height: 100vh;
-    div {
-        display: flex;
-        button {
-            margin-right: 0;
-            justify-content: center;
-        }
-    }
-}
-  
 .modalBack{
     background-Color: rgba(0,0,0,0.5);
     display: flex;
-    
+    text-align: center;
     align-items: center;
     justify-content: center;
 }
+

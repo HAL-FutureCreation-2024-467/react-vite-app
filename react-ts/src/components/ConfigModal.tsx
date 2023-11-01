@@ -9,22 +9,24 @@ const Modal = (props:  any) => {
         props.info.showNo ? (
           <div id="overlay" className="modalBack">
             <div id="modalContent" className="modalContainer">
-              <div>
-                <p>ユーザー登録</p>
-              </div>
-              <hr />
-              <div>
-                <p>登録すると、進行状態を保存できます</p>
-              </div>
-              <div className="modalBtn">
-                <input type="text"
-                  required value={props.info.username}
-                  onChange={e => props.setUserName(e.target.value)}
-                />
-              </div>
-              <div>
-                <button type="submit">決定</button>
-                <button onClick={props.onNologin}>閉じる</button>
+              <div className="modal-top">
+                <div>
+                  <p>ユーザー登録</p>
+                </div>
+                <hr />
+                <div>
+                  <p>登録すると、進行状態を保存できます</p>
+                </div>
+                <div className="modalBtn">
+                  <input type="text"
+                    required value={props.info.username}
+                    onChange={e => props.setUserName(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <button type="submit">決定</button>
+                  <button onClick={props.onNologin}>閉じる</button>
+                </div>
               </div>
             </div>
           </div>
@@ -48,23 +50,23 @@ const Modal = (props:  any) => {
           ):( 
             <div id="overlay" className="modalBack">
               <div id="modalContent" className="modalContainer">
-                <div>
-                  <p>ユーザー登録</p>
+                    <div>
+                      <p>ユーザー登録</p>
+                    </div>
+                    <hr />
+                    <div>
+                      <p>登録すると、進行状態を保存できます</p>
+                    </div>
+                    <div className="modalBtn">
+                      <button onClick={props.onNologin}>登録せずに進む</button>
+                    </div>
+                    <div className="modalBtn">
+                      <button onClick={props.toggleSign}>ログイン</button>
+                    </div>
+                    <div>
+                      <button onClick={props.closeModal}>閉じる</button>
+                    </div>
                 </div>
-                <hr />
-                <div>
-                  <p>登録すると、進行状態を保存できます</p>
-                </div>
-                <div className="modalBtn">
-                  <button onClick={props.onNologin}>登録せずに進む</button>
-                </div>
-                <div className="modalBtn">
-                  <button onClick={props.toggleSign}>ログイン</button>
-                </div>
-                <div>
-                  <button onClick={props.closeModal}>閉じる</button>
-                </div>
-              </div>
             </div> 
           )
         )}
