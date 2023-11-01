@@ -33,10 +33,12 @@ const SignUp = (props: any) => {
         <div id="modalContent" className="modalContainer">
             <div>
               <p>新規登録</p>
-              <button onClick={props.toggleInUpFunc} type="button">ログイン</button>
             </div>
+            <div>
+              <button className="switchSignBtn" onClick={props.toggleInUpFunc} type="button">ログイン</button>
+          </div>
             <hr />
-      <div >
+        <div >
         <form onSubmit={onSubmit}>
           <div>
             <label>メールアドレス</label>

@@ -1,30 +1,6 @@
 import { supabase } from "../../supabaseClient"
 import { FormEvent, useState } from "react"
 
-const modalContent = {
-  background: "white",
-  padding: "10px",
-  borderRadius: "3px",
-};
-
-const overlay = {
-  position: "fixed",
-  top: 0,
-  left: 0,
-  width: "100%",
-  height: "100%",
-  backgroundColor: "rgba(0,0,0,0.5)",
-
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-};
-
-// interface SignInProps {
-//   closeModal: () => void;
-//   toggleInUp: () => void;
-// }
-
 const SignIn = (props: any) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -48,8 +24,10 @@ const SignIn = (props: any) => {
         <div id="modalContent" className="modalContainer">
           <div>
             <p>ログイン</p>
-            <button onClick={props.toggleInUpFunc} type="button">新規作成</button>
           </div>
+          <div>
+              <button className="switchSignBtn" onClick={props.toggleInUpFunc} type="button">新規作成</button>
+          </div> 
           <hr />
           <div>
             <form onSubmit={onSubmit}>

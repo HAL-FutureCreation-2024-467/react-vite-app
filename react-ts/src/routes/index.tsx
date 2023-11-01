@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "../../src/assets/scss/style.scss";
 import "../../src/assets/scss/home.scss";
 import Modal from "../components/ConfigModal";
+import { supabase } from "../supabaseClient";
 
 function App() {
   const getImage = (filePath: string): string => {
@@ -48,18 +49,43 @@ function App() {
   const toggleSign = () => {setLogin(!showLogin);};
   const toggleInUpFunc = () => {setToggleInUp(!toggleInUp)};
 
+  const [session, setSession] = useState(null)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+  }, [])
+  
   const ShowModal = () => {
     setShowModal(true);
     setMenu('line_cross.png');
   };
 
+  const tapStart = (e) => {
+    (!session ? null : null)
+  }
   return (
     modelUrl && (
       <>
         <div className="App">
           <div className={"black"}></div>
           <section className={"home-wrap"}>
-            <div className={storyModal ? "overlay-add" : "overlay"}></div>
+            <div className={showConfigModal ? "overlay-add" : "overlay"}>
+              <Modal 
+                setUserName={setUserName} 
+                onNologin={onNologin}
+                setLogin={setLogin}
+                toggleSign={toggleSign}
+                toggleInUpFunc={toggleInUpFunc}
+                closeModal={toggleModal}
+                info={{showConfigModal , showNo, showLogin, toggleInUp, username}}
+                 />
+            </div>
             <div
               className="home-btn"
               onClick={toggleModal}
@@ -71,17 +97,6 @@ function App() {
             </div>
             <div className="home-text-wrap">
               <p className="home-text">~タップして始める~</p>
-            </div>
-            <div> 
-              <Modal 
-                setUserName={setUserName} 
-                onNologin={onNologin}
-                setLogin={setLogin}
-                toggleSign={toggleSign}
-                toggleInUpFunc={toggleInUpFunc}
-                closeModal={toggleModal}
-                info={{showConfigModal , showNo, showLogin, toggleInUp, username}}
-                 />
             </div>
           </section>
         </div>

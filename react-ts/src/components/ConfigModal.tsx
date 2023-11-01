@@ -10,9 +10,12 @@ const Modal = (props:  any) => {
           <div id="overlay" className="modalBack">
             <div id="modalContent" className="modalContainer">
               <div>
-                <p>ユーザー登録:メール無し</p>
+                <p>ユーザー登録</p>
               </div>
               <hr />
+              <div>
+                <p>登録すると、進行状態を保存できます</p>
+              </div>
               <div className="modalBtn">
                 <input type="text"
                   required value={props.info.username}
@@ -20,6 +23,7 @@ const Modal = (props:  any) => {
                 />
               </div>
               <div>
+                <button type="submit">決定</button>
                 <button onClick={props.onNologin}>閉じる</button>
               </div>
             </div>
