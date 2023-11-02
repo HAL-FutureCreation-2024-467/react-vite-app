@@ -3,7 +3,6 @@ import "../../src/assets/scss/style.scss";
 import "../../src/assets/scss/home.scss";
 import Modal from "../components/ConfigModal";
 import { supabase } from "../supabaseClient";
-import { Route, useHistory } from "react-router-dom";
 
 function App() {
   const getImage = (filePath: string): string => {
