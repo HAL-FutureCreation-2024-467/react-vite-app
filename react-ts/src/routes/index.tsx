@@ -9,6 +9,9 @@ function App() {
   const getImage = (filePath: string): string => {
     return new URL(`../assets/${filePath}`, import.meta.url).href;
   };
+  const [email, setEmail] = useState("guest@example.com")
+  const [password, setPassword] = useState("guest")
+
   const appState = localStorage.getItem("flag");
   const flag = appState ? appState : "no";
   const [clearF, setCrearF] = useState("no");
@@ -65,12 +68,28 @@ function App() {
     setMenu('line_cross.png');
   };
 
+  const onSubmit = async () => {
+    console.log('test')
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    })
+
+    if (error) {
+      throw error;
+    }
+
+    if(data){
+      location.href = "/home";
+    }
+  }
+
   const tapStart = () => {
-    (!session ? (
-      alert('loginしてね')
-    ) : (
-      location.href='/home'
-    ))
+    (!session ? 
+      (confirm("ゲストモードでプレイしますか？") ? onSubmit() : alert("右上のアイコンから新規登録かログインしてプレイしてね"))
+      : location.href='/home'
+    );
   }
   return (
     modelUrl && (
