@@ -16,6 +16,9 @@ const SignIn = (props: any) => {
     if (error) {
       throw error;
     }
+    if(data){
+      location.href = "/home";
+    }
   }
 
   return (

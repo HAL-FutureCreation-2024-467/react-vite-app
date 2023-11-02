@@ -3,6 +3,7 @@ import "../../src/assets/scss/style.scss";
 import "../../src/assets/scss/home.scss";
 import Modal from "../components/ConfigModal";
 import { supabase } from "../supabaseClient";
+import { Route, useHistory } from "react-router-dom";
 
 function App() {
   const getImage = (filePath: string): string => {
@@ -10,8 +11,6 @@ function App() {
   };
   const appState = localStorage.getItem("flag");
   const flag = appState ? appState : "no";
-  const [storyModal, setStoryModal] = useState(false);
-  const [home, setHome] = useState(true);
   const [clearF, setCrearF] = useState("no");
   const displayStyle = clearF === "ok" ? {} : { display: "none" };
   const modelUrl = "/Live2dModels/rutika-model/runtime/rutika.model3.json";
@@ -66,8 +65,12 @@ function App() {
     setMenu('line_cross.png');
   };
 
-  const tapStart = (e) => {
-    (!session ? null : null)
+  const tapStart = () => {
+    (!session ? (
+      alert('loginしてね')
+    ) : (
+      location.href='/home'
+    ))
   }
   return (
     modelUrl && (
@@ -92,10 +95,10 @@ function App() {
             >
               <img src={getImage(menuBar)} alt="" />
             </div>
-            <div className="logo-wrap">
+            <div className="logo-wrap" onClick={tapStart}>
               <img className="logo-img" src={getImage('logo.png')} alt="" />
             </div>
-            <div className="home-text-wrap">
+            <div className="home-text-wrap" onClick={tapStart}>
               <p className="home-text">~タップして始める~</p>
             </div>
           </section>

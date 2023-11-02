@@ -31,43 +31,41 @@ const SignUp = (props: any) => {
     <>
       <div id="overlay" className="modalBack">
         <div id="modalContent" className="modalContainer">
+          <div>
+            <p>新規登録</p>
+          </div>
+          <div>
+            <button className="switchSignBtn" onClick={props.toggleInUpFunc} type="button">ログイン</button>
+          </div>
+          <hr />
+          <form onSubmit={onSubmit}>
             <div>
-              <p>新規登録</p>
+              <label>メールアドレス</label>
+              <input type="email"
+                required value={email}
+                onChange={e => setEmail(e.target.value)}
+              />
             </div>
             <div>
-              <button className="switchSignBtn" onClick={props.toggleInUpFunc} type="button">ログイン</button>
-          </div>
-            <hr />
-        <div >
-        <form onSubmit={onSubmit}>
-          <div>
-            <label>メールアドレス</label>
-            <input type="email"
-              required value={email}
-              onChange={e => setEmail(e.target.value)}
-            />
-          </div>
-          <div>
-            <label>パスワード</label>
-            <input type="password"
-              required value={password}
-              onChange={e => setPassword(e.target.value)}
-            />
-          </div>
-          <div>
-            <label>パスワード（確認）</label>
-            <input type="password"
-              required value={passwordConf}
-              onChange={e => setPasswordConf(e.target.value)}
-            />
-          </div>
-          <div>
-            <button type="submit">サインアップ</button>
-            <button onClick={props.toggleSign} type="button">閉じる</button>
-          </div>
-        </form>
+              <label>パスワード</label>
+              <input type="password"
+                required value={password}
+                onChange={e => setPassword(e.target.value)}
+              />
+            </div>
+            <div>
+              <label>パスワード（確認）</label>
+              <input type="password"
+                required value={passwordConf}
+                onChange={e => setPasswordConf(e.target.value)}
+              />
+            </div>
+            <div>
+              <button type="submit">サインアップ</button>
+              <button onClick={props.toggleSign} type="button">閉じる</button>
+            </div>
+          </form>
         </div>
-      </div> 
       </div>
     </>
   )

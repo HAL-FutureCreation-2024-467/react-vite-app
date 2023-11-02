@@ -1,32 +1,46 @@
 import { useState } from "react";
 import SignIn from "./auth/SingIn";
 import SignUp from "./auth/SingUp";
+import { supabase } from "../supabaseClient";
 
 const Modal = (props:  any) => {
+  const [email, setEmail] = useState("guest@example.com")
+  const [password, setPassword] = useState("guest")
+
+  const onSubmit = async () => {
+    console.log('test')
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    })
+
+    if (error) {
+      throw error;
+    }
+
+    if(data){
+      location.href = "/home";
+    }
+  }
   return (
     <>
      {!props.info.showConfigModal ? null :
         props.info.showNo ? (
+          // Gusetユーザーの場合 guest@example.comを使用
+          // パスワードをランダムに生成
           <div id="overlay" className="modalBack">
             <div id="modalContent" className="modalContainer">
-              <div className="modal-top">
-                <div>
-                  <p>ユーザー登録</p>
-                </div>
-                <hr />
-                <div>
-                  <p>登録すると、進行状態を保存できます</p>
-                </div>
-                <div className="modalBtn">
-                  <input type="text"
-                    required value={props.info.username}
-                    onChange={e => props.setUserName(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <button type="submit">決定</button>
-                  <button onClick={props.onNologin}>閉じる</button>
-                </div>
+              <div>
+                <p>ゲストモードでプレイ</p>
+              </div>
+              <hr />
+              <div>
+                <p>登録すると、進行状態を保存できます</p>
+              </div>
+              <div>
+                <button type="submit" onClick={onSubmit}>プレイ</button>
+                <button onClick={props.onNologin}>閉じる</button>
               </div>
             </div>
           </div>
