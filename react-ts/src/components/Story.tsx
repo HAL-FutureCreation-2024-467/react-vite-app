@@ -102,9 +102,7 @@ const Story = ({ storyHidden }) => {
       "",
     ];
 
-    const [ MainText, setMainText ] = useState([
-      supabase.from
-    ]);
+
     phina.define("MainScene", {
       superClass: "DisplayScene",
 
