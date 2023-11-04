@@ -18,7 +18,8 @@ const story = () => {
       try {
         const { data, error } = await supabase
           .from(TABLE_NAME)
-          .select("*"); // "*" はすべてのカラムを選択することを意味します
+          .select("*") // "*" はすべてのカラムを選択することを意味します
+          .order("created_at");
 
         if (error) {
           console.error("データの取得に失敗しました", error);
