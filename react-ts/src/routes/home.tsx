@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";   
 import type { Json } from '../types/database'
+import { Session } from "@supabase/supabase-js";
 
 const Home = () => {
-    const [sessions, setSession] = useState()
+    const [sessions, setSession] = useState<Session | null>(null)
     const [user, setUser] = useState<Json>(null)
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {

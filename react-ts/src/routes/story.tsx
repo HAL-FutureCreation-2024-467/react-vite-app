@@ -1,50 +1,56 @@
 // import "@scss/story.scss";
 import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
-import { Json } from "../types/database";
+import { StoryType } from "../types/tables";
 
 const story = () => {
-  const TABLE_NAME = "story";
+  const TABLE_NAME = 'story';
   let chp = 1;
   let para = 1;
-  const [storyDB, setStory] = useState<Json|{}>({});// 初期状態を{}に変更
+  const [stories, setStory] = useState<StoryType[]|null>(null);// 初期状態を{}に変更
 
   const getImage = (filePath: string): string => {
     return new URL(`../assets/${filePath}`, import.meta.url).href;
   };
 
   useEffect(() => {
-    (async () => await StoryTexT())();
+    async function fetchStories() {
+      try {
+        const { data, error } = await supabase
+          .from(TABLE_NAME)
+          .select("*"); // "*" はすべてのカラムを選択することを意味します
+
+        if (error) {
+          console.error("データの取得に失敗しました", error);
+        } else {
+          console.log("データの取得に成功しました", data);
+          setStory(data as StoryType[]);
+        }
+      } catch (error) {
+        console.error("エラーが発生しました", error);
+      }
+    }
+
+    fetchStories();
   }, []);
 
-  const StoryTexT = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('story')
-        .select()
-
-        if (error) throw error;
-          setStory(data[0]);
-          console.log(storyDB)
-    } catch (error) {
-      alert(error);
-      setStory({});
-    }
-  };
   // chapter 章
   // paragraph 段落
   // sentence 文
 
   return (
     <div>
-      {storyDB && Object.keys(storyDB).length === 0 ? (
-        <p>Loading...</p>
-      ) : (
-        <div>
-          <p>受信完了</p>
-          {/* ここにstoryDBを表示するコードを追加 */}
-        </div>
-      )}
+      {
+        stories == null 
+        ? (<p>Loading...</p>) 
+        : (
+            Object.keys(stories[0]).length === 0 ? (
+              <p>受信に問題が発生した</p>
+            ) : (
+              <p>受信完了</p>
+            )
+          )
+      }
     </div>
   );
 }
