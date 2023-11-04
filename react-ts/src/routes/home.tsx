@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../supabaseClient";   '
+import { supabase } from "../supabaseClient";
 import { Session } from "@supabase/supabase-js";
 import { ProfileType } from "../types/tables";
 
 const Home = () => {
     const [sessions, setSession] = useState<Session | null>(null)
     const [user, setUser] = useState<ProfileType[] | null>(null)
-    const [quizTag, setQTag] = useState<boolean>(false)
+    const [showTab, setShowTab] = useState<{[key: string]:boolean}>({
+        'home' : true,
+        'quiz' : false,
+        'story' : false
+    })
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
@@ -17,6 +21,17 @@ const Home = () => {
         setSession(session)
         })
     }, [])
+
+    
+    const setTab = (e : any) => {
+       setShowTab({
+        'home' : false,
+        'quiz' : false,
+        'story' : false})
+        console.log(e.target.id)
+        //setShowTab(showTab[e.target.id])
+     } 
+    
 
     useEffect(() => {
         const setupUser = async () => {
@@ -29,27 +44,87 @@ const Home = () => {
                 setUser(profiles[0])
             }
         }
+        console.log(showTab)
         setupUser()
     },[sessions])
 
-    return(
-        <>
-        <div>
-            <section>
+    if(showTab['home']){
+        return(
+            <>
             <div>
-                <p>レベル</p>
+                <h1>ホーム</h1>
+                <section>
+                    <div>
+                        <p>レベル</p>
+                    </div>
+                    <div>
+                        <p>{user && user.username}</p>
+                        <p>アイテム数</p>
+                    </div>
+                    <div>
+                        <p>モーダルを表示</p>
+                    </div>
+                </section>
+                <div>
+                    <button type="submit" id='story' onClick={setTab}>ストーリー</button>
+                    <button type="submit" id='home' onClick={setTab}>ホーム</button>
+                    <button type="submit" id='quiz' onClick={setTab}>かきとり</button>
+                </div>
             </div>
+            </>
+        );
+    }else if(showTab['quiz']){
+        return(
+            <>
             <div>
-                <p>{user && user.username}</p>
-                <p>アイテム数</p>
+                <h1>クイズ</h1>
+                <section>
+                    <div>
+                        <p>レベル</p>
+                    </div>
+                    <div>
+                        <p>{user && user.username}</p>
+                        <p>アイテム数</p>
+                    </div>
+                    <div>
+                        <p>モーダルを表示</p>
+                    </div>
+                </section>
+                <div>
+                    <button type="submit" id='story' onClick={setTab}>ストーリー</button>
+                    <button type="submit" id='home' onClick={setTab}>ホーム</button>
+                    <button type="submit" id='quiz' onClick={setTab}>かきとり</button>
+                </div>
             </div>
+            </>
+        );
+    }else if(showTab['story']){
+        return(
+            <>
             <div>
-                <p>モーダルを表示</p>
+                <h1>ストーリー</h1>
+                <section>
+                    <div>
+                        <p>レベル</p>
+                    </div>
+                    <div>
+                        <p>{user && user.username}</p>
+                        <p>アイテム数</p>
+                    </div>
+                    <div>
+                        <p>モーダルを表示</p>
+                    </div>
+                </section>
+                <div>
+                    <button type="submit" id='story' onClick={setTab}>ストーリー</button>
+                    <button type="submit" id='home' onClick={setTab}>ホーム</button>
+                    <button type="submit" id='quiz' onClick={setTab}>かきとり</button>
+                </div>
             </div>
-            </section>
-        </div>
-        </>
-    );
+            </>
+        );
+    }
+    
 }
 
 export default Home;
