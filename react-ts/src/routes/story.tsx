@@ -1,6 +1,7 @@
 // import "@scss/story.scss";
 import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
+import { Json } from "../types/database";
 import { StoryType } from "../types/tables";
 
 const story = () => {
@@ -51,7 +52,13 @@ const story = () => {
                 return (
                   <div key={index}>
                     <p>{story.chapter}-{story.paragraph}</p>
-                    {/* <p>{story.sentence)}</p> */}
+                    {story.sentence['start']?.map((sentence : string, index : number) => {
+                      return (
+                        <div key={index}>
+                          <p>{sentence}</p>
+                        </div>
+                      )
+                    })}
                   </div>
                 )
               })
