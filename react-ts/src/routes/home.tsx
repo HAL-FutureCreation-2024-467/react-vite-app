@@ -36,15 +36,18 @@ const Home = () => {
     useEffect(() => {
         const setupUser = async () => {
             if(sessions?.user.id){                  
-                let { data: profiles, error } = await supabase
+                const { data: profiles, error } = await supabase
                 .from('profiles')
                 .select('*')
                 .eq('id',sessions.user.id)
-                console.log(profiles)
-                setUser(profiles[0])
+                if (error) {
+                    console.error("データの取得に失敗しました", error);
+                } else {
+                    console.log("データの取得に成功しました", profiles);
+                    setUser(profiles[0])
+                }
             }
         }
-        console.log(showTab)
         setupUser()
     },[sessions])
 
