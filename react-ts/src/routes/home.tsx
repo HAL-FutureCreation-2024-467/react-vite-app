@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../supabaseClient";   
-import type { Json } from '../types/database'
+import { supabase } from "../supabaseClient";   '
 import { Session } from "@supabase/supabase-js";
+import { ProfileType } from "../types/tables";
 
 const Home = () => {
     const [sessions, setSession] = useState<Session | null>(null)
-    const [user, setUser] = useState<Json>(null)
+    const [user, setUser] = useState<ProfileType[] | null>(null)
+    const [quizTag, setQTag] = useState<boolean>(false)
+
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
         setSession(session)
@@ -16,16 +18,15 @@ const Home = () => {
         })
     }, [])
 
-
     useEffect(() => {
         const setupUser = async () => {
-            if(sessions?.user.id){
-                const {data} = await supabase
-                    .from('profiles')
-                    .select('*')
-                    .eq('id', sessions.user.id)
-                    .single()
-                setUser(data)
+            if(sessions?.user.id){                  
+                let { data: profiles, error } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id',sessions.user.id)
+                console.log(profiles)
+                setUser(profiles[0])
             }
         }
         setupUser()
