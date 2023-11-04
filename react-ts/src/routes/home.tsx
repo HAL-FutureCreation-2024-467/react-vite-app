@@ -23,14 +23,14 @@ const Home = () => {
     }, [])
 
     
-    const setTab = (e : any) => {
-       setShowTab({
-        'home' : false,
-        'quiz' : false,
-        'story' : false})
-        console.log(e.target.id)
-        //setShowTab(showTab[e.target.id])
-     } 
+      const setTab = (tabName: string) => {
+        const updatedTabs: { [key: string]: boolean } = {};
+        Object.keys(showTab).forEach((key) => {
+          updatedTabs[key] = key === tabName;
+        });
+        setShowTab(updatedTabs);
+      };
+    
     
 
     useEffect(() => {
@@ -66,9 +66,9 @@ const Home = () => {
                     </div>
                 </section>
                 <div>
-                    <button type="submit" id='story' onClick={setTab}>ストーリー</button>
-                    <button type="submit" id='home' onClick={setTab}>ホーム</button>
-                    <button type="submit" id='quiz' onClick={setTab}>かきとり</button>
+                    <button onClick={() => setTab('home')}>ホーム</button>
+                    <button onClick={() => setTab('quiz')}>クイズ</button>
+                    <button onClick={() => setTab('story')}>ストーリー</button>
                 </div>
             </div>
             </>
@@ -91,9 +91,9 @@ const Home = () => {
                     </div>
                 </section>
                 <div>
-                    <button type="submit" id='story' onClick={setTab}>ストーリー</button>
-                    <button type="submit" id='home' onClick={setTab}>ホーム</button>
-                    <button type="submit" id='quiz' onClick={setTab}>かきとり</button>
+                    <button onClick={() => setTab('home')}>ホーム</button>
+                    <button onClick={() => setTab('quiz')}>クイズ</button>
+                    <button onClick={() => setTab('story')}>ストーリー</button>
                 </div>
             </div>
             </>
@@ -116,9 +116,9 @@ const Home = () => {
                     </div>
                 </section>
                 <div>
-                    <button type="submit" id='story' onClick={setTab}>ストーリー</button>
-                    <button type="submit" id='home' onClick={setTab}>ホーム</button>
-                    <button type="submit" id='quiz' onClick={setTab}>かきとり</button>
+                    <button onClick={() => setTab('home')}>ホーム</button>
+                    <button onClick={() => setTab('quiz')}>クイズ</button>
+                    <button onClick={() => setTab('story')}>ストーリー</button>
                 </div>
             </div>
             </>
