@@ -47,7 +47,14 @@ const story = () => {
             Object.keys(stories[0]).length === 0 ? (
               <p>受信に問題が発生した</p>
             ) : (
-              <p>受信完了</p>
+              stories.map((story, index) => {
+                return (
+                  <div key={index}>
+                    <p>{story.chapter}-{story.paragraph}</p>
+                    {/* <p>{story.sentence)}</p> */}
+                  </div>
+                )
+              })
             )
           )
       }
