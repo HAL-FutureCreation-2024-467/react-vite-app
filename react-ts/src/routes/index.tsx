@@ -3,6 +3,7 @@ import "../../src/assets/scss/style.scss";
 import "../../src/assets/scss/home.scss";
 import Modal from "../components/ConfigModal";
 import { supabase } from "../supabaseClient";
+import { Session } from "@supabase/supabase-js";
 
 function App() {
   const getImage = (filePath: string): string => {
@@ -12,17 +13,8 @@ function App() {
   const [password, setPassword] = useState("guest")
 
   const appState = localStorage.getItem("flag");
-  const flag = appState ? appState : "no";
-  const [clearF, setCrearF] = useState("no");
-  const displayStyle = clearF === "ok" ? {} : { display: "none" };
   const modelUrl = "/Live2dModels/rutika-model/runtime/rutika.model3.json";
 
-  useEffect(() => {
-    setCrearF(flag);
-  }, []);
-  useEffect(() => {
-    localStorage.setItem("flag", clearF);
-  }, [clearF]);
   
   const [showConfigModal, setShowModal] = useState(false); // Modalコンポーネントの表示の状態を定義する 0 ~ 5
   const [menuBar, setMenu] = useState("line_menu.png"); //menuの画像を変える
@@ -50,7 +42,7 @@ function App() {
   const toggleSign = () => {setLogin(!showLogin);};
   const toggleInUpFunc = () => {setToggleInUp(!toggleInUp)};
 
-  const [session, setSession] = useState(null)
+  const [session, setSession] = useState<Session | null>(null)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -62,11 +54,6 @@ function App() {
     })
   }, [])
   
-  const ShowModal = () => {
-    setShowModal(true);
-    setMenu('line_cross.png');
-  };
-
   const onSubmit = async () => {
     console.log('test')
 

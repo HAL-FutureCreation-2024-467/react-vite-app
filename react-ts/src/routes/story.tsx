@@ -5,49 +5,46 @@ import { Json } from "../types/database";
 
 const story = () => {
   const TABLE_NAME = "story";
-  const [storyDB, setStory] = useState<Json>(null); // 初期状態を null に変更
+  let chp = 1;
+  let para = 1;
+  const [storyDB, setStory] = useState<Json|{}>({});// 初期状態を{}に変更
 
   const getImage = (filePath: string): string => {
     return new URL(`../assets/${filePath}`, import.meta.url).href;
   };
 
-  const fetchStory = async () => {
+  useEffect(() => {
+    (async () => await StoryTexT())();
+  }, []);
+
+  const StoryTexT = async () => {
     try {
-      const { data, error } = await supabase.from(TABLE_NAME).select('sentence').eq('chapter', 1).eq('paragraph', 1);
-      if (error) {
-        console.error(error);
-      } else if (data !== null && data.length > 0) {
-        setStory(data);
-      } else {
-        console.error("No data found in the response.");
-      }
+      const { data, error } = await supabase
+        .from('story')
+        .select()
+
+        if (error) throw error;
+          setStory(data[0]);
+          console.log(storyDB)
     } catch (error) {
-      console.error(error);
+      alert(error);
+      setStory({});
     }
   };
-
-
-
-  useEffect(() => {
-    fetchStory();
-  }, []);
-  
   // chapter 章
   // paragraph 段落
   // sentence 文
 
-  // storyDB ステートが null の場合にローディングを表示
-  if (storyDB === null) {
-    return (
-    <div>
-      <p>Loading...</p>
-    </div>
-    )
-  }
-
   return (
     <div>
-      <p>{storyDB.toString()}</p>
+      {storyDB && Object.keys(storyDB).length === 0 ? (
+        <p>Loading...</p>
+      ) : (
+        <div>
+          <p>受信完了</p>
+          {/* ここにstoryDBを表示するコードを追加 */}
+        </div>
+      )}
     </div>
   );
 }
