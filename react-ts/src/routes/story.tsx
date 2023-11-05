@@ -9,7 +9,7 @@ const story = () => {
   let chp = 1;
   let para = 1;
   const [stories, setStory] = useState<StoryType[]|null>(null);// 初期状態を{}に変更
-
+  const [result, setResult] = useState([]);
   const getImage = (filePath: string): string => {
     return new URL(`../assets/${filePath}`, import.meta.url).href;
   };
@@ -31,7 +31,6 @@ const story = () => {
         console.error("エラーが発生しました", error);
       }
     }
-
     fetchStories();
   }, []);
 
