@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../supabaseClient";   '
+import { supabase } from "../supabaseClient";
 import { Session } from "@supabase/supabase-js";
 import { ProfileType } from "../types/tables";
 
 const Home = () => {
     const [sessions, setSession] = useState<Session | null>(null)
     const [user, setUser] = useState<ProfileType[] | null>(null)
-    const [quizTag, setQTag] = useState<boolean>(false)
+    const [showTab, setShowTab] = useState<{[key: string]:boolean}>({
+        'home' : true,
+        'quiz' : false,
+        'story' : false
+    })
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
@@ -18,38 +22,112 @@ const Home = () => {
         })
     }, [])
 
+    
+      const setTab = (tabName: string) => {
+        const updatedTabs: { [key: string]: boolean } = {};
+        Object.keys(showTab).forEach((key) => {
+          updatedTabs[key] = key === tabName;
+        });
+        setShowTab(updatedTabs);
+      };
+    
+    
+
     useEffect(() => {
         const setupUser = async () => {
             if(sessions?.user.id){                  
-                let { data: profiles, error } = await supabase
+                const { data: profiles, error } = await supabase
                 .from('profiles')
                 .select('*')
                 .eq('id',sessions.user.id)
-                console.log(profiles)
-                setUser(profiles[0])
+                if (error) {
+                    console.error("データの取得に失敗しました", error);
+                } else {
+                    console.log("データの取得に成功しました", profiles);
+                    setUser(profiles[0])
+                }
             }
         }
         setupUser()
     },[sessions])
 
-    return(
-        <>
-        <div>
-            <section>
+    if(showTab['home']){
+        return(
+            <>
             <div>
-                <p>レベル</p>
+                <h1>ホーム</h1>
+                <section>
+                    <div>
+                        <p>レベル</p>
+                    </div>
+                    <div>
+                        <p>{user && user.username}</p>
+                        <p>アイテム数</p>
+                    </div>
+                    <div>
+                        <p>モーダルを表示</p>
+                    </div>
+                </section>
+                <div>
+                    <button onClick={() => setTab('home')}>ホーム</button>
+                    <button onClick={() => setTab('quiz')}>クイズ</button>
+                    <button onClick={() => setTab('story')}>ストーリー</button>
+                </div>
             </div>
+            </>
+        );
+    }else if(showTab['quiz']){
+        return(
+            <>
             <div>
-                <p>{user && user.username}</p>
-                <p>アイテム数</p>
+                <h1>クイズ</h1>
+                <section>
+                    <div>
+                        <p>レベル</p>
+                    </div>
+                    <div>
+                        <p>{user && user.username}</p>
+                        <p>アイテム数</p>
+                    </div>
+                    <div>
+                        <p>モーダルを表示</p>
+                    </div>
+                </section>
+                <div>
+                    <button onClick={() => setTab('home')}>ホーム</button>
+                    <button onClick={() => setTab('quiz')}>クイズ</button>
+                    <button onClick={() => setTab('story')}>ストーリー</button>
+                </div>
             </div>
+            </>
+        );
+    }else if(showTab['story']){
+        return(
+            <>
             <div>
-                <p>モーダルを表示</p>
+                <h1>ストーリー</h1>
+                <section>
+                    <div>
+                        <p>レベル</p>
+                    </div>
+                    <div>
+                        <p>{user && user.username}</p>
+                        <p>アイテム数</p>
+                    </div>
+                    <div>
+                        <p>モーダルを表示</p>
+                    </div>
+                </section>
+                <div>
+                    <button onClick={() => setTab('home')}>ホーム</button>
+                    <button onClick={() => setTab('quiz')}>クイズ</button>
+                    <button onClick={() => setTab('story')}>ストーリー</button>
+                </div>
             </div>
-            </section>
-        </div>
-        </>
-    );
+            </>
+        );
+    }
+    
 }
 
 export default Home;
