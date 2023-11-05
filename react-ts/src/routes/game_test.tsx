@@ -11,7 +11,8 @@ const Game = () => {
   const question = [...Array(10).keys()];
   const [quizNow, setQuizNow] = useState<number>(0);
   const [lifeNow, setLifeNow] = useState<number>(3);
-  const [quiz, setQuiz] = useState<Json[]>([]);
+  const [quiz_rank, setQuizRank] = useState<Json[]>([]);
+  const [quiz_class, setQuizClass] = useState<Json[]>([]);
   const [sessions, setSession] = useState<Session | null>(null)
   useEffect(() => {
       supabase.auth.getSession().then(({ data: { session } }) => {
@@ -26,13 +27,15 @@ const Game = () => {
   useEffect(() => {
       const fetchQuiz = async () => {
           const { data, error } = await supabase
-              .from('quiz')
+              .from('quiz_rank')
               .select('*')
+          console.log(data);
+          
           if (error) {
               console.log(error)
               return
           }
-          setQuiz(data)
+          setQuizRank(data)
       }
       fetchQuiz()
   }, [])

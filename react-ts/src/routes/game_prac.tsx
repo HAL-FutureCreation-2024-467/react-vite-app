@@ -4,46 +4,48 @@ import type { Json } from '../types/database'
 import { Session } from "@supabase/supabase-js";
 import "@scss/mozi.scss";
 import { useLocation, useParams } from 'react-router-dom'
-
-type Params = {
-  id?: string;
-};
+import { QuizClassType, QuizRankType } from '../types/tables'
 
 //ゲームプレイ画面
 const Game = () => {
   const { search } = useLocation();
   const queryParams = new URLSearchParams(search);
-  const name = queryParams.get("name");
-  const age = queryParams.get("age");
   const getImage = (filePath: string): string => {return new URL(`../assets/${filePath}`, import.meta.url).href;};
   const question = [...Array(10).keys()];
   const [quizNow, setQuizNow] = useState<number>(0);
   const [lifeNow, setLifeNow] = useState<number>(3);
-  const [quiz, setQuiz] = useState<Json[]>([]);
+  const [quizRank, setQuizRank] = useState<QuizRankType[] | null>([]);
+  const [quizClass, setQuizClass] = useState<QuizClassType[] | null>(null);
   const [sessions, setSession] = useState<Session | null>(null)
-  useEffect(() => {
-      supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-  })
+  // useEffect(() => {
+  //     supabase.auth.getSession().then(({ data: { session } }) => {
+  //     setSession(session)
+  // })
 
-      supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-      })
-  }, [])
+  //     supabase.auth.onAuthStateChange((_event, session) => {
+  //     setSession(session)
+  //     })
+  // }, [])
 
   useEffect(() => {
-      const fetchQuiz = async () => {
-          const { data, error } = await supabase
-              .from('quiz')
-              .select('*')
-          if (error) {
-              console.log(error)
-              return
-          }
-          setQuiz(data)
+    const fetchQuiz = async () => {
+      const { data, error } = await supabase.from('quiz_rank').select('*').eq('rank', 'gp1');
+      if (error) {
+        console.log(error);
+        return;
       }
-      fetchQuiz()
+  
+      if (data) {
+        setQuizRank(data);
+        // setQuizRank(data) が完了した後でログを出力
+        const selected = quizRank.slice().sort(function(){ return Math.random() - 0.5; }).slice(0, 10);
+        console.log(data);
+        console.log(selected);
+      }
+    }
+    fetchQuiz(); // 非同期関数を実行
   }, [])
+
   
   return (
       <>
