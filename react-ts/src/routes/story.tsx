@@ -1,6 +1,7 @@
 // import "@scss/story.scss";
 import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
+import { Json } from "../types/database";
 import { StoryType } from "../types/tables";
 
 const story = () => {
@@ -8,7 +9,7 @@ const story = () => {
   let chp = 1;
   let para = 1;
   const [stories, setStory] = useState<StoryType[]|null>(null);// 初期状態を{}に変更
-
+  const [result, setResult] = useState([]);
   const getImage = (filePath: string): string => {
     return new URL(`../assets/${filePath}`, import.meta.url).href;
   };
@@ -31,7 +32,6 @@ const story = () => {
         console.error("エラーが発生しました", error);
       }
     }
-
     fetchStories();
   }, []);
 
@@ -52,7 +52,13 @@ const story = () => {
                 return (
                   <div key={index}>
                     <p>{story.chapter}-{story.paragraph}</p>
-                    {/* <p>{story.sentence)}</p> */}
+                    {story.sentence['start']?.map((sentence : string, index : number) => {
+                      return (
+                        <div key={index}>
+                          <p>{sentence}</p>
+                        </div>
+                      )
+                    })}
                   </div>
                 )
               })
