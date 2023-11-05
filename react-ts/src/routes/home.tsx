@@ -13,10 +13,6 @@ const Home = () => {
         'quiz' : false,
         'story' : false
     })
-    const [showQuizTab, setShowQTab] = useState<{[key: string]:boolean}>({
-        'practice' : false,
-        'test' : false,
-    })
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
@@ -30,10 +26,6 @@ const Home = () => {
 
     
     const setTab = (tabName: string) => {
-        setShowQTab({
-            'practice' : false,
-            'test' : false,
-        })
         const updatedTabs: { [key: string]: boolean } = {};
         Object.keys(showTab).forEach((key) => {
             updatedTabs[key] = key === tabName;
@@ -41,14 +33,6 @@ const Home = () => {
         setShowTab(updatedTabs);
     };
     
-    const setQTab = (tabName: string) => {
-        const updatedTabs: { [key: string]: boolean } = {};
-        Object.keys(showQuizTab).forEach((key) => {
-          updatedTabs[key] = key === tabName;
-        });
-        setShowQTab(updatedTabs);
-    };
-
     useEffect(() => {
         const setupUser = async () => {
             if(sessions?.user.id){                  
@@ -112,13 +96,8 @@ const Home = () => {
                     </div>
                 </section>
 
-                <QuizTab 
-                showTab={showTab} 
-                setShowTab={setShowTab}
-                showQuizTab={showQuizTab} 
-                setQTab={setQTab}
-                />
-                
+                <QuizTab />
+
                 <div>
                     <button onClick={() => setTab('home')}>ホーム</button>
                     <button onClick={() => setTab('quiz')}>クイズ</button>
