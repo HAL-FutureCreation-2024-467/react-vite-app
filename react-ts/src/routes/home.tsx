@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
 import { Session } from "@supabase/supabase-js";
 import { ProfileType } from "../types/tables";
+import QuizTab from "../components/home/QuizTab";
+
 
 const Home = () => {
     const [sessions, setSession] = useState<Session | null>(null)
@@ -23,16 +25,14 @@ const Home = () => {
     }, [])
 
     
-      const setTab = (tabName: string) => {
+    const setTab = (tabName: string) => {
         const updatedTabs: { [key: string]: boolean } = {};
         Object.keys(showTab).forEach((key) => {
-          updatedTabs[key] = key === tabName;
+            updatedTabs[key] = key === tabName;
         });
         setShowTab(updatedTabs);
-      };
+    };
     
-    
-
     useEffect(() => {
         const setupUser = async () => {
             if(sessions?.user.id){                  
@@ -68,6 +68,7 @@ const Home = () => {
                         <p>モーダルを表示</p>
                     </div>
                 </section>
+                {/*ここにはユーザ画像（キャラクター等）表示*/}
                 <div>
                     <button onClick={() => setTab('home')}>ホーム</button>
                     <button onClick={() => setTab('quiz')}>クイズ</button>
@@ -77,6 +78,7 @@ const Home = () => {
             </>
         );
     }else if(showTab['quiz']){
+        //console.log(showTab)
         return(
             <>
             <div>
@@ -93,6 +95,9 @@ const Home = () => {
                         <p>モーダルを表示</p>
                     </div>
                 </section>
+
+                <QuizTab />
+
                 <div>
                     <button onClick={() => setTab('home')}>ホーム</button>
                     <button onClick={() => setTab('quiz')}>クイズ</button>
