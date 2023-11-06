@@ -3,7 +3,7 @@ import { supabase } from "../supabaseClient";
 import { Session } from "@supabase/supabase-js";
 import { ProfileType } from "../types/tables";
 import QuizTab from "../components/home/QuizTab";
-
+import StoryTab from "../components/home/StoryTab";
 
 const Home = () => {
     const [sessions, setSession] = useState<Session | null>(null)
@@ -55,7 +55,6 @@ const Home = () => {
         return(
             <>
             <div>
-                <h1>ホーム</h1>
                 <section>
                     <div>
                         <p>レベル</p>
@@ -68,6 +67,7 @@ const Home = () => {
                         <p>モーダルを表示</p>
                     </div>
                 </section>
+                <h1>ホーム</h1>
                 {/*ここにはユーザ画像（キャラクター等）表示*/}
                 <div>
                     <button onClick={() => setTab('home')}>ホーム</button>
@@ -82,7 +82,6 @@ const Home = () => {
         return(
             <>
             <div>
-                <h1>クイズ</h1>
                 <section>
                     <div>
                         <p>レベル</p>
@@ -95,7 +94,7 @@ const Home = () => {
                         <p>モーダルを表示</p>
                     </div>
                 </section>
-
+                <h1>クイズ</h1>
                 <QuizTab />
 
                 <div>
@@ -110,7 +109,6 @@ const Home = () => {
         return(
             <>
             <div>
-                <h1>ストーリー</h1>
                 <section>
                     <div>
                         <p>レベル</p>
@@ -123,6 +121,9 @@ const Home = () => {
                         <p>モーダルを表示</p>
                     </div>
                 </section>
+                <StoryTab />
+                <h1>ストーリー</h1>
+                
                 <div>
                     <button onClick={() => setTab('home')}>ホーム</button>
                     <button onClick={() => setTab('quiz')}>クイズ</button>

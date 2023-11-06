@@ -3,9 +3,9 @@ import { supabase } from "../../supabaseClient";
 import { Session } from "@supabase/supabase-js";
 import { Link, useNavigate } from 'react-router-dom';
 
-const QuizTab = () => {
+const StoryTab = () => {
     // const grades{} = {} 
-    const grades: { name: string; rank: string }[] = [
+   /* const grades: { name: string; rank: string }[] = [
         { name: "初級", rank: 'low' },
         { name: "中級", rank: 'mid' },
         { name: "上級", rank: 'high' },
@@ -22,32 +22,30 @@ const QuizTab = () => {
      const handleButtonClick = (rank: string) => {
        // ボタンをクリックしたときに指定のランクに遷移
        navigate(`/game/practice/${rank}`);
-     };
+     };*/
      return (
        <div>
          <div>
            <p>読めるけど読めない漢字</p>
            <div>
-             {threeGrades.map((grade, index) => (
+             {/*threeGrades.map((grade, index) => (
                <button key={index} onClick={() => handleButtonClick(grade.rank)}>
                  {grade.name}
                </button>
-             ))}
+             ))*/}
            </div>
          </div>
          <div>
            <p>日本語漢字能力検定（漢検）編</p>
            <div>
-             {sixGrades.map((grade, index) => (
+             {/*sixGrades.map((grade, index) => (
                <button key={index} onClick={() => handleButtonClick(grade.rank)}>
                  {grade.name}
                </button>
-             ))}
+             ))*/}
            </div>
          </div>
        </div>
      );
    }
-   
-
-export default QuizTab;
+   export default StoryTab;
