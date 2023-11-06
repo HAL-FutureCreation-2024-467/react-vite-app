@@ -12,7 +12,7 @@ export const Router: FC = () => {
     <Routes>
       <Route path="/" element={<Index />} />
       <Route path="/home" element={<Home />} />
-      <Route path="/story" element={<Story />} />
+      <Route path="/story/:chapter=:paragraph" element={<Story />} />
       <Route path="/game/practice/:id?" element={<Game_p />} />
       <Route path="/game/test/:id?" element={<Game_t />} />
       <Route path="*" element={<NotF />} />
