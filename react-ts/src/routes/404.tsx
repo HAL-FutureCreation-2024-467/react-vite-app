@@ -1,7 +1,18 @@
 function notfound(){
+    const sty = `
+        
+    `;
+
+    const style = document.createElement('style');
+    style.type = 'text/css';
+    style.appendChild(document.createTextNode(sty));
+    document.head.appendChild(style);
+
     return(
         <div>
-            <h1>404</h1>
+            <div>
+                404                                           
+            </div>
         </div>
     );
 }
