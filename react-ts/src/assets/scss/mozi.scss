@@ -165,6 +165,26 @@
   }
 }
 
+.ans-wrap{
+  width: 46px;
+  height: 46px;
+  position: absolute;
+  z-index: 1;
+  bottom: 28%;
+  right: 1.2%;
+  border: none;
+  appearance: none;
+  cursor: pointer;
+  border-radius: 5px;
+
+  &:active {
+ 
+  }
+  img {
+    width: 95%;
+  }
+}
+
 .result-wrap {
   position: absolute;
   width: 90%;
