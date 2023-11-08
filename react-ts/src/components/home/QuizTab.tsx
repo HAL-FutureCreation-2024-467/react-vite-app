@@ -9,8 +9,11 @@ const QuizTab = () => {
   interface EpisodeData {
     episodes: number;
     class: string;
+    rank: string;
   }
-  const [level, setLevel] = useState<String>("")
+  
+  const [classLevel, setClassLevel] = useState<String>("")
+  const [rankLevel, setRankLevel] = useState<String>("")
   const [quizClass, setQuizClass] = useState<EpisodeData[]>([]);
   const grades: { name: string; rank: string }[] = [
     { name: "初級", rank: 'low' },
@@ -23,14 +26,17 @@ const QuizTab = () => {
     { name: "二級", rank: 'g2' },
     { name: "準一級", rank: 'gp1' },
   ];
-  const TABLE_NAME = 'quiz_class';
+  const TABLE_CLASS_NAME = 'quiz_class';
+  const TABLE_RANK_NAME = 'quiz_rank';
   const navigate = useNavigate();
   const threeGrades = grades.slice(0, 3);
   const sixGrades = grades.slice(3);
-  const handleButtonClick = (rank: string) => {
-    setLevel(rank)
+  const classButtonClick = (rank: string) => {
+    setClassLevel(rank)
   };
-
+  const rankButtonClick = (rank: string) => {
+    setRankLevel(rank)
+  };
   const gameButton = (episodes: number, quizclass: string) => {
     //<Link />
     console.log(episodes, quizclass)
@@ -41,9 +47,9 @@ const QuizTab = () => {
     async function fetchCategory() {
       try {
         const { data, error } = await supabase
-          .from(TABLE_NAME)
+          .from(TABLE_CLASS_NAME)
           .select("episodes, class")
-          .eq('class', level)
+          .eq('class', classLevel)
         if (error) {
           console.error("データの取得に失敗しました", error);
         } else {
@@ -57,16 +63,40 @@ const QuizTab = () => {
       }
     }
     fetchCategory();
-  }, [level])
+  }, [classLevel])
 
-  if (!level) {
+//５級がないので５級ボタンは反応しない。まだepisodesが登録されていないので放置
+  useEffect(() => {
+    async function fetchCategory() {
+      try {
+        const { data, error } = await supabase
+          .from(TABLE_RANK_NAME)
+          .select("rank")// .select("episodes,rank")
+          .eq('rank', rankLevel)
+        if (error) {
+          console.error("データの取得に失敗しました", error);
+        } else {
+          console.log("データの取得に成功しました", data);
+          const uniqueData: EpisodeData[] = Array.from(new Set(data.map(grade => JSON.stringify(grade)))).map(grade => JSON.parse(grade));
+          console.log("データの取得に成功しました", uniqueData)
+          setQuizClass(uniqueData);
+        }
+      } catch (error) {
+        console.error("エラーが発生しました", error);
+      }
+    }
+    fetchCategory();
+  }, [rankLevel])
+
+
+  if (!classLevel && !rankLevel) {
     return (
       <div>
         <div>
           <p>読めるけど読めない漢字</p>
           <div>
             {threeGrades.map((grade, index) => (
-              <button key={index} onClick={() => handleButtonClick(grade.rank)}>
+              <button key={index} onClick={() => classButtonClick(grade.rank)}>
                 {grade.name}
               </button>
             ))}
@@ -76,7 +106,7 @@ const QuizTab = () => {
           <p>日本語漢字能力検定（漢検）編</p>
           <div>
             {sixGrades.map((grade, index) => (
-              <button key={index} onClick={() => handleButtonClick(grade.rank)}>
+              <button key={index} onClick={() => rankButtonClick(grade.rank)}>
                 {grade.name}
               </button>
             ))}
@@ -88,15 +118,21 @@ const QuizTab = () => {
     return (
       <div>
         {quizClass.map((stage, index) => {
-          const matchingGrade = grades.find(grade => grade.rank === stage.class);
-
-          if (matchingGrade) {
+          const matchingClass = grades.find(grade => grade.rank === stage.class);
+          const matchingRank = grades.find(grade => grade.rank === stage.rank);
+          if (matchingClass) {
             return (
               <button key={index} onClick={() => gameButton(stage.episodes, stage.class)}>
-                {matchingGrade.name}:その{stage.episodes}
+                {matchingClass.name}:その{stage.episodes}
               </button>
             );
-          } else {
+          } else if(matchingRank){
+            return (
+              <button key={index} onClick={() => gameButton(stage.episodes, stage.class)}>
+                {matchingRank.name}:その{/*stage.episodesここはまだない*/}
+              </button>
+            );
+          }else{
             return (
               <button key={index} onClick={() => gameButton(stage.episodes, stage.class)}>
                 {stage.episodes}
