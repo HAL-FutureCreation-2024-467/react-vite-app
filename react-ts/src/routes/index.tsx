@@ -92,7 +92,7 @@ function App() {
                 toggleInUpFunc={toggleInUpFunc}
                 closeModal={toggleModal}
                 info={{showConfigModal , showNo, showLogin, toggleInUp, username}}
-                 />
+              />
             </div>
             <div
               className="home-btn"
