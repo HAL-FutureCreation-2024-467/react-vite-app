@@ -11,7 +11,7 @@ const QuizTab = () => {
     class: string;
     rank: string;
   }
-  
+
   const [classLevel, setClassLevel] = useState<String>("")
   const [rankLevel, setRankLevel] = useState<String>("")
   const [quizClass, setQuizClass] = useState<EpisodeData[]>([]);
@@ -42,7 +42,7 @@ const QuizTab = () => {
     console.log(episodes, quizclass)
     navigate(`/game/practice/?class=${quizclass}&episodes=${episodes}`);
   };
-  
+
   useEffect(() => {
     async function fetchCategory() {
       try {
@@ -65,7 +65,7 @@ const QuizTab = () => {
     fetchCategory();
   }, [classLevel])
 
-//５級がないので５級ボタンは反応しない。まだepisodesが登録されていないので放置
+  //５級がないので５級ボタンは反応しない。まだepisodesが登録されていないので放置
   useEffect(() => {
     async function fetchCategory() {
       try {
@@ -87,7 +87,19 @@ const QuizTab = () => {
     }
     fetchCategory();
   }, [rankLevel])
+  
+  const getButtonLabel = (stage: EpisodeData) => {
+    const matchingClass = grades.find((grade) => grade.rank === stage.class);
+    const matchingRank = grades.find((grade) => grade.rank === stage.rank);
 
+    if (matchingClass) {
+      return `${matchingClass.name}:その${stage.episodes}`;
+    } else if (matchingRank) {
+      return `${matchingRank.name}:その${stage.episodes}`;
+    } else {
+      return `${stage.episodes}`;
+    }
+  };
 
   if (!classLevel && !rankLevel) {
     return (
@@ -117,29 +129,11 @@ const QuizTab = () => {
   } else {
     return (
       <div>
-        {quizClass.map((stage, index) => {
-          const matchingClass = grades.find(grade => grade.rank === stage.class);
-          const matchingRank = grades.find(grade => grade.rank === stage.rank);
-          if (matchingClass) {
-            return (
-              <button key={index} onClick={() => gameButton(stage.episodes, stage.class)}>
-                {matchingClass.name}:その{stage.episodes}
-              </button>
-            );
-          } else if(matchingRank){
-            return (
-              <button key={index} onClick={() => gameButton(stage.episodes, stage.class)}>
-                {matchingRank.name}:その{/*stage.episodesここはまだない*/}
-              </button>
-            );
-          }else{
-            return (
-              <button key={index} onClick={() => gameButton(stage.episodes, stage.class)}>
-                {stage.episodes}
-              </button>
-            );
-          }
-        })}
+        {quizClass.map((stage, index) => (
+          <button key={index} onClick={() => gameButton(stage.episodes, stage.class)}>
+            {getButtonLabel(stage)}
+          </button>
+        ))}
       </div>
     );
   }
