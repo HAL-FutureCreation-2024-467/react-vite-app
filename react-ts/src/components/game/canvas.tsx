@@ -25,8 +25,6 @@ interface IRect {
 interface CanvasProps {
   quizNow: Quiz;
   ansShow: boolean;
-  width: number;
-  height: number;
 }
 
 const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
@@ -189,8 +187,6 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
       className="backarea"
       ref={backareaCanvasRef}
       // onClick={saveImg}
-      width={canvasSize.width}
-      height={canvasSize.height}
       style={{
         position: 'absolute', // 絶対位置
         zIndex: 0, // 下に配置
