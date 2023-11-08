@@ -68,7 +68,21 @@ const Home = () => {
 
     async function updateProfile(event, avatarUrl) {
         event.preventDefault()
-
+        const setupUser = async () => {
+            if (sessions?.user.id) {
+                const { data: profiles, error } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', sessions.user.id)
+                if (error) {
+                    console.error("データの取得に失敗しました", error);
+                } else {
+                    console.log("データの取得に成功しました", profiles);
+                    setUser(profiles[0])
+                }
+            }
+        }
+        
         setLoading(true)
 
         const updates = {
@@ -88,27 +102,11 @@ const Home = () => {
             alert(error.message)
         } else {
             setAvatarUrl(avatar_url)
+            setupUser()
         }
         setLoading(false)
     }
-    //ボタンが押されたときにuser情報再取得
-        const handleButtonClick = () => {
-            const setupUser = async () => {
-                if (sessions?.user.id) {
-                    const { data: profiles, error } = await supabase
-                        .from('profiles')
-                        .select('*')
-                        .eq('id', sessions.user.id)
-                    if (error) {
-                        console.error("データの取得に失敗しました", error);
-                    } else {
-                        console.log("データの取得に成功しました", profiles);
-                        setUser(profiles[0])
-                    }
-                }
-            }
-            setupUser()
-        };
+    
 
     const toggleModal = () => {
         setShowModal(!showConfigModal);
@@ -275,7 +273,6 @@ const Home = () => {
                         <button className="button block primary"
                             type="submit"
                             disabled={loading}
-                            onClick={handleButtonClick}
                         >
                             {loading ? 'Loading ...' : 'Update'}
                         </button>
