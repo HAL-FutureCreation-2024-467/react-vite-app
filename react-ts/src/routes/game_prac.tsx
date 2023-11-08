@@ -70,7 +70,12 @@ const Game = () => {
   }, [quizRank, nowNum])
   
   // canvas関連 --------------------------------------
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [showCanvasText, setShowCanvasText] = useState<boolean>(false);
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
   const toggleCanvasText = () => {
     console.log(showCanvasText);
     setShowCanvasText(!showCanvasText);
@@ -85,6 +90,14 @@ const Game = () => {
       }
     }
   };
+  const handleResize = () => {
+    setWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+    console.log([windowSize.width, windowSize.height])
+  };
+  window.addEventListener('resize', handleResize);
   // ページ遷移 --------------------------------------
 
   return (
@@ -136,7 +149,12 @@ const Game = () => {
           <div
             className={"mozi-canvas-wrap canvas-add"}
           >
-            <CanComp ref={childCanvasRef} quizNow={quizNow} ansShow={showCanvasText} width={400} height={200}/>
+            <CanComp 
+              ref={childCanvasRef} 
+              quizNow={quizNow} 
+              ansShow={showCanvasText}
+              width={windowSize.width}
+              height={windowSize.height} />
             
           </div>
           <br />

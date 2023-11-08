@@ -1,7 +1,11 @@
 import React, { useRef, useEffect, useState, useImperativeHandle, forwardRef } from "react";
 import axios from 'axios';
+import Tesseract, { createWorker } from "tesseract.js";
 
 const url = 'https://inputtools.google.com/request?itc=ja-t-i0-handwrit';
+
+const Appkey = '5dfc227a-bcf2-4b86-a3d3-e222442e22ea';
+const HMACkey = '9c2568f8-69e3-40bb-aebc-fd10e0f6a164';
 
 interface Quiz {
   question: string | null;
@@ -28,9 +32,11 @@ interface CanvasProps {
 const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
   const quizNow = props.quizNow;
   const showCanvasText = props.ansShow;
-  const width = props.width;
-  const height = props.height;
-  let canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
+  const worker = createWorker();
+  const [result, setResult] = useState<string>("");
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const backareaCanvasRef = useRef<HTMLCanvasElement | null>(null);
   let mouseX: number | null = null;
   let mouseY: number | null = null;
 
@@ -81,12 +87,13 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
     mouseY = y;
   }
 
-  
-  function drawTextOnCanvas(text: string, canvas: HTMLCanvasElement) {
+  function drawTextOnCanvas(text: string) {
+    let canvas = backareaCanvasRef.current
+    if(!canvas) return;
     const ctx = canvas.getContext("2d");
     if (ctx) {
       ctx.clearRect(0, 0, canvas.width, canvas.height); // キャンバスをクリア
-
+      
       ctx.font = "140px Arial"; // テキストのフォントとサイズを設定
       ctx.fillStyle = "rgba(0, 0, 0, 0.3)"; // テキストの色と透明度を設定
       // テキストを中央に描画
@@ -97,9 +104,9 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
   }
 
   const clearCanvas = () => {
-    const canvas = canvasRef.current;
+    let canvas = canvasRef.current;
     if (canvas) {
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext('2d',{ willReadFrequently: true });
       if (ctx) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
@@ -109,62 +116,46 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
   useImperativeHandle(ref, () => ({clearCanvas}));
 
   useEffect(() => {
-    let canvas = canvasRef.current;
+    let canvas = backareaCanvasRef.current;
     if (canvas) {
       if (showCanvasText) {(quizNow.answer !== null) ? drawTextOnCanvas(quizNow.answer, canvas) : null;}else{const ctx = canvas.getContext("2d");if (ctx) {ctx.clearRect(0, 0, canvas.width, canvas.height);}}
+      const ctx = canvas.getContext('2d',{ willReadFrequently: true });
+      console.log(canvas.width, canvas.height);
     }
+
   }, [showCanvasText, quizNow.answer]);
 
-  const getPredict = () => {
-    var data = {
-      app_version: 0.1,
-      device: window.navigator.userAgent,
-      input_type: 0,
-      options: 'enable_pre_space',
-      requests: {
-          pre_context: '',
-          max_num_results: 6,
-          max_completions: 0,
-          ink: []
-        },
-    };
-
-    const handwriting = { trace: [] }; // Define the variable 'handwriting'
+  useEffect(() => {
     const canvas = canvasRef.current;
-    if (canvas) {
-      const ctx = canvas.getContext("2d",{ willReadFrequently: true });
-      if (ctx) {
-        const imageData = ctx.getImageData(0, 0, width, height);
-        const pixelArray = imageData.data;
-        const pixels = [];
-        for (let i = 0; i < pixelArray.length; i += 4) {
-          const r = pixelArray[i];
-          const g = pixelArray[i + 1];
-          const b = pixelArray[i + 2];
-          const a = pixelArray[i + 3];
-          pixels.push([r, g, b, a]);
-        }
-        handwriting.trace.push(pixels as never); // explicitly annotate the type of the array
-        data.requests.ink = handwriting.trace;
-      }
-    }
-
-    
-    axios
-      .post(url,JSON.stringify(data), {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        // 成功時のコールバック関数
-        console.log(response.data[1][0][1]);
-        return response;
-      })
-      .catch((error) => {
-        console.error("エラー:", error);
+    const updateCanvasSize = () => {
+      const rect = canvas.getBoundingClientRect();
+      setCanvasSize({
+        width: rect.width,
+        height: rect.height,
       });
-  }
+    };
+    updateCanvasSize();
+
+    window.addEventListener('resize', updateCanvasSize);
+
+    return () => {
+      window.removeEventListener('resize', updateCanvasSize);
+    };
+  }, []);
+ 
+  // const HandingSaveImg = async() => {
+  //   let canvas = canvasRef.current;
+  //   if (!canvas) return;
+  //   let base64 = canvas.toDataURL("image/png");
+  //   //Download
+  //   // ダウンロード用のリンクを作成
+  //   const downloadLink = document.createElement('a');
+  //   downloadLink.href = base64;
+  //   downloadLink.download = 'image.png'; // ファイル名を指定
+
+  //   // リンクをクリックしてダウンロードを開始
+  //   downloadLink.click();
+  // }
 
   const style = {
     minWidth: 64,
@@ -177,17 +168,34 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
 
   return (
     <>
-      <canvas 
+      <canvas
         onMouseDown={OnClick}
         onMouseMove={OnMove}
         onMouseUp={DrawEnd}
+        onMouseLeave={DrawEnd}
         onMouseOut={DrawEnd}
-        onClick={getPredict}
         ref={canvasRef}
-        width={`${width}px`}
-        height={`${height}px`}
-    
-        />
+        width={canvasSize.width}
+        height={canvasSize.height}
+        style={{
+          backgroundColor: 'transparent',
+          position: 'absolute', // 絶対位置
+          zIndex: 1, // 上に配置
+        }}
+    />
+
+    {/* backarea キャンバス */}
+    <canvas
+      className="backarea"
+      ref={backareaCanvasRef}
+      // onClick={saveImg}
+      width={canvasSize.width}
+      height={canvasSize.height}
+      style={{
+        position: 'absolute', // 絶対位置
+        zIndex: 0, // 下に配置
+      }}
+    />
     </>
   )
 });
