@@ -81,9 +81,6 @@ const Game = () => {
   const clearChildCanvas = () => {
     if (childCanvasRef.current && childCanvasRef.current.clearCanvas) {
       childCanvasRef.current.clearCanvas();
-      if (showCanvasText) {
-        toggleCanvasText();
-      }
     }
   };
   // ページ遷移 --------------------------------------

@@ -35,29 +35,31 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
   const [result, setResult] = useState<string>("");
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const backareaCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const canvas = canvasRef.current;
+  const backCanvas = backareaCanvasRef.current;
   let mouseX: number | null = null;
   let mouseY: number | null = null;
 
   const getContext = (): CanvasRenderingContext2D => {
-    const canvas: any = canvasRef.current;
+    let canvas: any = canvasRef.current;
     return canvas.getContext('2d');
   };
 
   const OnClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (e.button !== 0) { return; }
-    const canvas: any = canvasRef.current;
-    const rect: IRect = canvas.getBoundingClientRect();
-    const x = ~~(e.clientX - rect.left);
-    const y = ~~(e.clientY - rect.top);
+    let canvas: any = canvasRef.current;
+    let rect: IRect = canvas.getBoundingClientRect();
+    let x = ~~(e.clientX - rect.left);
+    let y = ~~(e.clientY - rect.top);
     Draw(x, y);
   }
 
   const OnMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (e.buttons !== 1) { return; }
-    const canvas: any = canvasRef.current;
-    const rect: IRect = canvas.getBoundingClientRect();
-    const x = ~~(e.clientX - rect.left);
-    const y = ~~(e.clientY - rect.top);
+    let canvas: any = canvasRef.current;
+    let rect: IRect = canvas.getBoundingClientRect();
+    let x = ~~(e.clientX - rect.left);
+    let y = ~~(e.clientY - rect.top);
     Draw(x, y);
   }
 
@@ -68,7 +70,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
   }
 
   const Draw = (x: number, y: number) => {
-    const ctx = getContext();
+    let ctx = getContext();
     ctx.beginPath();
     ctx.globalAlpha = 1.0;
     if (mouseX === null || mouseY === null) {
@@ -86,25 +88,24 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
   }
 
   function drawTextOnCanvas(text: string) {
-    let canvas = backareaCanvasRef.current
-    if(!canvas) return;
-    const ctx = canvas.getContext("2d");
+    if(!backCanvas) return;
+    let ctx = backCanvas.getContext("2d");
     if (ctx) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height); // キャンバスをクリア
+      ctx.clearRect(0, 0, backCanvas.width, backCanvas.height); // キャンバスをクリア
       
       ctx.font = "140px Arial"; // テキストのフォントとサイズを設定
       ctx.fillStyle = "rgba(0, 0, 0, 0.3)"; // テキストの色と透明度を設定
       // テキストを中央に描画
       ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(text, canvas.width / 2, canvas.height / 2); // テキストを描画
+      ctx.textBaseline = "top";
+      // ctx.
+      ctx.fillText(text, backCanvas.width/2, backCanvas.height/2); // テキストを描画
     }
   }
 
   const clearCanvas = () => {
-    let canvas = canvasRef.current;
     if (canvas) {
-      const ctx = canvas.getContext('2d',{ willReadFrequently: true });
+      let ctx = canvas.getContext('2d');
       if (ctx) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
@@ -114,11 +115,13 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
   useImperativeHandle(ref, () => ({clearCanvas}));
 
   useEffect(() => {
-    let canvas = backareaCanvasRef.current;
     if (canvas) {
-      if (showCanvasText) {(quizNow.answer !== null) ? drawTextOnCanvas(quizNow.answer, canvas) : null;}else{const ctx = canvas.getContext("2d");if (ctx) {ctx.clearRect(0, 0, canvas.width, canvas.height);}}
-      const ctx = canvas.getContext('2d',{ willReadFrequently: true });
-      console.log(canvas.width, canvas.height);
+      if (showCanvasText) {(quizNow.answer !== null) ? drawTextOnCanvas(quizNow.answer) : null;}
+      else{
+        if(backCanvas){
+          let ctx = backCanvas.getContext("2d");
+         if(ctx) {ctx.clearRect(0, 0, backCanvas.width, backCanvas.height);}}
+      }
     }
 
   }, [showCanvasText, quizNow.answer]);
@@ -126,11 +129,13 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
   useEffect(() => {
     const canvas = canvasRef.current;
     const updateCanvasSize = () => {
-      const rect = canvas.getBoundingClientRect();
-      setCanvasSize({
-        width: rect.width,
-        height: rect.height,
-      });
+      if(canvas){
+        const rect = canvas.getBoundingClientRect();
+        setCanvasSize({
+          width: rect.width,
+          height: rect.height,
+        });
+      };
     };
     updateCanvasSize();
 
@@ -157,7 +162,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
 
   const style = {
     minWidth: 64,
-    lineHeight: "32px",
+    lineHeight: "24px",
     borderRadius: 4,
     border: "none",
     color: "#fff",
