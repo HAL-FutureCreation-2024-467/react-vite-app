@@ -70,6 +70,7 @@ const Game = () => {
   }, [quizRank, nowNum])
   
   // canvas関連 --------------------------------------
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [showCanvasText, setShowCanvasText] = useState<boolean>(false);
   const toggleCanvasText = () => {
     console.log(showCanvasText);
@@ -80,9 +81,6 @@ const Game = () => {
   const clearChildCanvas = () => {
     if (childCanvasRef.current && childCanvasRef.current.clearCanvas) {
       childCanvasRef.current.clearCanvas();
-      if (showCanvasText) {
-        toggleCanvasText();
-      }
     }
   };
   // ページ遷移 --------------------------------------
@@ -136,7 +134,11 @@ const Game = () => {
           <div
             className={"mozi-canvas-wrap canvas-add"}
           >
-            <CanComp ref={childCanvasRef} quizNow={quizNow} ansShow={showCanvasText} width={400} height={200}/>
+            <CanComp 
+              ref={childCanvasRef} 
+              quizNow={quizNow} 
+              ansShow={showCanvasText}
+              />
             
           </div>
           <br />
