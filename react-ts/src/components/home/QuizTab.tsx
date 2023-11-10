@@ -14,6 +14,7 @@ const QuizTab = () => {
 
   const [classLevel, setClassLevel] = useState<String>("")
   const [rankLevel, setRankLevel] = useState<String>("")
+  const [TABLE_NAME, setTABLE_NAME] = useState("")
   const [quizClass, setQuizClass] = useState<EpisodeData[]>([]);
   const grades: { name: string; rank: string }[] = [
     { name: "初級", rank: 'low' },
@@ -26,16 +27,16 @@ const QuizTab = () => {
     { name: "二級", rank: 'g2' },
     { name: "準一級", rank: 'gp1' },
   ];
-  const TABLE_CLASS_NAME = 'quiz_class';
-  const TABLE_RANK_NAME = 'quiz_rank';
   const navigate = useNavigate();
   const threeGrades = grades.slice(0, 3);
   const sixGrades = grades.slice(3);
   const classButtonClick = (rank: string) => {
     setClassLevel(rank)
+    setTABLE_NAME('quiz_class_epi')
   };
   const rankButtonClick = (rank: string) => {
     setRankLevel(rank)
+    setTABLE_NAME('quiz_rank_epi')
   };
   const gameButton = (episodes: number, quizclass: string) => {
     //<Link />
@@ -46,47 +47,23 @@ const QuizTab = () => {
   useEffect(() => {
     async function fetchCategory() {
       try {
+        if(TABLE_NAME == 'quiz_class_epi'){}
         const { data, error } = await supabase
-          .from(TABLE_CLASS_NAME)
-          .select("episodes, class")
-          .eq('class', classLevel)
+          .from(TABLE_NAME)
+          .select(TABLE_NAME === 'quiz_class_epi' ? "episodes, class" : "episodes, rank")
+          .eq(TABLE_NAME === 'quiz_class_epi' ? 'class' : 'rank', TABLE_NAME === 'quiz_class_epi' ? classLevel : rankLevel);
         if (error) {
           console.error("データの取得に失敗しました", error);
         } else {
           console.log("データの取得に成功しました", data);
-          const uniqueData: EpisodeData[] = Array.from(new Set(data.map(grade => JSON.stringify(grade)))).map(grade => JSON.parse(grade));
-          console.log("データの取得に成功しました", uniqueData)
-          setQuizClass(uniqueData);
+          setQuizClass(data as EpisodeData[]);
         }
       } catch (error) {
         console.error("エラーが発生しました", error);
       }
     }
     fetchCategory();
-  }, [classLevel])
-
-  //５級がないので５級ボタンは反応しない。まだepisodesが登録されていないので放置
-  useEffect(() => {
-    async function fetchCategory() {
-      try {
-        const { data, error } = await supabase
-          .from(TABLE_RANK_NAME)
-          .select("episodes,rank")
-          .eq('rank', rankLevel)
-        if (error) {
-          console.error("データの取得に失敗しました", error);
-        } else {
-          console.log("データの取得に成功しました", data);
-          const uniqueData: EpisodeData[] = Array.from(new Set(data.map(grade => JSON.stringify(grade)))).map(grade => JSON.parse(grade));
-          console.log("データの取得に成功しました", uniqueData)
-          setQuizClass(uniqueData);
-        }
-      } catch (error) {
-        console.error("エラーが発生しました", error);
-      }
-    }
-    fetchCategory();
-  }, [rankLevel])
+  }, [classLevel,rankLevel])
   
   const getButtonLabel = (stage: EpisodeData) => {
     const matchingClass = grades.find((grade) => grade.rank === stage.class);
@@ -129,7 +106,7 @@ const QuizTab = () => {
   } else {
     return (
       <div>
-        {quizClass.map((stage, index) => (
+        {Array.isArray(quizClass) && quizClass.map((stage, index) => (
           <button key={index} onClick={() => gameButton(stage.episodes, stage.class)}>
             {getButtonLabel(stage)}
           </button>
@@ -138,5 +115,4 @@ const QuizTab = () => {
     );
   }
 }
-
 export default QuizTab;
