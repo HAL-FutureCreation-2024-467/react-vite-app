@@ -71,7 +71,7 @@ const QuizTab = () => {
       try {
         const { data, error } = await supabase
           .from(TABLE_RANK_NAME)
-          .select("rank")// .select("episodes,rank")
+          .select("episodes,rank")
           .eq('rank', rankLevel)
         if (error) {
           console.error("データの取得に失敗しました", error);
