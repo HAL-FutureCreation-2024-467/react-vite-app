@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import "../../scss/story.scss";
+// import "../../src/assets/scss/story.scss";
 import { supabase } from "../supabaseClient";
+import { GameApp } from "phina.js"
 
 const Story = ({ storyHidden }) => {
   const getImage = (filePath: string): string => {
