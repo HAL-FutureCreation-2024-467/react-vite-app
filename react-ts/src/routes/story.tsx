@@ -13,6 +13,10 @@ const story = () => {
   const getImage = (filePath: string): string => {
     return new URL(`../assets/${filePath}`, import.meta.url).href;
   };
+  const [clickCount, setClickCount] = useState(0);
+  const [currentText, setCurrentText] = useState<string>("");
+  const [currentTextIndex, setCurrentTextIndex] = useState(0);
+
   
   useEffect(() => {
     async function fetchStories() {
@@ -37,9 +41,35 @@ const story = () => {
     fetchStories();
   }, []);
 
+  useEffect(() => {
+    if (stories && clickCount < stories[0].sentence.start.length) {
+      const currentStoryText = stories[0].sentence.start[clickCount];
+      const timer = setInterval(() => {
+        if(currentText.length < stories[0].sentence.start[clickCount].length){
+          setCurrentText((prevText) => prevText + currentStoryText[currentTextIndex]);
+          setCurrentTextIndex((prevIndex) => prevIndex + 1);
+        }
+        if (currentTextIndex === currentStoryText.length) {
+          clearInterval(timer);
+        }
+      }, 150);
+
+      return () => {
+        clearInterval(timer);
+      };
+    }
+  }, [clickCount, currentTextIndex, stories]);
+
   // chapter 章
   // paragraph 段落
   // sentence 文
+  const handleNextClick = () => {
+    if (clickCount < (stories[0].sentence.start?.length || 0) - 1) {
+      setClickCount(clickCount + 1);
+      setCurrentText("");
+      setCurrentTextIndex(0);
+    }
+  };
 
   return (
     <>
@@ -50,17 +80,18 @@ const story = () => {
           <button>SKIP</button>
         </div>
         {
-          stories == null 
-          ? (<p>Loading...</p>) 
+          chapter == null || paragraph == null
+          ? (location.href = "/404")
+          : stories == null
+          ? (<p>Loading...</p>)
           : (
               Object.keys(stories[0]).length === 0 ? (
                 <p>受信に問題が発生した</p>
               ) : (
                 stories.map((story , index) => {
                   return (
-                    <div key={index}>
-                      {/* <p>{story.chapter}-{story.paragraph}</p> */}
-                      <p>{story.sentence.start}</p>
+                    <div key={index} onClick={handleNextClick}>
+                      {<p>{currentText}</p>}
                     </div>
                   )
                 })
