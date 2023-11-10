@@ -24,13 +24,13 @@ interface IRect {
 interface CanvasProps {
   quizNow: Quiz;
   ansShow: boolean;
+  setChoice : any;
 }
 
 const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
   const quizNow = props.quizNow;
   const showCanvasText = props.ansShow;
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
-  const [result, setResult] = useState<string>("");
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const backareaCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const canvas = canvasRef.current;
@@ -70,12 +70,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
   const DrawEnd = (e: React.MouseEvent<HTMLCanvasElement>) => {
     mouseX = null;
     mouseY = null;
-    var w = [];
-        w.push(Xarr);
-        w.push(Yarr);
-        w.push([]);
-        trace.push(w);
-    console.log(trace);
+    recognize();
     //
   }
 
@@ -125,6 +120,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
     setTrace([[], [], []]);
     Xarr = [];
     Yarr = [];
+    setTrace([]);
   };
   
   useImperativeHandle(ref, () => ({clearCanvas, recognize}));
@@ -158,7 +154,13 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
     };
   }, []);
 
-  const recognize = () => {  
+  const recognize = () => { 
+    var w = [];
+        w.push(Xarr);
+        w.push(Yarr);
+        w.push([]);
+        trace.push(w);
+    console.log(trace); 
     var data = JSON.stringify({
       app_version: 0.1,
       api_level: "537.36",
@@ -187,7 +189,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
       )
       .then(function (response) {
         var result = response.data[1][0][1];
-        console.log(result);
+        props.setChoice(result);
       })
       .catch(function (error) {
         console.log(error);
@@ -211,9 +213,11 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
         onMouseUp={DrawEnd}
         onMouseLeave={DrawEnd}
         onMouseOut={DrawEnd}
+
         ref={canvasRef}
         width={canvasSize.width}
         height={canvasSize.height}
+        
         style={{
           backgroundColor: 'transparent',
           position: 'absolute', // 絶対位置

@@ -28,7 +28,7 @@ const Game = () => {
     answer: "答え",
     choices: ["", "", ""],
   });
-  const [quizChoice, setqChoice] = useState<string[]>([]);
+  const [quizChoice, setChoice] = useState<string[]>([]);
 
   const [lifeNow, setLifeNow] = useState<number>(3);
   const [quizRank, setQuizRank] = useState<QuizRankType[] | null>(null);
@@ -49,6 +49,19 @@ const Game = () => {
     }
     fetchQuiz(); // 非同期関数を実行
   }, [])
+
+  useEffect(() => {
+    if(quizRank){
+      var tmp = quizChoice.slice(0,6);
+      setQuizNow({
+        question: quizRank[nowNum].problem,
+        answer: quizRank[nowNum].write,
+        choices: tmp,
+      })
+    }
+    
+
+  }, [quizChoice])
 
   useEffect(() => {
     console.log(quizRank);
@@ -102,7 +115,21 @@ const Game = () => {
     // リンクをクリックしてダウンロードを開始
     downloadLink.click();
   }
-  // ページ遷移 --------------------------------------
+  // 正誤判定 --------------------------------------
+  const jg = (e) => {
+    if (quizNow.answer, quizNow.choices) {
+      console.log(e.target.dataset.v);
+      if (quizNow.answer === quizNow.choices[e.target.dataset.v]) {
+        console.log("正解");
+        setNowNum(nowNum + 1);
+        clearChildCanvas();
+      } else {
+        console.log("不正解");
+        setLifeNow(lifeNow - 1);
+        clearChildCanvas();
+      }
+    }
+  }
 
   return (
       <>
@@ -135,8 +162,12 @@ const Game = () => {
               { quizNow.choices !== null ?
                   quizNow.choices.map((v, i) => {
                     return (
-                      <div className="result-push">
-                        <div className={"result add"}>
+                      <div className="result-push" onClick={jg} data-v={i}>
+                        <div className={"result add"}
+                          style={{ 
+                            fontSize: `${6.7 / v.length}rem`,
+                            textAlign: "center",
+                           }}>
                           <p>{v}</p>
                         </div>
                       </div>
@@ -157,6 +188,7 @@ const Game = () => {
               ref={childCanvasRef} 
               quizNow={quizNow} 
               ansShow={showCanvasText}
+              setChoice={setChoice}
               />
             
           </div>
