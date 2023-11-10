@@ -83,6 +83,25 @@ const Game = () => {
       childCanvasRef.current.clearCanvas();
     }
   };
+
+  const recognizeChildCanvas = () => {
+    if (childCanvasRef.current && childCanvasRef.current.recognize) {
+      childCanvasRef.current.recognize();
+    }
+  };
+   const HandingSaveImg = async() => {
+    let canvas = canvasRef.current;
+    if (!canvas) return;
+    let base64 = canvas.toDataURL("image/png");
+    //Download
+    // ダウンロード用のリンクを作成
+    const downloadLink = document.createElement('a');
+    downloadLink.href = base64;
+    downloadLink.download = 'image.png'; // ファイル名を指定
+
+    // リンクをクリックしてダウンロードを開始
+    downloadLink.click();
+  }
   // ページ遷移 --------------------------------------
 
   return (
@@ -142,6 +161,9 @@ const Game = () => {
             
           </div>
           <br />
+          <button className="save-btn" onClick={recognizeChildCanvas}>
+            <img src={getImage('tp.png')} alt="" />
+          </button>
 
           <button className="erase-btn" onClick={clearChildCanvas}>
             <img src={getImage('kesi.png')} alt="" />
@@ -152,12 +174,10 @@ const Game = () => {
             <h2>{lifeNow}</h2>
           </div>
 
-          <div className="ans-wrap">
-            <button className={"ans-show-btn"} onClick={toggleCanvasText}>
-              <img src={getImage('scope.png')} alt="" />
-            </button>
-          </div>
-        </div>
+          <button className="ans-wrap" onClick={ toggleCanvasText }>
+            <img src={getImage('scope.png')} alt="" />
+          </button>
+        </div>  
       </div>
     </div>
   </>

@@ -1,11 +1,10 @@
 import React, { useRef, useEffect, useState, useImperativeHandle, forwardRef } from "react";
 import axios from 'axios';
-import Tesseract, { createWorker } from "tesseract.js";
 
 const url = 'https://inputtools.google.com/request?itc=ja-t-i0-handwrit';
 
-const Appkey = '5dfc227a-bcf2-4b86-a3d3-e222442e22ea';
-const HMACkey = '9c2568f8-69e3-40bb-aebc-fd10e0f6a164';
+// const Appkey = '5dfc227a-bcf2-4b86-a3d3-e222442e22ea';
+// const HMACkey = '9c2568f8-69e3-40bb-aebc-fd10e0f6a164';
 
 interface Quiz {
   question: string | null;
@@ -31,12 +30,15 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
   const quizNow = props.quizNow;
   const showCanvasText = props.ansShow;
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
-  const worker = createWorker();
   const [result, setResult] = useState<string>("");
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const backareaCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const canvas = canvasRef.current;
   const backCanvas = backareaCanvasRef.current;
+  const [trace, setTrace] = useState<any[]>([]);
+  var Xarr = useState<number[]>([]);
+  var Yarr = useState<number[]>([]);
+
   let mouseX: number | null = null;
   let mouseY: number | null = null;
 
@@ -58,14 +60,22 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
     if (e.buttons !== 1) { return; }
     let canvas: any = canvasRef.current;
     let rect: IRect = canvas.getBoundingClientRect();
-    let x = ~~(e.clientX - rect.left);
-    let y = ~~(e.clientY - rect.top);
+    let x = (e.clientX - rect.left);
+    let y = (e.clientY - rect.top);
     Draw(x, y);
+    Xarr.push(x);
+    Yarr.push(y);
   }
 
   const DrawEnd = (e: React.MouseEvent<HTMLCanvasElement>) => {
     mouseX = null;
     mouseY = null;
+    var w = [];
+        w.push(Xarr);
+        w.push(Yarr);
+        w.push([]);
+        trace.push(w);
+    console.log(trace);
     //
   }
 
@@ -85,6 +95,8 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
     ctx.stroke();
     mouseX = x;
     mouseY = y;
+    Xarr.push(x);
+    Yarr.push(y);
   }
 
   function drawTextOnCanvas(text: string) {
@@ -97,11 +109,11 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
       ctx.fillStyle = "rgba(0, 0, 0, 0.3)"; // テキストの色と透明度を設定
       // テキストを中央に描画
       ctx.textAlign = "center";
-      ctx.textBaseline = "top";
       // ctx.
-      ctx.fillText(text, backCanvas.width/2, backCanvas.height/2); // テキストを描画
+      ctx.fillText(text, backCanvas.width/2, backCanvas.height/1.2); // テキストを描画
     }
   }
+
 
   const clearCanvas = () => {
     if (canvas) {
@@ -110,17 +122,17 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
     }
+    setTrace([[], [], []]);
+    Xarr = [];
+    Yarr = [];
   };
   
-  useImperativeHandle(ref, () => ({clearCanvas}));
+  useImperativeHandle(ref, () => ({clearCanvas, recognize}));
 
   useEffect(() => {
     if (canvas) {
       if (showCanvasText) {(quizNow.answer !== null) ? drawTextOnCanvas(quizNow.answer) : null;}
-      else{
-        if(backCanvas){
-          let ctx = backCanvas.getContext("2d");
-         if(ctx) {ctx.clearRect(0, 0, backCanvas.width, backCanvas.height);}}
+      else{if(backCanvas){let ctx = backCanvas.getContext("2d");if(ctx) {ctx.clearRect(0, 0, backCanvas.width, backCanvas.height);}}
       }
     }
 
@@ -145,20 +157,42 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
       window.removeEventListener('resize', updateCanvasSize);
     };
   }, []);
- 
-  // const HandingSaveImg = async() => {
-  //   let canvas = canvasRef.current;
-  //   if (!canvas) return;
-  //   let base64 = canvas.toDataURL("image/png");
-  //   //Download
-  //   // ダウンロード用のリンクを作成
-  //   const downloadLink = document.createElement('a');
-  //   downloadLink.href = base64;
-  //   downloadLink.download = 'image.png'; // ファイル名を指定
 
-  //   // リンクをクリックしてダウンロードを開始
-  //   downloadLink.click();
-  // }
+  const recognize = () => {  
+    var data = JSON.stringify({
+      app_version: 0.1,
+      api_level: "537.36",
+      device: window.navigator.userAgent,
+      input_type: 0,
+      options: "enable_pre_space",
+      requests: [
+        {
+          writing_guide: {
+            writing_area_width: 0,
+            writing_area_height: 0,
+          },
+          ink: trace,
+          language: "ja",
+        },
+      ],
+    });
+  
+    axios
+      .post(
+        "https://www.google.com.tw/inputtools/request?ime=handwriting&app=mobilesearch&cs=1&oe=UTF-8",
+        data,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      )
+      .then(function (response) {
+        var result = response.data[1][0][1];
+        console.log(result);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   const style = {
     minWidth: 64,
@@ -202,3 +236,4 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
 });
 
 export default Canvas;
+

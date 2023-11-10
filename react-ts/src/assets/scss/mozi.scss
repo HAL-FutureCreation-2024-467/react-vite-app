@@ -178,6 +178,29 @@
   border-radius: 5px;
 
   &:active {
+
+  }
+  img {
+    width: 95%;
+  }
+}
+
+.save-btn{
+  padding: 0;
+  width: 46px;
+  height: 46px;
+  position: absolute;
+  left: 1.2%;
+  bottom: 28%;
+  border: none;
+  appearance: none;
+  cursor: pointer;
+  background-image: linear-gradient(135deg, #abdcff 10%, #0396ff 100%);
+  border-radius: 5px;
+  
+  box-shadow: 0 0 10px #fff;
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  &:active {
  
   }
   img {
