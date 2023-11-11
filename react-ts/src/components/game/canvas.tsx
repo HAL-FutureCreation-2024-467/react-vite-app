@@ -211,8 +211,8 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
         onMouseDown={OnClick}
         onMouseMove={OnMove}
         onMouseUp={DrawEnd}
-        onMouseLeave={DrawEnd}
-        onMouseOut={DrawEnd}
+        // onMouseLeave={DrawEnd}
+        // onMouseOut={DrawEnd}
 
         ref={canvasRef}
         width={canvasSize.width}
