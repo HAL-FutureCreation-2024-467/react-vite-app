@@ -32,7 +32,7 @@ const story = () => {
           console.error("データの取得に失敗しました", error);
         } else {
           console.log("データの取得に成功しました", data);
-          setStory(data as StoryType[]);
+          setStory(data as unknown as StoryType[]);
         }
       } catch (error) {
         console.error("エラーが発生しました", error);

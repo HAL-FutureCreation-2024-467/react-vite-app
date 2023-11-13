@@ -1,12 +1,9 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { supabase } from "../supabaseClient";   
 import "@scss/mozi.scss";
-import { useLocation, useParams } from 'react-router-dom'
+import { Link, useNavigate, useLocation, useParams } from 'react-router-dom'
 import { QuizClassType, QuizRankType } from '../types/tables'
 import CanComp from "../components/game/canvas";
-// import useSound from 'use-sound';
-// import collectSd from '../assets/Quiz-Buzzer01-mp3/Quiz-Buzzer01-1.mp3';
-// const [collectPlay, { stop, pause }] = useSound(collectSd,{ volume: 0.5 });
 
 interface Quiz {
   question: string | null;
@@ -16,10 +13,11 @@ interface Quiz {
 
 //ゲームプレイ画面
 const Game = () => {
-
-
+  const Navigate = useNavigate();
   const { search } = useLocation();
-  const queryParams = new URLSearchParams(search);
+  const {mode, grade, episode} = useParams();
+  //['ゲームが終わっているか','クリア=> true, 失敗=> false']
+  const [gameStatus, setGameStatus] = useState<boolean[]>([false, false]);
   const getImage = (filePath: string): string => {return new URL(`../assets/${filePath}`, import.meta.url).href;};
 
   // quiz関連 --------------------------------------
@@ -35,58 +33,102 @@ const Game = () => {
   const [quizChoice, setChoice] = useState<string[]>([]);
 
   const [lifeNow, setLifeNow] = useState<number>(3);
-  const [quizRank, setQuizRank] = useState<QuizRankType[] | null>(null);
-  const [quizClass, setQuizClass] = useState<QuizClassType[] | null>(null);
-
-  useEffect(() => {
-    const fetchQuiz = async () => {
-      const { data, error } = await supabase.from('quiz_rank').select('*').eq('rank', 'g5');
-      if (error) {
-        console.log(error);
-        return;
+  if(mode == "rank"){
+    console.log(mode);
+    const [quizRank, setQuizRank] = useState<QuizRankType[] | null>(null);
+    useEffect(() => {
+      const fetchQuiz = async () => {
+        if(grade != null && episode != null){
+          const { data, error } = await supabase.from('quiz_rank').select('*').eq('rank', grade).eq('episodes', episode);
+          if (error) {
+            Navigate('/404');
+            return;
+          }
+      
+          if (data) {
+            let selected = data.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 10);
+            setQuizRank(selected);
+          }
+        }
       }
+      fetchQuiz(); // 非同期関数を実行
+    }, [])
+
+    useEffect(() => {
+      if(quizRank){
+        var tmpChoice = quizChoice.slice(0,6);
+        tmpChoice = tmpChoice.map(element => element.replace(/[ 　\n]/g, ""));
+        setQuizNow({
+          question: quizRank[nowNum].problem,
+          answer: quizRank[nowNum].write,
+          choices: tmpChoice,
+        })
+        setShowChoice(true);
+      }
+      
   
-      if (data) {
-        let selected = data.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 10);
-        setQuizRank(selected);
+    }, [quizChoice])
+
+    useEffect(() => {
+      quizRank !== null? 
+      (
+        setQuizNow({
+          question: quizRank[nowNum].problem,
+          answer: quizRank[nowNum].write,
+          choices: [],
+        }),
+        setShowQuiz(true),
+        setShowChoice(true)
+      ):null;
+    }, [quizRank, nowNum])
+  }else{
+    const [quizClass, setQuizClass] = useState<QuizClassType[] | null>(null);
+    useEffect(() => {
+      const fetchQuiz = async () => {
+        if(grade != null && episode != null){
+          const { data, error } = await supabase.from('quiz_class').select('*').eq('class', grade).eq('episodes', episode);
+          if (error) {Navigate('/404');console.log(error);return;}
+          if (data) {let selected = data.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 10);setQuizClass(selected);}
+        }
       }
-    }
-    fetchQuiz(); // 非同期関数を実行
-  }, [])
+      fetchQuiz(); // 非同期関数を実行
+    }, [])
 
-  useEffect(() => {
-    if(quizRank){
-      var tmpChoice = quizChoice.slice(0,6);
-      tmpChoice = tmpChoice.map(element => element.replace(/\n/g, ""));
-      setQuizNow({
-        question: quizRank[nowNum].problem,
-        answer: quizRank[nowNum].write,
-        choices: tmpChoice,
-      })
-      setShowChoice(true);
-    }
-    
+    useEffect(() => {
+      if(quizClass){
+        var tmpChoice = quizChoice.slice(0,6);
+        tmpChoice = tmpChoice.map(element => element.replace(/[ 　\n]/g, ""));
+        setQuizNow({
+          question: quizClass[nowNum].problem,
+          answer: quizClass[nowNum].write,
+          choices: tmpChoice
+        })
+        setShowChoice(true);
+      }
+    }, [quizChoice])
 
-  }, [quizChoice])
-
-  useEffect(() => {
-    // console.log(quizRank);
-  }, [quizRank]);
+    useEffect(() => {
+      quizClass !== null
+      ? 
+      (
+        setQuizNow({
+          question: quizClass[nowNum].problem,
+          answer: quizClass[nowNum].write,
+          choices: [],
+        }),
+        setShowQuiz(true),
+        setShowChoice(true)
+      )
+      : null;
+    }, [quizClass, nowNum])
+  }
  
-  useEffect(() => {
-    quizRank !== null
-    ? 
-    (
-      setQuizNow({
-        question: quizRank[nowNum].problem,
-        answer: quizRank[nowNum].write,
-        choices: [],
-      }),
-      setShowQuiz(true),
-      setShowChoice(true)
-    )
-    : null;
-  }, [quizRank, nowNum])
+  const clearChildCanvas = () => {
+    if (childCanvasRef.current && childCanvasRef.current.clearCanvas) {
+      childCanvasRef.current.clearCanvas();
+      setShowChoice(false);}
+    };
+  
   
   // canvas関連 --------------------------------------
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -96,19 +138,6 @@ const Game = () => {
     setShowCanvasText(!showCanvasText);
   };
   const childCanvasRef = useRef(null);
-
-  const clearChildCanvas = () => {
-    if (childCanvasRef.current && childCanvasRef.current.clearCanvas) {
-      childCanvasRef.current.clearCanvas();
-      setQuizNow({
-        question: quizRank[nowNum].problem,
-        answer: quizRank[nowNum].write,
-        choices: ["", "", ""],
-      })
-      setShowChoice(false);
-
-    }
-  };
 
   const recognizeChildCanvas = () => {
     if (childCanvasRef.current && childCanvasRef.current.recognize) {
@@ -123,11 +152,10 @@ const Game = () => {
     //Download
     // ダウンロード用のリンクを作成
     const downloadLink = document.createElement('a');
-    downloadLink.href = base64;
-    downloadLink.download = 'image.png'; // ファイル名を指定
-
-    // リンクをクリックしてダウンロードを開始
-    downloadLink.click();
+          downloadLink.href = base64;
+          downloadLink.download = 'image.png'; // ファイル名を指定
+          // リンクをクリックしてダウンロードを開始
+          downloadLink.click();
   }
 
   // 正誤判定 --------------------------------------
@@ -139,13 +167,9 @@ const Game = () => {
         console.log(dataV);
     
         if (quizNow.answer === quizNow.choices[Number(dataV)]) {
-          console.log("正解"+ quizNow.answer + "->選択回答" + quizNow.choices[Number(dataV)]);
           setNowNum(nowNum + 1);
-          // collectPlay();
           clearChildCanvas();
         } else {
-          console.log("不正解");
-          console.log("不正解"+"->選択回答" + quizNow.choices[Number(dataV)]);
           setLifeNow(lifeNow - 1);
           clearChildCanvas();
         }
@@ -153,6 +177,48 @@ const Game = () => {
     };    
   }
     
+  // useEffect(() => {
+  //   if(lifeNow == 0){//残機なしでゲームオーバー
+  //     //showFaildModalの表示
+  //     setGameStatus([true, false]);
+  //     //2秒後にリザルト画面へ
+  //     setTimeout(() => {
+  //       Navigate('/result' ,
+  //         { state: 
+  //           { 
+  //             type: false, 
+  //             result : {
+  //               mode : mode,
+  //               grade : grade,
+  //               episodes : episode,
+  //               clearNum: nowNum-1,
+  //             }
+  //           },
+  //         }); 
+  //     }, 5000);
+  //   }
+  // }, [lifeNow]);
+
+  useEffect(() => {
+    if(nowNum == 10){//クリア
+      //showClearModalの表示
+      setGameStatus([true, true]);
+      setTimeout(() => {
+        Navigate('/result' ,
+          { state: 
+            { 
+              type: true, 
+              result : {
+                mode : mode,
+                grade : grade,
+                episodes : episode,
+                clearNum: nowNum,
+              }
+            },
+          }); 
+        }, 4000);
+    }
+  }, [nowNum]);
 
   return (
       <>
@@ -166,6 +232,23 @@ const Game = () => {
               </div>
             );
           })}
+        </div>
+        <div className={gameStatus[0] ? "end-black end-black-add" : "end-black"}>
+          {gameStatus[0] ? 
+            gameStatus[1] ? (
+              <div className="clear-area">
+                <div className="clear-add">
+                  <h2>CLEAR</h2>
+                </div>
+              </div>
+            ): (
+              <div className="failed-area">
+                <div className="failed-add">
+                  <h2>FAILED...</h2>
+                </div>
+              </div>
+            )
+          : null}
         </div>
 
         {/* ランダムに取得した問題を出す */}
