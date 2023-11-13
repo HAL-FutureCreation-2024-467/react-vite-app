@@ -1,7 +1,7 @@
 import "@scss/story.scss";
 import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
-import { Json } from "../types/database";
+import { StorySentence } from "../types/tables";
 import { StoryType } from "../types/tables";
 import { useParams } from "react-router-dom";
 
@@ -11,7 +11,7 @@ const story = () => {
   const chp = Number(chapter);
   const TABLE_NAME = 'story';
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [stories, setStory] = useState<StoryType[] | null>(null);// 初期状態を{}に変更
+  const [stories, setStory] = useState<StorySentence >();// 初期状態を{}に変更
   const getImage = (filePath: string): string => {
     return new URL(`../assets/${filePath}`, import.meta.url).href;
   };
@@ -29,8 +29,7 @@ const story = () => {
         if(chapter && paragraph){
           const { data, error } = await supabase
             .from(TABLE_NAME)
-            .select("") // "*" はすべてのカラムを選択することを意味します
-            .order("created_at")
+            .select("sentence") // "*" はすべてのカラムを選択することを意味します
             .eq("chapter", chp)
             .eq("paragraph", paragraph);
 
@@ -38,7 +37,7 @@ const story = () => {
           console.error("データの取得に失敗しました", error);
         } else {
           console.log("データの取得に成功しました", data);
-          setStory(data as unknown as StoryType[]);
+          setStory(data[0]);
         }
       } 
     }
@@ -51,10 +50,10 @@ const story = () => {
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
-    if (stories && clickCount < stories[0].sentence.start.length) {
-      const currentStoryText = stories[0].sentence.start[clickCount];
+    if (stories && clickCount < stories.sentence?.start.length) {
+      const currentStoryText = stories.sentence?.start[clickCount];
       const timer = setInterval(() => {
-        if (storyText.length < stories[0].sentence.start[clickCount].length) {
+        if (storyText.length < stories.sentence?.start[clickCount].length) {
           setStoryText((prevText) => prevText + currentStoryText[storyTextIndex]);
           setStoryTextIndex((prevIndex) => prevIndex + 1);
         }
@@ -70,7 +69,7 @@ const story = () => {
   }, [clickCount, storyTextIndex, stories]);
 
   const handleNextClick = () => {
-    if (clickCount < (stories[0].sentence.start?.length || 0) - 1) {
+    if (clickCount < (stories?.sentence?.start.length || 0) - 1) {
       setClickCount(clickCount + 1);
       setStoryText("");
       setStoryTextIndex(0);
@@ -97,7 +96,7 @@ const story = () => {
           : stories == null
             ? (<p>Loading...</p>)
             : (
-              Object.keys(stories[0]).length === 0 ? (
+              Object.keys(stories).length === 0 ? (
                 <p>受信に問題が発生した</p>
               )
                 : (
