@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react"
 import { supabase } from "../../supabaseClient";
-import { Session } from "@supabase/supabase-js";
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { QuizClassEpi, QuizRankEpi } from "../../types/tables";
 
 const QuizTab = () => {
