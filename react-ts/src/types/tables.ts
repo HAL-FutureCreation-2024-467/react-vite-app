@@ -13,3 +13,7 @@ export type QuizRankType = Database["public"]["Tables"]["quiz_rank"]["Row"]
 export type QuizClassType = Database["public"]["Tables"]["quiz_class"]["Row"]
 
 export type StoryParagraph = Database["public"]["Views"]["paragraph"]["Row"]
+
+export type QuizRankEpi = Database["public"]["Views"]["quiz_rank_epi"]["Row"]
+
+export type QuizClassEpi = Database["public"]["Views"]["quiz_class_epi"]["Row"]

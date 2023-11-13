@@ -2,15 +2,11 @@ import { useState, useEffect } from "react"
 import { supabase } from "../../supabaseClient";
 import { Session } from "@supabase/supabase-js";
 import { Link, useNavigate } from 'react-router-dom';
-import { QuizClassType } from "../../types/tables";
-
+import { QuizClassEpi, QuizRankEpi } from "../../types/tables";
 
 const QuizTab = () => {
-  interface EpisodeData {
-    episodes: number;
-    class: string;
-    rank: string;
-  }
+
+  type EpisodeData = QuizRankEpi & QuizClassEpi
 
   const [classLevel, setClassLevel] = useState<String>("")
   const [rankLevel, setRankLevel] = useState<String>("")
@@ -38,7 +34,7 @@ const QuizTab = () => {
     setRankLevel(rank)
     setTABLE_NAME('quiz_rank_epi')
   };
-  const gameButton = (episodes: number, quizclass: string) => {
+  const gameButton = (episodes: number | null, quizclass: string | null) => {
     //<Link />
     console.log(episodes, quizclass)
     navigate(`/game/practice/?class=${quizclass}&episodes=${episodes}`);
