@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from "../../supabaseClient";
 import { useNavigate } from 'react-router-dom';
+import { StoryParagraph } from '../../types/tables';
+
 
 const StoryTab: React.FC = () => {
 
   // const [chapters, setChapters] = useState<{ chapter: number }[]>();
   // const [paragraphs, setParagraphs] = useState<{ paragraph: string }[]>();
-  const [StoryDB, setStoryDB] = useState<{chapter: number,paragraph: string}[] | null>(null);
+  // const [StoryDB, setStoryDB] = useState<{chapter: number,paragraph: string}[] | null>(null);
+  const [StoryDB, setStoryDB] = useState<StoryParagraph[]>();
+
   const navigate  = useNavigate()
-  const storyButton = (chapters: number, paragraphs: string) => {
+  const storyButton = (chapters: number | null, paragraphs: string | null) => {
     console.log(chapters, paragraphs);
     navigate("/story/" + chapters + "/" + paragraphs);
   };
@@ -46,8 +50,11 @@ const StoryTab: React.FC = () => {
               <button key={index} onClick={() => storyButton(stage.chapter, stage.paragraph)}>
                 {stage.chapter} - {stage.paragraph}
               </button>))):
-          (<button>取得できなかった</button>)  
-        }
+         (() => {
+          console.log("取得できなかった");
+          return <div></div>;
+        })()
+      }
         
       </div>
       

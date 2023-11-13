@@ -11,3 +11,5 @@ export type ProfileType = Database["public"]["Tables"]["profiles"]["Row"]
 export type QuizRankType = Database["public"]["Tables"]["quiz_rank"]["Row"]
 
 export type QuizClassType = Database["public"]["Tables"]["quiz_class"]["Row"]
+
+export type StoryParagraph = Database["public"]["Views"]["paragraph"]["Row"]
