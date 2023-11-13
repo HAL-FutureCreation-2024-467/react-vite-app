@@ -10,7 +10,7 @@ const StoryTab: React.FC = () => {
   const navigate  = useNavigate()
   const storyButton = (chapters: number, paragraphs: string) => {
     console.log(chapters, paragraphs);
-    navigate("/story/:chapter?/:paragraph?");
+    navigate("/story/" + chapters + "/" + paragraphs);
   };
 
 
@@ -43,10 +43,8 @@ const StoryTab: React.FC = () => {
           StoryDB ? 
           (Array.isArray(StoryDB) && StoryDB.map(
             (stage, index) => (
-              <button 
-                key={index} 
-                onClick={() => storyButton(stage.chapter, stage.paragraph)}>
-                  {stage.chapter} - {}
+              <button key={index} onClick={() => storyButton(stage.chapter, stage.paragraph)}>
+                {stage.chapter} - {stage.paragraph}
               </button>))):
           (<button>取得できなかった</button>)  
         }
