@@ -34,23 +34,15 @@ const story = () => {
             .eq("chapter", chp)
             .eq("paragraph", paragraph);
 
-<<<<<<< HEAD
         if (error) {
           console.error("データの取得に失敗しました", error);
         } else {
           console.log("データの取得に成功しました", data);
           setStory(data as unknown as StoryType[]);
         }
-=======
-          if (error) {
-            console.error("データの取得に失敗しました", error);
-          } else {
-            console.log("データの取得に成功しました", data);
-            setStory(data as StoryType[]);
-          }
-      }
->>>>>>> b4e6ab46ff8f7ca3eaf3aa7b5879718233d0a556
-      } catch (error) {
+      } 
+    }
+    catch (error) {
         console.error("エラーが発生しました", error);
       }
     }
