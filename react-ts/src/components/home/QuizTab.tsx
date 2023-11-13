@@ -11,6 +11,7 @@ const QuizTab = () => {
   const [rankLevel, setRankLevel] = useState<String>("")
   const [TABLE_NAME, setTABLE_NAME] = useState("")
   const [quizClass, setQuizClass] = useState<EpisodeData[]>([]);
+  const [grade, setGrade] = useState<string | null>(null);
   const grades: { name: string; rank: string }[] = [
     { name: "初級", rank: 'low' },
     { name: "中級", rank: 'mediam' },
@@ -24,18 +25,19 @@ const QuizTab = () => {
   ];
   const navigate = useNavigate();
   const selectDifficulty = (rank: string , value:string) => {
+    setGrade(value);
+    console.log(rank)
     if(value == 'class'){
       setClassLevel(rank)
       setTABLE_NAME('quiz_class_epi')
     }else{
       setRankLevel(rank)
-    setTABLE_NAME('quiz_rank_epi')
+      setTABLE_NAME('quiz_rank_epi')
     }
   };
-  const gameButton = (episodes: number | null, quizclass: string | null) => {
-    //<Link />
-    console.log(episodes, quizclass)
-    navigate(`/game/practice/?class=${quizclass}&episodes=${episodes}`);
+  const gameButton = (episodes: number | null, quizclass: string | null, grade: string | null) => {
+    //console.log(episodes, quizclass)
+    navigate(`/game/practice/${grade}/${quizclass}/${episodes}`);
   };
 
   useEffect(() => {
@@ -99,7 +101,7 @@ const QuizTab = () => {
       ) : (
         <div>
           {Array.isArray(quizClass) && quizClass.map((stage, index) => (
-            <button key={index} onClick={() => gameButton(stage.episodes, stage.class)}>
+            <button key={index} onClick={() => gameButton(stage.episodes, grade === 'class' ? stage.class : stage.rank , grade)}>
               {getButtonLabel(stage)}
             </button>
           ))}
