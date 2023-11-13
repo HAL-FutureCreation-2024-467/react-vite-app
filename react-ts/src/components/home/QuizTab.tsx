@@ -24,15 +24,14 @@ const QuizTab = () => {
     { name: "準一級", rank: 'gp1' },
   ];
   const navigate = useNavigate();
-  const threeGrades = grades.slice(0, 3);
-  const sixGrades = grades.slice(3);
-  const classButtonClick = (rank: string) => {
-    setClassLevel(rank)
-    setTABLE_NAME('quiz_class_epi')
-  };
-  const rankButtonClick = (rank: string) => {
-    setRankLevel(rank)
+  const selectDifficulty = (rank: string , value:string) => {
+    if(value == 'class'){
+      setClassLevel(rank)
+      setTABLE_NAME('quiz_class_epi')
+    }else{
+      setRankLevel(rank)
     setTABLE_NAME('quiz_rank_epi')
+    }
   };
   const gameButton = (episodes: number | null, quizclass: string | null) => {
     //<Link />
@@ -43,7 +42,6 @@ const QuizTab = () => {
   useEffect(() => {
     async function fetchCategory() {
       try {
-        if(TABLE_NAME == 'quiz_class_epi'){}
         const { data, error } = await supabase
           .from(TABLE_NAME)
           .select(TABLE_NAME === 'quiz_class_epi' ? "episodes, class" : "episodes, rank")
@@ -74,41 +72,41 @@ const QuizTab = () => {
     }
   };
 
-  if (!classLevel && !rankLevel) {
-    return (
-      <div>
+  return (
+    <div>
+      {(!classLevel && !rankLevel) ? (
         <div>
-          <p>読めるけど読めない漢字</p>
           <div>
-            {threeGrades.map((grade, index) => (
-              <button key={index} onClick={() => classButtonClick(grade.rank)}>
-                {grade.name}
-              </button>
-            ))}
+            <p>読めるけど読めない漢字</p>
+            <div>
+              {grades.slice(0,3).map((grade, index) => (
+                <button key={index} onClick={() => selectDifficulty(grade.rank, 'class')}>
+                  {grade.name}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p>日本語漢字能力検定（漢検）編</p>
+            <div>
+              {grades.slice(3).map((grade, index) => (
+                <button key={index} onClick={() => selectDifficulty(grade.rank, 'rank')}>
+                  {grade.name}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
+      ) : (
         <div>
-          <p>日本語漢字能力検定（漢検）編</p>
-          <div>
-            {sixGrades.map((grade, index) => (
-              <button key={index} onClick={() => rankButtonClick(grade.rank)}>
-                {grade.name}
-              </button>
-            ))}
-          </div>
+          {Array.isArray(quizClass) && quizClass.map((stage, index) => (
+            <button key={index} onClick={() => gameButton(stage.episodes, stage.class)}>
+              {getButtonLabel(stage)}
+            </button>
+          ))}
         </div>
-      </div>
-    );
-  } else {
-    return (
-      <div>
-        {Array.isArray(quizClass) && quizClass.map((stage, index) => (
-          <button key={index} onClick={() => gameButton(stage.episodes, stage.class)}>
-            {getButtonLabel(stage)}
-          </button>
-        ))}
-      </div>
-    );
-  }
+      )}
+    </div>
+  );
 }
 export default QuizTab;
