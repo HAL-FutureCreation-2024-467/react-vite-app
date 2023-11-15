@@ -1,18 +1,18 @@
 @import './base/base';
 @import './base/variables';
 
-.App {
-  background: #fff;
-  box-shadow: 0 0 30px 3px rgba(110, 90, 70, 0.7);
-  width: 100vw;
-  max-width: 500px;
-  margin: 0 auto;
-  height: 100vh;
-  height: 100dvh;
-  position: relative;
-  background-image: url(@assets/sougen.jpg);
-  overflow: hidden;
-}
+// .App {
+//   background: #fff;
+//   box-shadow: 0 0 30px 3px rgba(110, 90, 70, 0.7);
+//   width: 100vw;
+//   max-width: 500px;
+//   margin: 0 auto;
+//   height: 100vh;
+//   height: 100dvh;
+//   position: relative;
+//   background-image: url(@assets/sougen.jpg);
+//   overflow: hidden;
+// }
 
 .num-wrap {
   width: 97%;
@@ -42,6 +42,18 @@
 }
 .num:last-child {
   border-right: none;
+}
+
+.timer-wrap{
+  width: 30%;
+  position: absolute;
+  top: 50px;
+  left: 2%;
+  text-align: center;
+  border: 2.5px solid rgba(128, 128, 128, 0.8);
+  box-shadow: 0 0 4px 2px #fff;
+  border-radius: 4px;
+  background-color: #fafad6;
 }
 
 .life-wrap {

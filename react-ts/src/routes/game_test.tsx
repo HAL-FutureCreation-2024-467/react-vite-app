@@ -4,6 +4,7 @@ import "@scss/mozi.scss";
 import { Link, useNavigate, useLocation, useParams } from 'react-router-dom'
 import { QuizClassType, QuizRankType } from '../types/tables'
 import CanComp from "../components/game/canvas";
+import React from "react";
 
 interface Quiz {
   question: string | null;
@@ -17,8 +18,33 @@ const Game = () => {
   const { search } = useLocation();
   const {mode, grade} = useParams();
   //['ゲームが終わっているか','クリア=> true, 失敗=> false']
-  const [gameStatus, setGameStatus] = useState<boolean[]>([false, false]);
+  const [gameStatus, setGameStatus] = useState<boolean[]>([false, false, false]);
   const getImage = (filePath: string): string => {return new URL(`../assets/${filePath}`, import.meta.url).href;};
+
+  // Timer 
+  
+  const useCountDownInterval = (
+    countTime: number | null,
+    setCountTime: (arg0: number) => void,
+  ) => {
+    useEffect(() => {
+      const countDownInterval = setInterval(() => {
+        if (countTime === 0) {
+          clearInterval(countDownInterval)
+
+        }
+        if (countTime && countTime > 0) {
+          setCountTime(countTime - 1)
+        }
+      }, 1000)
+      return () => {
+        clearInterval(countDownInterval)
+      }
+    }, [countTime])
+  }
+
+  const [countTime, setCountTime] = useState<number>(5)
+  useCountDownInterval(countTime, setCountTime);
 
   // quiz関連 --------------------------------------
   const question = [...Array(10).keys()];
@@ -36,7 +62,7 @@ const Game = () => {
   if(mode == "rank"){
     console.log(mode);
     const [quizRank, setQuizRank] = useState<QuizRankType[] | null>(null);
-    useEffect(() => {
+    useEffect(() => {//rank Modeランダムに取得した問題を出す
       const fetchQuiz = async () => {
         if(grade != null){
           const { data, error } = await supabase.from('quiz_rank').select('*').eq('rank', grade);
@@ -54,7 +80,7 @@ const Game = () => {
       fetchQuiz(); // 非同期関数を実行
     }, [])
 
-    useEffect(() => {
+    useEffect(() => {//取得した問題から選択肢をランダムに取得
       if(quizRank){
         var tmpChoice = quizChoice.slice(0,6);
         tmpChoice = tmpChoice.map(element => element.replace(/[ 　\n]/g, ""));
@@ -69,7 +95,7 @@ const Game = () => {
   
     }, [quizChoice])
 
-    useEffect(() => {
+    useEffect(() => {//問題を表示
       quizRank !== null? 
       (
         setQuizNow({
@@ -83,7 +109,7 @@ const Game = () => {
     }, [quizRank, nowNum])
   }else{
     const [quizClass, setQuizClass] = useState<QuizClassType[] | null>(null);
-    useEffect(() => {
+    useEffect(() => {//class Modeランダムに取得した問題を出す
       const fetchQuiz = async () => {
         if(grade != null){
           const { data, error } = await supabase.from('quiz_class').select('*').eq('class', grade);
@@ -94,7 +120,7 @@ const Game = () => {
       fetchQuiz(); // 非同期関数を実行
     }, [])
 
-    useEffect(() => {
+    useEffect(() => {//取得した問題から選択肢をランダムに取得
       if(quizClass){
         var tmpChoice = quizChoice.slice(0,6);
         tmpChoice = tmpChoice.map(element => element.replace(/[ 　\n]/g, ""));
@@ -107,7 +133,7 @@ const Game = () => {
       }
     }, [quizChoice])
 
-    useEffect(() => {
+    useEffect(() => {//問題を表示
       quizClass !== null
       ? 
       (
@@ -123,13 +149,6 @@ const Game = () => {
     }, [quizClass, nowNum])
   }
  
-  const clearChildCanvas = () => {
-    if (childCanvasRef.current && childCanvasRef.current.clearCanvas) {
-      childCanvasRef.current.clearCanvas();
-      setShowChoice(false);}
-    };
-  
-  
   // canvas関連 --------------------------------------
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [showCanvasText, setShowCanvasText] = useState<boolean>(false);
@@ -139,13 +158,13 @@ const Game = () => {
   };
   const childCanvasRef = useRef(null);
 
-  const recognizeChildCanvas = () => {
+  const recognizeChildCanvas = () => {//canvasの認識
     if (childCanvasRef.current && childCanvasRef.current.recognize) {
       childCanvasRef.current.recognize();
     }
   };
 
-   const HandingSaveImg = async() => {
+   const HandingSaveImg = async() => {//canvasの保存
     let canvas = canvasRef.current;
     if (!canvas) return;
     let base64 = canvas.toDataURL("image/png");
@@ -158,8 +177,14 @@ const Game = () => {
           downloadLink.click();
   }
 
+  const clearChildCanvas = () => {//canvasのクリア
+    if (childCanvasRef.current && childCanvasRef.current.clearCanvas) {
+      childCanvasRef.current.clearCanvas();
+      setShowChoice(false);}
+  };
+
   // 正誤判定 --------------------------------------
-  const jg = (e : any) => {
+  const jg = (e : any) => {//正誤判定
     if (quizNow.answer, quizNow.choices) {
       const dataV = e.target.closest('[data-v]')?.getAttribute('data-v');
       
@@ -177,15 +202,16 @@ const Game = () => {
     };    
   }
     
-  useEffect(() => {
+  useEffect(() => {//Lifeが0になったらゲームオーバー
     if(lifeNow == 0){//残機なしでゲームオーバー
       //showFaildModalの表示
-      setGameStatus([true, false]);
+      setGameStatus([true, false, false]);
       //2秒後にリザルト画面へ
       setTimeout(() => {
         Navigate('/result' ,
           { state: 
             { 
+              gamemode: "test",
               type: false, 
               result : {
                 mode : mode,
@@ -198,14 +224,15 @@ const Game = () => {
     }
   }, [lifeNow]);
 
-  useEffect(() => {
+  useEffect(() => {//問題が10問終わったらクリア
     if(nowNum == 10){//クリア
       //showClearModalの表示
-      setGameStatus([true, true]);
+      setGameStatus([true, true, false]);
       setTimeout(() => {
         Navigate('/result' ,
           { state: 
             { 
+              gamemode: "test",
               type: true, 
               result : {
                 mode : mode,
@@ -217,6 +244,29 @@ const Game = () => {
         }, 4000);
     }
   }, [nowNum]);
+
+  useEffect(() => {//時間切れ
+    if(countTime == 0){
+      setGameStatus([true, false, true]);
+
+      setTimeout(() => {
+        Navigate('/result' ,
+          { state: 
+            { 
+              gamemode: "test", 
+              type: false, 
+              result : {
+                mode : mode,
+                grade : grade,
+                clearNum: nowNum-1,
+              }
+            },
+          }); 
+        }, 4000);
+    }
+  }, [countTime]);
+
+  // 判定関連ここまで
 
   return (
       <>
@@ -231,6 +281,9 @@ const Game = () => {
             );
           })}
         </div>
+        <div className="timer-wrap">
+          <p>ゲーム残り時間: {Math.floor(countTime / 60)}分{countTime % 60}秒 </p>
+        </div>
         <div className={gameStatus[0] ? "end-black end-black-add" : "end-black"}>
           {gameStatus[0] ? 
             gameStatus[1] ? (
@@ -239,14 +292,22 @@ const Game = () => {
                   <h2>CLEAR</h2>
                 </div>
               </div>
-            ): (
-              <div className="failed-area">
-                <div className="failed-add">
-                  <h2>FAILED...</h2>
-                </div>
-              </div>
-            )
-          : null}
+              ) : (
+                !gameStatus[2] ? (
+                  <div className="failed-area">
+                    <div className="failed-add">
+                      <h2>FAILED...</h2>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="failed-area">
+                    <div className="failed-add">
+                      <h2>TimeUp...</h2>
+                    </div>
+                  </div>
+                )
+            ) : null
+          }
         </div>
 
         {/* ランダムに取得した問題を出す */}

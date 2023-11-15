@@ -176,29 +176,7 @@ const Game = () => {
       }
     };    
   }
-    
-  // useEffect(() => {
-  //   if(lifeNow == 0){//残機なしでゲームオーバー
-  //     //showFaildModalの表示
-  //     setGameStatus([true, false]);
-  //     //2秒後にリザルト画面へ
-  //     setTimeout(() => {
-  //       Navigate('/result' ,
-  //         { state: 
-  //           { 
-  //             type: false, 
-  //             result : {
-  //               mode : mode,
-  //               grade : grade,
-  //               episodes : episode,
-  //               clearNum: nowNum-1,
-  //             }
-  //           },
-  //         }); 
-  //     }, 5000);
-  //   }
-  // }, [lifeNow]);
-
+  
   useEffect(() => {
     if(nowNum == 10){//クリア
       //showClearModalの表示
@@ -207,6 +185,7 @@ const Game = () => {
         Navigate('/result' ,
           { state: 
             { 
+              gamemode: "practice",
               type: true, 
               result : {
                 mode : mode,
