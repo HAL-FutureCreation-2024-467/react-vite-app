@@ -251,6 +251,11 @@ export interface Database {
         }
         Relationships: []
       }
+      sentence_only:{
+        Row: {
+          sentence: Json
+        }
+      }
     }
     Functions: {
       delete_avatar: {
