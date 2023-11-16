@@ -1,19 +1,6 @@
 @import './base/base';
 @import './base/variables';
 
-// .App {
-//   background: #fff;
-//   box-shadow: 0 0 30px 3px rgba(110, 90, 70, 0.7);
-//   width: 100vw;
-//   max-width: 500px;
-//   margin: 0 auto;
-//   height: 100vh;
-//   height: 100dvh;
-//   position: relative;
-//   background-image: url(@assets/sougen.jpg);
-//   overflow: hidden;
-// }
-
 .num-wrap {
   width: 97%;
   height: auto;
@@ -248,7 +235,7 @@
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  left: 50%;
+  left: 49%;
   transform: translateX(-50%);
   display: flex;
   align-items: center;
@@ -261,7 +248,7 @@
   white-space: nowrap;
   width: fit-content;
   min-width: 90px;
-  margin: 0 10%;
+  margin: 0 7%;
 	padding: 10px;
 }
 
@@ -270,7 +257,7 @@
 }
 
 $button-size: 5.4vw;
-$button-size-pc: 6vw;
+
 .result {
   width: fit-content;
   height: $button-size;
@@ -294,8 +281,7 @@ $button-size-pc: 6vw;
   }
   @media screen and (min-width: 900px) {
     //PC
-    width: $button-size-pc;
-    height: $button-size-pc;
+    height: $button-size;
   }
 }
 

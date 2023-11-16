@@ -336,6 +336,8 @@ const Game = () => {
                             style={{ 
                               fontSize: `4.2rem`,
                               textAlign: "center",
+                              width: "100%",
+                              padding: "0 4px 0 4px",
                             }}
                             >
                             <p data-v={i}>{v}</p>

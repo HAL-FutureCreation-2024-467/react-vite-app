@@ -99,16 +99,14 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
     let ctx = backCanvas.getContext("2d");
     if (ctx) {
       ctx.clearRect(0, 0, backCanvas.width, backCanvas.height); // キャンバスをクリア
-      
-      ctx.font = "140px Arial"; // テキストのフォントとサイズを設定
+      ctx.font = "100px Arial"; // テキストのフォントとサイズを設定
       ctx.fillStyle = "rgba(0, 0, 0, 0.3)"; // テキストの色と透明度を設定
       // テキストを中央に描画
       ctx.textAlign = "center";
       // ctx.
-      ctx.fillText(text, backCanvas.width/2, backCanvas.height/1.2); // テキストを描画
+      ctx.fillText(text, backCanvas.width/2, backCanvas.height/1.4); // テキストを描画
     }
   }
-
 
   const clearCanvas = () => {
     if (canvas) {
@@ -232,7 +230,8 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
       // onClick={saveImg}
       style={{
         position: 'absolute', // 絶対位置
-        zIndex: 0, // 下に配置
+        zIndex: 0,
+         // 下に配置
       }}
     />
     </>
