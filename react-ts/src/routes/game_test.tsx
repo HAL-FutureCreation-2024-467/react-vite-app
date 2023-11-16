@@ -43,7 +43,7 @@ const Game = () => {
     }, [countTime])
   }
 
-  const [countTime, setCountTime] = useState<number>(5)
+  const [countTime, setCountTime] = useState<number>(180)
   useCountDownInterval(countTime, setCountTime);
 
   // quiz関連 --------------------------------------
@@ -158,12 +158,6 @@ const Game = () => {
   };
   const childCanvasRef = useRef(null);
 
-  const recognizeChildCanvas = () => {//canvasの認識
-    if (childCanvasRef.current && childCanvasRef.current.recognize) {
-      childCanvasRef.current.recognize();
-    }
-  };
-
    const HandingSaveImg = async() => {//canvasの保存
     let canvas = canvasRef.current;
     if (!canvas) return;
@@ -193,6 +187,7 @@ const Game = () => {
     
         if (quizNow.answer === quizNow.choices[Number(dataV)]) {
           setNowNum(nowNum + 1);
+          if(countTime + 20 > 180){setCountTime(180)}else{setCountTime(countTime + 20)}
           clearChildCanvas();
         } else {
           setLifeNow(lifeNow - 1);
@@ -225,7 +220,7 @@ const Game = () => {
   }, [lifeNow]);
 
   useEffect(() => {//問題が10問終わったらクリア
-    if(nowNum == 10){//クリア
+    if(nowNum == 1){//クリア
       //showClearModalの表示
       setGameStatus([true, true, false]);
       setTimeout(() => {

@@ -177,20 +177,19 @@ const Game = () => {
     };    
   }
   
-  useEffect(() => {
-    if(nowNum == 10){//クリア
+  useEffect(() => {//問題が10問終わったらクリア
+    if(nowNum == 1){//クリア
       //showClearModalの表示
       setGameStatus([true, true]);
       setTimeout(() => {
         Navigate('/result' ,
           { state: 
             { 
-              gamemode: "practice",
+              gamemode: "test",
               type: true, 
               result : {
                 mode : mode,
                 grade : grade,
-                episodes : episode,
                 clearNum: nowNum,
               }
             },
@@ -213,21 +212,13 @@ const Game = () => {
           })}
         </div>
         <div className={gameStatus[0] ? "end-black end-black-add" : "end-black"}>
-          {gameStatus[0] ? 
-            gameStatus[1] ? (
-              <div className="clear-area">
-                <div className="clear-add">
-                  <h2>CLEAR</h2>
-                </div>
+          {gameStatus[1] ? (
+            <div className="clear-area">
+              <div className="clear-add">
+                <h2>CLEAR</h2>
               </div>
-            ): (
-              <div className="failed-area">
-                <div className="failed-add">
-                  <h2>FAILED...</h2>
-                </div>
-              </div>
-            )
-          : null}
+            </div>
+            ) : null}
         </div>
 
         {/* ランダムに取得した問題を出す */}
