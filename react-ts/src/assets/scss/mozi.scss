@@ -225,6 +225,14 @@
   min-height: 100px;
   height: 16%;
   margin-top: 88%;
+  /*IE(Internet Explorer)・Microsoft Edgeへの対応*/
+  -ms-overflow-style: none;
+  /*Firefoxへの対応*/
+  scrollbar-width: none;
+}
+
+.result-box::-webkit-scrollbar{
+  display: none;
 }
 
 .result-wrap {
@@ -242,6 +250,14 @@
   scroll-snap-type: x mandatory; /* x方向にスナップ */
   scroll-padding: 0 10%;
   justify-content: flex-start;
+  /*IE(Internet Explorer)・Microsoft Edgeへの対応*/
+  -ms-overflow-style: none;
+  /*Firefoxへの対応*/
+  scrollbar-width: none;
+}
+
+.result-wrap::-webkit-scrollbar{
+  display: none;
 }
 
 .result-push{
