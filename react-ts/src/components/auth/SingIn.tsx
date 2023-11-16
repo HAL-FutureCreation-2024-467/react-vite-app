@@ -1,31 +1,66 @@
-import { useRef, useState } from 'react'
+import { supabase } from "../../supabaseClient"
+import { FormEvent, useState } from "react"
 
-export function Signup() {
-  const emailRef = useRef()
-  const passwordRef = useRef()
+const SignIn = (props: any) => {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
 
-  async function handleSubmit(e) {
-    const emailRef = useRef()
-    const passwordRef = useRef()
-  
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
-    // @TODO: add sign up logic
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    })
+    // const { data, error } = await supabase.auth.signInWithOAuth({
+    //   provider:'github'
+    // })
+    if (error) {
+      throw error;
+    }
+    if(data){
+      location.href = "/home";
+    }
   }
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="input-email">Email</label>
-        <input id="input-email" type="email" ref={emailRef} />
-
-        <label htmlFor="input-password">Password</label>
-        <input id="input-password" type="password" ref={passwordRef} />
-
-        <br />
-
-        <button type="submit">Sign up</button>
-      </form>
-    </>
+      <div id="overlay" className="modalBack">
+        <div id="modalContent" className="modalContainer">
+          <div>
+            <p>ログイン</p>
+          </div>
+          <div>
+              <button className="switchSignBtn" onClick={props.toggleInUpFunc} type="button">新規作成</button>
+          </div> 
+          <hr />
+          <div>
+            <form onSubmit={onSubmit}>
+              <div>
+                <label>メールアドレス</label>
+                <input type="email"
+                  required value={email}
+                  onChange={e => setEmail(e.target.value)}
+                />
+              </div>
+              <div>
+                <label>パスワード</label>
+                <input type="password"
+                  required value={password}
+                  onChange={e => setPassword(e.target.value)}
+                />
+              </div>
+              <div>
+                <button type="submit">ログイン</button>
+                <button onClick={props.toggleSign} type="button">閉じる</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      </>
   )
 }
+
+
+export default SignIn;

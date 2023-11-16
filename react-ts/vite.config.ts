@@ -27,6 +27,7 @@ export default defineConfig({
     alias: {
       '@/': path.join(__dirname, './src/'),
       '@assets': path.join(__dirname, './src/assets/'),
+      '@css' : path.join(__dirname, './src/assets/css/'),
       '@scss': path.join(__dirname, './src/assets/scss/'),
     },
   },

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { supabase } from '../supabaseClient'
+import { supabase } from '@/supabaseClient'
 import reactLogo from '../assets/react.svg?raw';
 
 export default function Avatar({ url, size, onUpload }) {
