@@ -118,7 +118,7 @@ const Home = () => {
               <h1>ホーム</h1>
             ) : showTab['quiz'] ? (
               <>
-                <h1>クイズ</h1>
+
                 <QuizTab />
               </>
             ) : showTab['story'] ? (
@@ -128,7 +128,7 @@ const Home = () => {
               </>
             ) : null}
           </section>
-          <div>
+          <div className="home-btm-btn">
             <button onClick={() => setTab('home')}>ホーム</button>
             <button onClick={() => setTab('quiz')}>クイズ</button>
             <button onClick={() => setTab('story')}>ストーリー</button>

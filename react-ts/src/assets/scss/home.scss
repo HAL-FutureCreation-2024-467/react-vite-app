@@ -2,6 +2,7 @@
 @import './base/reset';
 
 .home-btn {
+  
   position: absolute;
   top: 1.1%;
   right: 1.5%;
@@ -11,6 +12,7 @@
   border: 3px solid #555577;
   border-radius: 10px;
   z-index: 3;
+  
   cursor: pointer;
   // @include variables.transition;
   // @include variables.center-center;

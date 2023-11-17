@@ -76,9 +76,9 @@ const QuizTab = () => {
   return (
     <div>
       {(!classLevel && !rankLevel) ? (
-        <div>
-          <div>
-            <p>読めるけど読めない漢字</p>
+        <div className="QTab">
+          <div className="KYomenai">
+            <p>読めるけど書けない漢字</p>
             <div>
               {grades.slice(0,3).map((grade, index) => (
                 <button key={index} onClick={() => selectDifficulty(grade.rank, 'class')}>
@@ -87,9 +87,9 @@ const QuizTab = () => {
               ))}
             </div>
           </div>
-          <div>
+          <div className="KKentei">
             <p>日本語漢字能力検定（漢検）編</p>
-            <div>
+            <div className="KKentei-btns">
               {grades.slice(3).map((grade, index) => (
                 <button key={index} onClick={() => selectDifficulty(grade.rank, 'rank')}>
                   {grade.name}
@@ -99,7 +99,7 @@ const QuizTab = () => {
           </div>
         </div>
       ) : (
-        <div>
+        <div className="Quizbox">
           {Array.isArray(quizClass) && quizClass.map((stage, index) => (
             <button key={index} onClick={() => gameButton(stage.episodes, grade === 'class' ? stage.class : stage.rank , grade)}>
               {getButtonLabel(stage)}
