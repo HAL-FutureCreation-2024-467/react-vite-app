@@ -109,9 +109,12 @@ const story = () => {
                       </div>
 
                       <div>
-                        <img src={getImage('egao.png')} alt="" />
-                        <div className="sentenceArea" onClick={handleNextClick}>
-                          {<h3>{storyText}</h3>}
+                        <div onClick={handleNextClick}>
+                          <img src={getImage('egao.png')} alt="" />
+                          <div className="name_box">a</div>
+                          <div className="message_box">
+                            {<h3>{storyText}</h3>}
+                          </div>
                         </div>
                       </div>
                     </div>
