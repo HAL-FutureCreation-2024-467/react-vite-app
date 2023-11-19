@@ -7,24 +7,24 @@ const Live2d = ({ quizHidden, flag }) => {
   const live2dRef = useRef(null);
   const live2dwrapRef = useRef(null);
 
-  var app;
+  let app;
 
   // PixiJS
-  var {
+  const {
     Application,
     live2d: { Live2DModel },
   } = PIXI;
 
   // Kalidokit
-  var {
+  const {
     Face,
     Vector: { lerp },
     Utils: { clamp },
   } = Kalidokit;
 
   // 1, Live2Dモデルへのパスを指定する
-  var modelUrl = "/Live2dModels/rutika-model/runtime/rutika.model3.json";
-  var currentModel;
+  const modelUrl = "/Live2dModels/rutika-model/runtime/rutika.model3.json";
+  let currentModel;
 
   // メインの処理開始
   useEffect(() => {
@@ -53,9 +53,9 @@ const Live2d = ({ quizHidden, flag }) => {
       // 6, Live2Dモデルを配置する
       app.stage.addChild(currentModel);
       function handleResize() {
-        var parent = live2dwrapRef.current;
-        var canvas = live2dRef.current;
-        var ratio = window.devicePixelRatio;
+        const parent = live2dwrapRef.current;
+        const canvas = live2dRef.current;
+        const ratio = window.devicePixelRatio;
         canvas.width = parent.clientWidth * ratio;
         canvas.height = parent.clientHeight * ratio;
         canvas.style.width = parent.clientWidth + "px";

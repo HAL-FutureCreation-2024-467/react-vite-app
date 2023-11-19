@@ -32,6 +32,22 @@ img {
   position: relative;
   background-image: url(@assets/sougen.jpg);
   overflow: hidden;
+  background-position:center center;
+  background-repeat: no-repeat;
+  background-size:cover;
+}
+.Result {
+  background: #fff;
+  text-align: center;
+  box-shadow: 0 0 30px 3px rgba(110, 90, 70, 0.7);
+  width: 100vw;
+  max-width: 500px;
+  margin: 0 auto;
+  height: 100vh;
+  height: 100dvh;
+  position: relative;
+  // background-image: url(@assets/);
+  overflow: hidden;
 }
 .Home {
   background: #fff;

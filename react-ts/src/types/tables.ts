@@ -1,4 +1,4 @@
-import {Database, Json} from "./database";
+import {Database} from "./database";
 
 export type StoryType = Database["public"]["Tables"]["story"]["Row"]
   

@@ -46,7 +46,7 @@ const Game = () => {
           }
       
           if (data) {
-            let selected = data.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 10);
+            const selected = data.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 10);
             setQuizRank(selected);
           }
         }
@@ -56,7 +56,7 @@ const Game = () => {
 
     useEffect(() => {
       if(quizRank){
-        var tmpChoice = quizChoice.slice(0,6);
+        let tmpChoice = quizChoice.slice(0,6);
         tmpChoice = tmpChoice.map(element => element.replace(/[ 　\n]/g, ""));
         setQuizNow({
           question: quizRank[nowNum].problem,
@@ -88,7 +88,7 @@ const Game = () => {
         if(grade != null && episode != null){
           const { data, error } = await supabase.from('quiz_class').select('*').eq('class', grade).eq('episodes', episode);
           if (error) {Navigate('/404');console.log(error);return;}
-          if (data) {let selected = data.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 10);setQuizClass(selected);}
+          if (data) {const selected = data.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 10);setQuizClass(selected);}
         }
       }
       fetchQuiz(); // 非同期関数を実行
@@ -96,7 +96,7 @@ const Game = () => {
 
     useEffect(() => {
       if(quizClass){
-        var tmpChoice = quizChoice.slice(0,6);
+        let tmpChoice = quizChoice.slice(0,6);
         tmpChoice = tmpChoice.map(element => element.replace(/[ 　\n]/g, ""));
         setQuizNow({
           question: quizClass[nowNum].problem,
@@ -146,9 +146,9 @@ const Game = () => {
   };
 
    const HandingSaveImg = async() => {
-    let canvas = canvasRef.current;
+    const canvas = canvasRef.current;
     if (!canvas) return;
-    let base64 = canvas.toDataURL("image/png");
+    const base64 = canvas.toDataURL("image/png");
     //Download
     // ダウンロード用のリンクを作成
     const downloadLink = document.createElement('a');
@@ -174,44 +174,22 @@ const Game = () => {
           clearChildCanvas();
         }
       }
-    };    
+    }    
   }
-    
-  // useEffect(() => {
-  //   if(lifeNow == 0){//残機なしでゲームオーバー
-  //     //showFaildModalの表示
-  //     setGameStatus([true, false]);
-  //     //2秒後にリザルト画面へ
-  //     setTimeout(() => {
-  //       Navigate('/result' ,
-  //         { state: 
-  //           { 
-  //             type: false, 
-  //             result : {
-  //               mode : mode,
-  //               grade : grade,
-  //               episodes : episode,
-  //               clearNum: nowNum-1,
-  //             }
-  //           },
-  //         }); 
-  //     }, 5000);
-  //   }
-  // }, [lifeNow]);
-
-  useEffect(() => {
-    if(nowNum == 10){//クリア
+  
+  useEffect(() => {//問題が10問終わったらクリア
+    if(nowNum == 1){//クリア
       //showClearModalの表示
       setGameStatus([true, true]);
       setTimeout(() => {
         Navigate('/result' ,
           { state: 
             { 
+              gamemode: "test",
               type: true, 
               result : {
                 mode : mode,
                 grade : grade,
-                episodes : episode,
                 clearNum: nowNum,
               }
             },
@@ -234,21 +212,13 @@ const Game = () => {
           })}
         </div>
         <div className={gameStatus[0] ? "end-black end-black-add" : "end-black"}>
-          {gameStatus[0] ? 
-            gameStatus[1] ? (
-              <div className="clear-area">
-                <div className="clear-add">
-                  <h2>CLEAR</h2>
-                </div>
+          {gameStatus[1] ? (
+            <div className="clear-area">
+              <div className="clear-add">
+                <h2>CLEAR</h2>
               </div>
-            ): (
-              <div className="failed-area">
-                <div className="failed-add">
-                  <h2>FAILED...</h2>
-                </div>
-              </div>
-            )
-          : null}
+            </div>
+            ) : null}
         </div>
 
         {/* ランダムに取得した問題を出す */}

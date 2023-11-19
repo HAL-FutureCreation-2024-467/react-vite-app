@@ -9,13 +9,9 @@ function App() {
   const getImage = (filePath: string): string => {
     return new URL(`../assets/${filePath}`, import.meta.url).href;
   };
-  const [email, setEmail] = useState("guest@example.com")
-  const [password, setPassword] = useState("guest")
-
-  const appState = localStorage.getItem("flag");
+  const [email] = useState("guest@example.com")
+  const [password] = useState("guest")
   const modelUrl = "/Live2dModels/rutika-model/runtime/rutika.model3.json";
-
-  
   const [showConfigModal, setShowModal] = useState(false); // Modalコンポーネントの表示の状態を定義する 0 ~ 5
   const [menuBar, setMenu] = useState("line_menu.png"); //menuの画像を変える
   const [username, setUserName] = useState("")

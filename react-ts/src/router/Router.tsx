@@ -8,11 +8,13 @@ import Game_t from "../routes/game_test";
 import NotF from "../routes/404"; 
 import RegForm from "../routes/RegForm";
 import Result from "../routes/result";
+import Test from "../routes/test";
 
 export const Router: FC = () => {
   return (
     <Routes>
       <Route path="/" element={<Index />} />
+      <Route path="/test" element={<Test />} />
       <Route path="/RegForm" element={<RegForm />} />
       <Route path="/home" element={<Home />} />
       <Route path="/story/:chapter?/:paragraph?" element={<Story />} />
