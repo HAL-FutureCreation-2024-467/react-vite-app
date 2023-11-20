@@ -126,7 +126,7 @@ const Home = () => {
               </>
             ) : null}
           </section>
-          <div className="home-bottom-btn">
+          <div className="home-btm-nv">
             <button onClick={() => setTab('home')}>ホーム</button>
             <button onClick={() => setTab('quiz')}>クイズ</button>
             <button onClick={() => setTab('story')}>ストーリー</button>
