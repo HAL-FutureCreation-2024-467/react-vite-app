@@ -24,13 +24,13 @@ const QuizTab = () => {
     { name: "準一級", rank: 'gp1' },
   ];
   const navigate = useNavigate();
-  const selectDifficulty = (rank: string , value:string) => {
+  const selectDifficulty = (rank: string, value: string) => {
     setGrade(value);
     console.log(rank)
-    if(value == 'class'){
+    if (value == 'class') {
       setClassLevel(rank)
       setTABLE_NAME('quiz_class_epi')
-    }else{
+    } else {
       setRankLevel(rank)
       setTABLE_NAME('quiz_rank_epi')
     }
@@ -38,6 +38,10 @@ const QuizTab = () => {
   const gameButton = (episodes: number | null, quizclass: string | null, grade: string | null) => {
     //console.log(episodes, quizclass)
     navigate(`/game/practice/${grade}/${quizclass}/${episodes}`);
+  };
+  const gameTest = (grade: string | null, rank: string | null) => {
+    //console.log(episodes, quizclass)
+    navigate(`/game/test/${grade}/${rank}`);
   };
 
   useEffect(() => {
@@ -58,8 +62,8 @@ const QuizTab = () => {
       }
     }
     fetchCategory();
-  }, [classLevel,rankLevel])
-  
+  }, [classLevel, rankLevel])
+
   const getButtonLabel = (stage: EpisodeData) => {
     const matchingClass = grades.find((grade) => grade.rank === stage.class);
     const matchingRank = grades.find((grade) => grade.rank === stage.rank);
@@ -80,7 +84,7 @@ const QuizTab = () => {
           <div className="KYomenai">
             <p>読めるけど書けない漢字</p>
             <div>
-              {grades.slice(0,3).map((grade, index) => (
+              {grades.slice(0, 3).map((grade, index) => (
                 <button key={index} onClick={() => selectDifficulty(grade.rank, 'class')}>
                   {grade.name}
                 </button>
@@ -99,13 +103,17 @@ const QuizTab = () => {
           </div>
         </div>
       ) : (
-        <div className="Quizbox">
-          {Array.isArray(quizClass) && quizClass.map((stage, index) => (
-            <button key={index} onClick={() => gameButton(stage.episodes, grade === 'class' ? stage.class : stage.rank , grade)}>
-              {getButtonLabel(stage)}
-            </button>
-          ))}
+        <>
+        <div>
+          <button onClick={() => gameTest(grade,!classLevel ? rankLevel: classLevel)}>本番</button>
         </div>
+          <div className="Quizbox">
+            {Array.isArray(quizClass) && quizClass.map((stage, index) => (
+              <button key={index} onClick={() => gameButton(stage.episodes, grade === 'class' ? stage.class : stage.rank, grade)}>
+                {getButtonLabel(stage)}
+              </button>
+            ))}
+          </div></>
       )}
     </div>
   );
