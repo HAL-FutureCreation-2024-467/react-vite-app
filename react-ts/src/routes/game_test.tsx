@@ -4,7 +4,7 @@ import "@scss/mozi.scss";
 import { Link, useNavigate, useLocation, useParams } from 'react-router-dom'
 import { QuizClassType, QuizRankType } from '../types/tables'
 import CanComp from "../components/game/canvas";
-import React from "react";
+import Timer from "../components/game/timer";
 
 interface Quiz {
   question: string | null;
@@ -48,36 +48,8 @@ const Game = () => {
   // ver001---end
 
   // ver002
-  const [timeLeft, setTimeLeft] = useState(180); // タイマーの初期値（秒）
-  const [timerId, setTimerId] = useState(null);
-  const [gaugeWidth, setGaugeWidth] = useState((180 / 60) * 480); // ゲージの幅を初期化
 
   // ゲージの幅を計算
-
-  useEffect(() => {
-    // 残り時間が0になるまでタイマーを実行
-    if (timeLeft === 0) {
-      if (timerId) {
-        clearInterval(timerId);
-        // タイマーが終了した時の処理などを追加する場合はここに記述
-      }
-      // タイマーが終了した時の処理などを追加する場合はここに記述
-    }
-    // 1秒ごとにtimeLeftを減らす
-    const id = setInterval(() => {
-      setTimeLeft(prevTime => {
-        const newTime = prevTime - 1;
-        let newWidth = ((newTime / 60) * 480); // 時間の変化に応じてゲージの幅を更新
-        setGaugeWidth(Math.min(newWidth, 480));
-        return newTime;
-      });
-    }, 1000);
-
-    setTimerId(id);
-    // コンポーネントがアンマウントされた時にタイマーをクリアする
-    return () => clearInterval(id);
-  }, [timeLeft, timerId]);
-
   // quiz関連 --------------------------------------
   const question = [...Array(10).keys()];
   const [nowNum, setNowNum] = useState<number>(0);
@@ -214,7 +186,7 @@ const Game = () => {
     
         if (quizNow.answer === quizNow.choices[Number(dataV)]) {
           setNowNum(nowNum + 1);
-          if(countTime + 20 > 180){setCountTime(180)}else{setCountTime(countTime + 20)}
+          // if(countTime + 20 > 180){setCountTime(180)}else{setCountTime(countTime + 20)}
           clearChildCanvas();
         } else {
           setLifeNow(lifeNow - 1);
@@ -267,26 +239,26 @@ const Game = () => {
     }
   }, [nowNum]);
 
-  useEffect(() => {//時間切れ
-    if(timeLeft == 0){
-      setGameStatus([true, false, true]);
+  // useEffect(() => {//時間切れ
+  //   if(timeLeft == 0){
+  //     setGameStatus([true, false, true]);
 
-      setTimeout(() => {
-        Navigate('/result' ,
-          { state: 
-            { 
-              gamemode: "test", 
-              type: false, 
-              result : {
-                mode : mode,
-                grade : grade,
-                clearNum: nowNum-1,
-              }
-            },
-          }); 
-        }, 4000);
-    }
-  }, [timeLeft]);
+  //     setTimeout(() => {
+  //       Navigate('/result' ,
+  //         { state: 
+  //           { 
+  //             gamemode: "test", 
+  //             type: false, 
+  //             result : {
+  //               mode : mode,
+  //               grade : grade,
+  //               clearNum: nowNum-1,
+  //             }
+  //           },
+  //         }); 
+  //       }, 4000);
+  //   }
+  // }, [timeLeft]);
 
   // 判定関連ここまで
 
@@ -302,22 +274,6 @@ const Game = () => {
               </div>
             );
           })}
-        </div>
-        <div className="timer-wrap">
-          {/* <p>ゲーム残り時間: {Math.floor(countTime / 60)}分{countTime % 60}秒 </p> */}
-          <div>
-            <div style={{ width: '200px', border: '1px solid #000' }}>
-              <div
-                style={{
-                  width: `${gaugeWidth}%`,
-                  height: '20px',
-                  backgroundColor: 'green',
-                }}
-              >
-            </div>
-          </div>
-            <p>Time left: {timeLeft} seconds</p>
-        </div>
         </div>
         <div className={gameStatus[0] ? "end-black end-black-add" : "end-black"}>
           {gameStatus[0] ? 
@@ -400,7 +356,8 @@ const Game = () => {
           </div>
           ) : null
         }
-
+        
+        <Timer />
         <div style={{ display: "inline-block" }}>
           <div
             className={"mozi-canvas-wrap canvas-add"}

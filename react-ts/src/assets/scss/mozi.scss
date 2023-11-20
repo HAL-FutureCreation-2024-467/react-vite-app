@@ -34,12 +34,8 @@
 .timer-wrap{
   width: 30%;
   position: absolute;
-  top: 50px;
   left: 2%;
   text-align: center;
-  border: 2.5px solid rgba(128, 128, 128, 0.8);
-  box-shadow: 0 0 4px 2px #fff;
-  border-radius: 4px;
   background-color: #fafad6;
 }
 
@@ -75,8 +71,8 @@
 
 .q-wrap {
   width: 98%;
-  margin: 70% auto 0 auto;
-  height: fit-content;
+  margin: 60% auto 0 auto;
+  min-height: 120px;
   text-align: center;
   -webkit-text-stroke: 1.5px #fff;
   h1 {
