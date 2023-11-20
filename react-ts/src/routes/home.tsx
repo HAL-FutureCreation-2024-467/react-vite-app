@@ -4,8 +4,6 @@ import { Session } from "@supabase/supabase-js";
 import { ProfileType } from "../types/tables";
 import QuizTab from "../components/home/QuizTab";
 import StoryTab from "../components/home/StoryTab";
-import Avatar from '../components/Avatar'
-import { error } from "console";
 import HomeModal from "../components/home/HomeModal";
 import { useNavigate } from 'react-router-dom';
 
@@ -128,7 +126,7 @@ const Home = () => {
               </>
             ) : null}
           </section>
-          <div>
+          <div className="home-bottom-btn">
             <button onClick={() => setTab('home')}>ホーム</button>
             <button onClick={() => setTab('quiz')}>クイズ</button>
             <button onClick={() => setTab('story')}>ストーリー</button>
