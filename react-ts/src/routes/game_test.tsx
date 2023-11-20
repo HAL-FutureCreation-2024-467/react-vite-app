@@ -23,28 +23,60 @@ const Game = () => {
 
   // Timer 
   
-  const useCountDownInterval = (
-    countTime: number | null,
-    setCountTime: (arg0: number) => void,
-  ) => {
-    useEffect(() => {
-      const countDownInterval = setInterval(() => {
-        if (countTime === 0) {
-          clearInterval(countDownInterval)
+  // ver001
+  // const useCountDownInterval = (
+  //   countTime: number | null,
+  //   setCountTime: (arg0: number) => void,
+  // ) => {
+  //   useEffect(() => {
+  //     const countDownInterval = setInterval(() => {
+  //       if (countTime === 0) {
+  //         clearInterval(countDownInterval)
 
-        }
-        if (countTime && countTime > 0) {
-          setCountTime(countTime - 1)
-        }
-      }, 1000)
-      return () => {
-        clearInterval(countDownInterval)
+  //       }
+  //       if (countTime && countTime > 0) {
+  //         setCountTime(countTime - 1)
+  //       }
+  //     }, 1000)
+  //     return () => {
+  //       clearInterval(countDownInterval)
+  //     }
+  //   }, [countTime])
+  // }
+  // const [countTime, setCountTime] = useState<number>(180)
+  // useCountDownInterval(countTime, setCountTime);
+  // ver001---end
+
+  // ver002
+  const [timeLeft, setTimeLeft] = useState(180); // タイマーの初期値（秒）
+  const [timerId, setTimerId] = useState(null);
+  const [gaugeWidth, setGaugeWidth] = useState((180 / 60) * 480); // ゲージの幅を初期化
+
+  // ゲージの幅を計算
+
+  useEffect(() => {
+    // 残り時間が0になるまでタイマーを実行
+    if (timeLeft === 0) {
+      if (timerId) {
+        clearInterval(timerId);
+        // タイマーが終了した時の処理などを追加する場合はここに記述
       }
-    }, [countTime])
-  }
+      // タイマーが終了した時の処理などを追加する場合はここに記述
+    }
+    // 1秒ごとにtimeLeftを減らす
+    const id = setInterval(() => {
+      setTimeLeft(prevTime => {
+        const newTime = prevTime - 1;
+        let newWidth = ((newTime / 60) * 480); // 時間の変化に応じてゲージの幅を更新
+        setGaugeWidth(Math.min(newWidth, 480));
+        return newTime;
+      });
+    }, 1000);
 
-  const [countTime, setCountTime] = useState<number>(180)
-  useCountDownInterval(countTime, setCountTime);
+    setTimerId(id);
+    // コンポーネントがアンマウントされた時にタイマーをクリアする
+    return () => clearInterval(id);
+  }, [timeLeft, timerId]);
 
   // quiz関連 --------------------------------------
   const question = [...Array(10).keys()];
@@ -60,7 +92,6 @@ const Game = () => {
 
   const [lifeNow, setLifeNow] = useState<number>(3);
   if(mode == "rank"){
-    console.log(mode);
     const [quizRank, setQuizRank] = useState<QuizRankType[] | null>(null);
     useEffect(() => {//rank Modeランダムに取得した問題を出す
       const fetchQuiz = async () => {
@@ -152,10 +183,6 @@ const Game = () => {
   // canvas関連 --------------------------------------
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [showCanvasText, setShowCanvasText] = useState<boolean>(false);
-  const toggleCanvasText = () => {
-    console.log(showCanvasText);
-    setShowCanvasText(!showCanvasText);
-  };
   const childCanvasRef = useRef(null);
 
    const HandingSaveImg = async() => {//canvasの保存
@@ -241,7 +268,7 @@ const Game = () => {
   }, [nowNum]);
 
   useEffect(() => {//時間切れ
-    if(countTime == 0){
+    if(timeLeft == 0){
       setGameStatus([true, false, true]);
 
       setTimeout(() => {
@@ -259,7 +286,7 @@ const Game = () => {
           }); 
         }, 4000);
     }
-  }, [countTime]);
+  }, [timeLeft]);
 
   // 判定関連ここまで
 
@@ -277,7 +304,20 @@ const Game = () => {
           })}
         </div>
         <div className="timer-wrap">
-          <p>ゲーム残り時間: {Math.floor(countTime / 60)}分{countTime % 60}秒 </p>
+          {/* <p>ゲーム残り時間: {Math.floor(countTime / 60)}分{countTime % 60}秒 </p> */}
+          <div>
+            <div style={{ width: '200px', border: '1px solid #000' }}>
+              <div
+                style={{
+                  width: `${gaugeWidth}%`,
+                  height: '20px',
+                  backgroundColor: 'green',
+                }}
+              >
+            </div>
+          </div>
+            <p>Time left: {timeLeft} seconds</p>
+        </div>
         </div>
         <div className={gameStatus[0] ? "end-black end-black-add" : "end-black"}>
           {gameStatus[0] ? 
