@@ -72,13 +72,13 @@ button:focus-visible {
 /*ユーザー情報とアイテム欄*/
 
 /*navigatebar*/
-.home-btm-nv {
+.home-bottom-btn {
   bottom: 0;
   position: fixed;
   z-index: 8;
   margin-left: 5px;
 }
-.home-btm-nv button {
+.home-bottom-btn button {
   font-size: 2em;
   padding: 43px;  
 
