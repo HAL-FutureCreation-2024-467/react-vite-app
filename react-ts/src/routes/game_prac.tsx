@@ -32,7 +32,6 @@ const Game = () => {
   });
   const [quizChoice, setChoice] = useState<string[]>([]);
 
-  const [lifeNow, setLifeNow] = useState<number>(3);
   if(mode == "rank"){
     console.log(mode);
     const [quizRank, setQuizRank] = useState<QuizRankType[] | null>(null);
@@ -170,7 +169,6 @@ const Game = () => {
           setNowNum(nowNum + 1);
           clearChildCanvas();
         } else {
-          setLifeNow(lifeNow - 1);
           clearChildCanvas();
         }
       }
@@ -288,18 +286,18 @@ const Game = () => {
             
           </div>
           <br />
+          {/* 消しゴムbtn */}
           <button className="erase-btn" onClick={clearChildCanvas}>
             <img src={getImage('kesi.png')} alt="" />
           </button>
 
-          <div className="life-wrap">
-            <img src={getImage('heart.png')} alt="" />
-            <h2>{lifeNow}</h2>
-          </div>
-
+          {/* 答えの薄文字表示btn */}
           <button className="ans-wrap" onClick={ toggleCanvasText }>
             <img src={getImage('scope.png')} alt="" />
           </button>
+
+          {/* 解説表示用のbtn */}
+
         </div>  
       </div>
     </div>
@@ -308,5 +306,3 @@ const Game = () => {
 };
 
 export default Game;
-
- {/* <button className="save-btn" onClick={recognizeChildCanvas}><img src={getImage('tp.png')} alt="" /></button> */}
