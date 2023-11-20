@@ -1,19 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
-const [maxWidth, setMaxWidth] = useState<number>(window.innerWidth * 0.8); // 初期の最大幅を設定（例えば画面幅の80%）
+
+const Timer = () => {
+  const [times, setTime] = useState<number>(180);
+  const [maxTime] = useState<number>(180); // 最大時間を設定 (秒)
+  const timerBarRef = useRef<HTMLDivElement>(null);
+  const [maxWidth, setMaxWidth] = useState<number>(480);
+
+  useEffect(() => {
+    if (timerBarRef.current) {
+      setMaxWidth(timerBarRef.current.clientWidth);
+    }
+  }, []);
 
   useEffect(() => {
     const updateMaxWidth = () => {
-      setMaxWidth(window.innerWidth * 0.8); // 画面幅の変化に応じて最大幅を更新
+      if (timerBarRef.current) {
+        setMaxWidth(timerBarRef.current.clientWidth);
+      }
     };
 
     window.addEventListener('resize', updateMaxWidth);
 
     return () => window.removeEventListener('resize', updateMaxWidth);
   }, []);
-const Timer = () => {
-  const [times, setTime] = useState<number>(180);
-  const [maxTime] = useState<number>(180); // 最大時間を設定 (秒)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -30,8 +40,7 @@ const Timer = () => {
     <div
       className="timer-wrap"
       style={{
-        width: '100%',
-        maxWidth: '480px',
+        width: `${maxWidth}px`,
         minHeight: '20px',
         borderRadius: '4px',
         position: 'relative',
@@ -68,14 +77,14 @@ const Timer = () => {
                 margin: '0',
                 padding: '0',
                 fontSize: '12px',
-                width: `${MAX_WIDTH}px`,
+                width: `${maxWidth}px`,
                 textAlign: 'left',
                 fontWeight: 'bold',
                 color: '#fff',
-            }}>
-            <p>残り時間{Math.floor(times)}秒</p>
+            }} 
+            />
+          <p>残り時間{Math.floor(times)}秒</p>
         </div>
-    </div>
   );
 };
 
