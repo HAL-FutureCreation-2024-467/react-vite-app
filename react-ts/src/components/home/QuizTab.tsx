@@ -7,8 +7,8 @@ const QuizTab = () => {
 
   type EpisodeData = QuizRankEpi & QuizClassEpi
 
-  const [classLevel, setClassLevel] = useState<String>("")
-  const [rankLevel, setRankLevel] = useState<String>("")
+  const [classLevel, setClassLevel] = useState<string>("")
+  const [rankLevel, setRankLevel] = useState<string>("")
   const [TABLE_NAME, setTABLE_NAME] = useState("")
   const [quizClass, setQuizClass] = useState<EpisodeData[]>([]);
   const [grade, setGrade] = useState<string | null>(null);

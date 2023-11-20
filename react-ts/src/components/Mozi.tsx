@@ -46,7 +46,7 @@ const Mozi = ({ motion, motion2, motion3, motion4, moziHidden, flagprop }) => {
   }, []);
 
   useEffect(() => {
-    var canvas = new handwriting.Canvas(
+    const canvas = new handwriting.Canvas(
       canvasRef.current,
       4,
       buttonRef.current,
@@ -55,7 +55,7 @@ const Mozi = ({ motion, motion2, motion3, motion4, moziHidden, flagprop }) => {
       resultBtn3.current
     );
 
-    let canvasParent = wrapRef.current;
+    const canvasParent = wrapRef.current;
     canvas.cxt.canvas.width = canvasParent.clientWidth; //縦と横
     canvas.cxt.canvas.height = canvasParent.clientHeight;
 

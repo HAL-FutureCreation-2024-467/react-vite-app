@@ -9,8 +9,8 @@ const Result = () => {
     const grade = useLocation().state.result.grade;
     const episode = useLocation().state.result.episode;
     // const score = useLocation().state.score;
-    var score = 0;
-    var returnBody;
+    const score = 0;
+    let returnBody;
     //取得経験値の計算 and ランクの計算
 
     const replayBtn = () => {

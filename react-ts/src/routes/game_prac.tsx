@@ -32,7 +32,6 @@ const Game = () => {
   });
   const [quizChoice, setChoice] = useState<string[]>([]);
 
-  const [lifeNow, setLifeNow] = useState<number>(3);
   if(mode == "rank"){
     console.log(mode);
     const [quizRank, setQuizRank] = useState<QuizRankType[] | null>(null);
@@ -46,7 +45,7 @@ const Game = () => {
           }
       
           if (data) {
-            let selected = data.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 10);
+            const selected = data.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 10);
             setQuizRank(selected);
           }
         }
@@ -56,7 +55,7 @@ const Game = () => {
 
     useEffect(() => {
       if(quizRank){
-        var tmpChoice = quizChoice.slice(0,6);
+        let tmpChoice = quizChoice.slice(0,6);
         tmpChoice = tmpChoice.map(element => element.replace(/[ 　\n]/g, ""));
         setQuizNow({
           question: quizRank[nowNum].problem,
@@ -88,7 +87,7 @@ const Game = () => {
         if(grade != null && episode != null){
           const { data, error } = await supabase.from('quiz_class').select('*').eq('class', grade).eq('episodes', episode);
           if (error) {Navigate('/404');console.log(error);return;}
-          if (data) {let selected = data.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 10);setQuizClass(selected);}
+          if (data) {const selected = data.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 10);setQuizClass(selected);}
         }
       }
       fetchQuiz(); // 非同期関数を実行
@@ -96,7 +95,7 @@ const Game = () => {
 
     useEffect(() => {
       if(quizClass){
-        var tmpChoice = quizChoice.slice(0,6);
+        let tmpChoice = quizChoice.slice(0,6);
         tmpChoice = tmpChoice.map(element => element.replace(/[ 　\n]/g, ""));
         setQuizNow({
           question: quizClass[nowNum].problem,
@@ -146,9 +145,9 @@ const Game = () => {
   };
 
    const HandingSaveImg = async() => {
-    let canvas = canvasRef.current;
+    const canvas = canvasRef.current;
     if (!canvas) return;
-    let base64 = canvas.toDataURL("image/png");
+    const base64 = canvas.toDataURL("image/png");
     //Download
     // ダウンロード用のリンクを作成
     const downloadLink = document.createElement('a');
@@ -170,11 +169,10 @@ const Game = () => {
           setNowNum(nowNum + 1);
           clearChildCanvas();
         } else {
-          setLifeNow(lifeNow - 1);
           clearChildCanvas();
         }
       }
-    };    
+    }    
   }
   
   useEffect(() => {//問題が10問終わったらクリア
@@ -288,18 +286,18 @@ const Game = () => {
             
           </div>
           <br />
+          {/* 消しゴムbtn */}
           <button className="erase-btn" onClick={clearChildCanvas}>
             <img src={getImage('kesi.png')} alt="" />
           </button>
 
-          <div className="life-wrap">
-            <img src={getImage('heart.png')} alt="" />
-            <h2>{lifeNow}</h2>
-          </div>
-
+          {/* 答えの薄文字表示btn */}
           <button className="ans-wrap" onClick={ toggleCanvasText }>
             <img src={getImage('scope.png')} alt="" />
           </button>
+
+          {/* 解説表示用のbtn */}
+
         </div>  
       </div>
     </div>
@@ -308,5 +306,3 @@ const Game = () => {
 };
 
 export default Game;
-
- {/* <button className="save-btn" onClick={recognizeChildCanvas}><img src={getImage('tp.png')} alt="" /></button> */}
