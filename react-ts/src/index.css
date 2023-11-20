@@ -41,7 +41,6 @@ button {
   margin: 2px;
   font-size: 2.3em;
   font-weight: 500;
-  font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
@@ -73,15 +72,13 @@ button:focus-visible {
 /*ユーザー情報とアイテム欄*/
 
 /*navigatebar*/
-.home-btm-btn {
+.home-bottom-btn {
   bottom: 0;
   position: fixed;
-  display: flex;
   z-index: 8;
-  width: 100%;
   margin-left: 5px;
 }
-.home-btm-btn button {
+.home-bottom-btn button {
   font-size: 2em;
   padding: 43px;  
 
