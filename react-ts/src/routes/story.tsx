@@ -85,7 +85,7 @@ const story = () => {
   };
 
   const storySkip = () => {
-    location.href = ""
+    location.href = "/home"
   };
 
   return (
