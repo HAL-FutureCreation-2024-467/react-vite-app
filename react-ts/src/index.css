@@ -73,15 +73,24 @@ button:focus-visible {
 
 /*navigatebar*/
 .home-bottom-btn {
+  position: absolute;
   bottom: 0;
-  position: fixed;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   z-index: 8;
-  margin-left: 5px;
+  width: 100%;
+  height: 80px;
 }
 .home-bottom-btn button {
-  font-size: 2em;
-  padding: 43px;  
-
+  /* ３分割均等にしたい */
+  flex-grow: 1;
+  flex-basis: 0;
+  border-radius: 0;
+  font-size: 1.5em;
+  padding: 0.5em 0.5em;
+  /* margin-bottom: 2px; */
+  height: 100%;
 }
 
 /*QuizTabのcss記述*/
