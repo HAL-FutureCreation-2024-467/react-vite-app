@@ -10,6 +10,7 @@ interface Quiz {
   question: string | null;
   answer: string | null;
   choices: string[] | null;
+  explain: string | null;
 }
 
 //ゲームプレイ画面
@@ -20,33 +21,36 @@ const Game = () => {
   //['ゲームが終わっているか','クリア=> true, 失敗=> false']
   const [gameStatus, setGameStatus] = useState<boolean[]>([false, false, false]);
   const getImage = (filePath: string): string => {return new URL(`../assets/${filePath}`, import.meta.url).href;};
+  const timerRef = useRef(null);
 
-  // Timer 
-  
-  // ver001
-  // const useCountDownInterval = (
-  //   countTime: number | null,
-  //   setCountTime: (arg0: number) => void,
-  // ) => {
-  //   useEffect(() => {
-  //     const countDownInterval = setInterval(() => {
-  //       if (countTime === 0) {
-  //         clearInterval(countDownInterval)
+  useEffect(() => {
+    // 一定間隔でTimerコンポーネント内のtimesを取得してログに出力する例
+    const interval = setInterval(() => {
+      if (timerRef.current && timerRef.current.times) {
+        console.log("親コンポーネントからのTimerのtimes:", timerRef.current.times);
+        if(timerRef.current.times == 0){
+          //時間切れ処理
+          setGameStatus([true, false, true]);
+          setTimeout(() => {
+            Navigate('/result' ,
+              { state: 
+                { 
+                  gamemode: "test", 
+                  type: false, 
+                  result : {
+                    mode : mode,
+                    grade : grade,
+                    clearNum: 0,
+                  }
+                },
+              }); 
+            }, 4000);
+        }
+      }
+    }, 1000);
 
-  //       }
-  //       if (countTime && countTime > 0) {
-  //         setCountTime(countTime - 1)
-  //       }
-  //     }, 1000)
-  //     return () => {
-  //       clearInterval(countDownInterval)
-  //     }
-  //   }, [countTime])
-  // }
-  // const [countTime, setCountTime] = useState<number>(180)
-  // useCountDownInterval(countTime, setCountTime);
-  // ver001---end
-
+    return () => clearInterval(interval);
+  }, []);
   // ver002
 
   // ゲージの幅を計算
@@ -55,14 +59,16 @@ const Game = () => {
   const [nowNum, setNowNum] = useState<number>(0);
   const [showQuiz, setShowQuiz] = useState<boolean>(false);
   const [showChoice, setShowChoice] = useState<boolean>(false);
+  const [showExplain, setShowExplain] = useState<boolean>(false);
   const [quizNow, setQuizNow] = useState<Quiz>({
     question: "",
     answer: "答え",
     choices: ["", "", ""],
+    explain: "",
   });
   const [quizChoice, setChoice] = useState<string[]>([]);
-
   const [lifeNow, setLifeNow] = useState<number>(3);
+
   if(mode == "rank"){
     const [quizRank, setQuizRank] = useState<QuizRankType[] | null>(null);
     useEffect(() => {//rank Modeランダムに取得した問題を出す
@@ -91,6 +97,7 @@ const Game = () => {
           question: quizRank[nowNum].problem,
           answer: quizRank[nowNum].write,
           choices: tmpChoice,
+          explain: quizRank[nowNum].expl
         })
         setShowChoice(true);
       }
@@ -105,6 +112,7 @@ const Game = () => {
           question: quizRank[nowNum].problem,
           answer: quizRank[nowNum].write,
           choices: [],
+          explain: quizRank[nowNum].expl,
         }),
         setShowQuiz(true),
         setShowChoice(true)
@@ -130,7 +138,8 @@ const Game = () => {
         setQuizNow({
           question: quizClass[nowNum].problem,
           answer: quizClass[nowNum].write,
-          choices: tmpChoice
+          choices: tmpChoice,
+          explain: quizClass[nowNum].expl
         })
         setShowChoice(true);
       }
@@ -144,6 +153,7 @@ const Game = () => {
           question: quizClass[nowNum].problem,
           answer: quizClass[nowNum].write,
           choices: [],
+          explain: quizClass[nowNum].expl,
         }),
         setShowQuiz(true),
         setShowChoice(true)
@@ -157,7 +167,7 @@ const Game = () => {
   const [showCanvasText, setShowCanvasText] = useState<boolean>(false);
   const childCanvasRef = useRef(null);
 
-   const HandingSaveImg = async() => {//canvasの保存
+  const HandingSaveImg = async() => {//canvasの保存
     const canvas = canvasRef.current;
     if (!canvas) return;
     const base64 = canvas.toDataURL("image/png");
@@ -176,6 +186,9 @@ const Game = () => {
       setShowChoice(false);}
   };
 
+  const toggleshowExplain = () => {
+    setShowExplain(!showExplain);
+  }
   // 正誤判定 --------------------------------------
   const jg = (e : any) => {//正誤判定
     if (quizNow.answer, quizNow.choices) {
@@ -356,8 +369,20 @@ const Game = () => {
           </div>
           ) : null
         }
-        
-        <Timer />
+
+        {/* 問題についての解説文表示領域 */}
+        { showExplain && showChoice ? (
+            <div className="explain-box">
+              <div className="exp-inbox">
+                <h2>{quizNow.explain}</h2>
+              </div>
+            </div> 
+          ) : null
+        }
+
+
+        {/*  */}
+        <Timer ref={timerRef}/>
         <div style={{ display: "inline-block" }}>
           <div
             className={"mozi-canvas-wrap canvas-add"}
@@ -379,6 +404,12 @@ const Game = () => {
             <img src={getImage('heart.png')} alt="" />
             <h2>{lifeNow}</h2>
           </div>
+
+          {/* 解説表示btn */}
+          <button className="epl-wrap" onClick={ toggleshowExplain }>
+            <img src={getImage('scope.png')} alt="" />
+          </button>
+
         </div>  
       </div>
     </div>

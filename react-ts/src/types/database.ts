@@ -131,6 +131,7 @@ export interface Database {
       }
       quiz_class: {
         Row: {
+          explain: string | null
           another: string | null
           class: string | null
           created_at: string
@@ -167,6 +168,7 @@ export interface Database {
       }
       quiz_rank: {
         Row: {
+          explain: string | null
           another: string | null
           created_at: string
           difficulty: boolean | null

@@ -9,6 +9,7 @@ interface Quiz {
   question: string | null;
   answer: string | null;
   choices: string[] | null;
+  explain: string | null;
 }
 
 //ゲームプレイ画面
@@ -25,10 +26,12 @@ const Game = () => {
   const [nowNum, setNowNum] = useState<number>(0);
   const [showQuiz, setShowQuiz] = useState<boolean>(false);
   const [showChoice, setShowChoice] = useState<boolean>(false);
+  const [showExplain, setShowExplain] = useState<boolean>(false);
   const [quizNow, setQuizNow] = useState<Quiz>({
     question: "",
     answer: "答え",
     choices: ["", "", ""],
+    explain: "",
   });
   const [quizChoice, setChoice] = useState<string[]>([]);
 
@@ -61,6 +64,7 @@ const Game = () => {
           question: quizRank[nowNum].problem,
           answer: quizRank[nowNum].write,
           choices: tmpChoice,
+          explain: quizRank[nowNum].expl
         })
         setShowChoice(true);
       }
@@ -75,6 +79,7 @@ const Game = () => {
           question: quizRank[nowNum].problem,
           answer: quizRank[nowNum].write,
           choices: [],
+          explain: quizRank[nowNum].expl
         }),
         setShowQuiz(true),
         setShowChoice(true)
@@ -100,7 +105,8 @@ const Game = () => {
         setQuizNow({
           question: quizClass[nowNum].problem,
           answer: quizClass[nowNum].write,
-          choices: tmpChoice
+          choices: tmpChoice,
+          explain: quizClass[nowNum].expl
         })
         setShowChoice(true);
       }
@@ -114,6 +120,7 @@ const Game = () => {
           question: quizClass[nowNum].problem,
           answer: quizClass[nowNum].write,
           choices: [],
+          explain: quizClass[nowNum].expl
         }),
         setShowQuiz(true),
         setShowChoice(true)
@@ -128,7 +135,9 @@ const Game = () => {
       setShowChoice(false);}
     };
   
-  
+    const toggleshowExplain = () => {
+      setShowExplain(!showExplain);
+    }
   // canvas関連 --------------------------------------
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [showCanvasText, setShowCanvasText] = useState<boolean>(false);
@@ -273,6 +282,16 @@ const Game = () => {
           ) : null
         }
 
+        {/* 問題についての解説文表示領域 */}
+        { showExplain && showChoice ? (
+            <div className="explain-box">
+              <div className="exp-inbox">
+                <h2>{quizNow.explain}</h2>
+              </div>
+            </div> 
+          ) : null
+        }
+
         <div style={{ display: "inline-block" }}>
           <div
             className={"mozi-canvas-wrap canvas-add"}
@@ -296,7 +315,10 @@ const Game = () => {
             <img src={getImage('scope.png')} alt="" />
           </button>
 
-          {/* 解説表示用のbtn */}
+          {/* 解説表示btn */}
+          <button className="epl-wrap" onClick={ toggleshowExplain }>
+            <img src={getImage('scope.png')} alt="" />
+          </button>
 
         </div>  
       </div>
