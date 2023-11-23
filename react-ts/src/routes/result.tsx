@@ -5,6 +5,8 @@ import { supabase } from "../supabaseClient";
 import { Session } from "@supabase/supabase-js";
 import { ProfileType } from "../types/tables";
 import { Json } from "../types/database";
+import "../assets/scss/result.scss";
+import RankCm from "../components/result/RankComponent";
 
 const Result = () => {
     const Navigate = useNavigate();
@@ -14,7 +16,8 @@ const Result = () => {
         // 更新したい情報を指定
         exp: 2000,
       });
-    const jg = useLocation().state.type;
+
+    const jg = useLocation().state.type || true;
     const gamemode = useLocation().state.gamemode;
     const mode = useLocation().state.result.mode;
     const grade = useLocation().state.result.grade;
@@ -22,7 +25,6 @@ const Result = () => {
     const clnum = useLocation().state.result.clearNum;
     // const score = useLocation().state.score;
     const [score, setScore] = useState(0);
-    let returnBody;
 
     //ユーザーの現在の経験値を取得
     useEffect(() => {
@@ -107,29 +109,30 @@ const Result = () => {
     }, [episode]);
     return (
         <div className="Result">
+          <div className="result_title" style={{textAlign:"center"}}>
+            <h1>挑戦結果</h1>
+          </div>
+          <RankCm accountData={user}/>
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 2 }}
             >
-                {/*  */}
-            { jg ? (<h1>Result</h1>) : (<h1>GameOver!</h1>)}
+              {/*  */}
+              {/* { jg ? (<h1>Result</h1>) : (<h1>GameOver!</h1>)} */}
 
-                <div>
-                    <h3>Player : {user?.username}</h3>
-                    <h3>Mode: {gamemode}</h3>
-                    <h3>Score: {score}</h3>
-                </div> 
-                
-                <div className="reBtn">
-                    <button className="replayBtn" onClick={replayBtn}>
-                        {jg ? ("もう一回!") : ("再挑戦！")} 
-                        
-                    </button>
-                    <button className="toHome" onClick={goHome}>
-                        {jg ? ("ホームに戻る") : ("諦める")}   
-                    </button>
-                </div> 
+              {/* 正答案の一覧表示 */}
+              <h2 className="result_h2">-今回の問題-</h2>
+              
+              {/*  */}
+              <div className="reBtn">
+                  <button className="toHome" onClick={goHome}>
+                      ステージ選択に戻る  
+                  </button>
+                  <button className="replayBtn" onClick={replayBtn}>
+                      {jg ? ("もう一度挑戦する") : ("再挑戦！")}                         
+                  </button>
+              </div> 
             {/*  */}
                 </motion.div>
             </div>
@@ -137,3 +140,15 @@ const Result = () => {
 }
 
 export default Result;
+
+// 大まかな構造
+// プロフィール情報を取得
+// 経験値を取得
+// 経験値を元にランクを計算
+// ランクをDBに保存
+// ランクを表示
+
+// title
+// exp + level component
+// 結果表示 component
+// ボタン component
