@@ -30,7 +30,8 @@
     }
     .rankProgress{
         width: 200px;
-        height: 100%;
+        height: 90%;
+        margin: auto 0;
         position: relative;
         .rankProgress_bar{
             position: absolute;
@@ -49,6 +50,7 @@
 }
 
 .progressbar_box{
+    position: relative;
     .p-bar{
         border-radius: 10px;
         top: 4px;
@@ -56,7 +58,6 @@
         height: 18px;
         position: absolute;
     }
-    position: relative;
     .rankProgress_bar_inner{  
         width: 100%;
         background-color:  grey;

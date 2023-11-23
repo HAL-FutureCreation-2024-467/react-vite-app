@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProfileType } from "../../types/tables";
 
 export interface RankCmProps {
@@ -11,7 +11,10 @@ const getImage = (filePath: string): string => {
 const RankCm = (props : RankCmProps) => {
     const [itemNum, setItemNum] = useState(0);
     const accountData = props.accountData;
-    
+
+    useEffect(() => {
+        var nowEx = accountData.exp/100;
+    }, [accountData])
     return (
         <div className="rank_comp">
             <div className="rank_box">
