@@ -108,6 +108,35 @@ const Result = () => {
         // ランクを表示
         }
     }, [episode]);
+
+    const [rank, setRank] = useState(0);
+    const [rankDiff, setRankDiff] = useState(0);
+
+    const calculateLevel = (EXP: number | null) => { //現在の経験値からレベルを計算する関数
+            const exPerLevel = 12;
+            let level = 1;
+            let requiredExperience = 0;
+            while (EXP !== null && EXP >= requiredExperience) {
+                requiredExperience += exPerLevel;
+                level++;
+            }
+        
+            return level - 1; // whileループを抜けるときに1回余分にインクリメントされているので、1を引いて正しいレベルを返す
+        }
+    
+    const ExpRequired = (level: number) => {
+      const exPerLevel = 12;
+      return level * exPerLevel;
+    };
+
+    useEffect(() => {
+      if (user?.exp != null) {
+        setRank(calculateLevel(user.exp));
+        let diff = ExpRequired(rank + 1) - user.exp;
+        setRankDiff(diff);
+      }
+    }, [user, rank]);
+
     return (
         <div className="Result">
           <div className="result_title" style={{textAlign:"center"}}>
@@ -118,7 +147,7 @@ const Result = () => {
             {/* 満点は全問正解 */}
             {/* テストのときは討伐成功 */}
           </div>
-          <RankCm accountData={user as ProfileType}/>
+          <RankCm accountData={user as ProfileType} rank={rank} rankDiff={rankDiff}/>
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -129,7 +158,62 @@ const Result = () => {
 
               {/* 正答案の一覧表示 */}
               <h2 className="result_h2">-今回の問題-</h2>
-              <QuizResult quizData={{}}/>
+              <QuizResult quizData={[
+                {
+                    write: '日本',//書き
+                    read : 'にほん',//読み
+                    problem: 'にほん海側',//問題
+                    expl: 'Japan の日本語訳Japan の日本語訳',//解説
+                    correct: true,//正解かどうか
+                },
+                {
+                    write: '海外',//書き
+                    read : 'かいがい',//読み
+                    problem: 'かいがい線',//問題
+                    expl: '海を挟んだ外の世界',//解説
+                    correct: false,//正解かどうか
+                },
+                {
+                    write: '札幌',//書き
+                    read : 'に',//読み
+                    problem: 'にほん海側',//問題
+                    expl: 'Japan の日本語訳',//解説
+                    correct: true,//正解かどうか
+                },
+                {
+                    write: '山梨',//書き
+                    read : 'かいがい',//読み
+                    problem: 'かいがい線',//問題
+                    expl: '海を挟んだ外の世界',//解説
+                    correct: false,//正解かどうか
+                },
+                {
+                    write: '御座敷',//書き
+                    read : 'にほん',//読み
+                    problem: 'にほん海側',//問題
+                    expl: 'Japan の日本語訳',//解説
+                    correct: true,//正解かどうか
+                },
+                {
+                    write: '鳥胸',//書き
+                    read : 'かいがい',//読み
+                    problem: 'かいがい線',//問題
+                    expl: '海を挟んだ外の世界',//解説
+                    correct: false,//正解かどうか
+                },{
+                    write: '灌漑',//書き
+                    read : 'にほん',//読み
+                    problem: 'にほん海側',//問題
+                    expl: 'Japan の日本語訳',//解説
+                    correct: true,//正解かどうか
+                },
+                {
+                    write: '僧都',//書き
+                    read : 'かいがい',//読み
+                    problem: 'かいがい線',//問題
+                    expl: '海を挟んだ外の世界',//解説
+                    correct: false,//正解かどうか
+                }]}/>
 
               {/*  */}
               <div className="reBtn">

@@ -133,13 +133,13 @@
                 text-align: left;
             }
             .quiz_result_text_exp{
-                font-size: 12px;
+                font-size: 14px;
                 font-weight: bold;
                 color: #333;
                 width: 100%;
                 text-align: left;
                 //改行も許可
-                white-space: pre-wrap;
+                white-space: wrap;
             }
         }
         .quiz_result_button{
@@ -149,7 +149,7 @@
             border: none;
             appearance: none;
             border: #000 solid 1px;
-            border-radius: 50%;
+            border-radius: 12px;
             cursor: pointer;
             img{
                 width: 24px;

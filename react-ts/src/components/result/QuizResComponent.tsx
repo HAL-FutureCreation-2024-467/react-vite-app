@@ -27,62 +27,7 @@ const getImage = (filePath: string): string => {
 
 const QuizResult = (props : qRProps) => {
     // const [quizRes, setQuizRes] = useState(props.quizData);
-    const [quizRes, setQuizRes] = useState([
-    {
-        write: '日本',//書き
-        read : 'にほん',//読み
-        problem: 'にほん海側',//問題
-        expl: 'Japan の日本語訳',//解説
-        correct: true,//正解かどうか
-    },
-    {
-        write: '海外',//書き
-        read : 'かいがい',//読み
-        problem: 'かいがい線',//問題
-        expl: '海を挟んだ外の世界',//解説
-        correct: false,//正解かどうか
-    },
-    {
-        write: '札幌',//書き
-        read : 'に',//読み
-        problem: 'にほん海側',//問題
-        expl: 'Japan の日本語訳',//解説
-        correct: true,//正解かどうか
-    },
-    {
-        write: '山梨',//書き
-        read : 'かいがい',//読み
-        problem: 'かいがい線',//問題
-        expl: '海を挟んだ外の世界',//解説
-        correct: false,//正解かどうか
-    },
-    {
-        write: '御座敷',//書き
-        read : 'にほん',//読み
-        problem: 'にほん海側',//問題
-        expl: 'Japan の日本語訳',//解説
-        correct: true,//正解かどうか
-    },
-    {
-        write: '鳥胸',//書き
-        read : 'かいがい',//読み
-        problem: 'かいがい線',//問題
-        expl: '海を挟んだ外の世界',//解説
-        correct: false,//正解かどうか
-    },{
-        write: '灌漑',//書き
-        read : 'にほん',//読み
-        problem: 'にほん海側',//問題
-        expl: 'Japan の日本語訳',//解説
-        correct: true,//正解かどうか
-    },
-    {
-        write: '僧都',//書き
-        read : 'かいがい',//読み
-        problem: 'かいがい線',//問題
-        expl: '海を挟んだ外の世界',//解説
-        correct: false,//正解かどうか
-    }]);
+    const [quizRes, setQuizRes] = useState(props.quizData);
     
     const [showStates, setShowStates] = useState(Array(quizRes.length).fill(false));
 

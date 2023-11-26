@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { ProfileType } from "../../types/tables";
 
 export interface RankCmProps {
-    accountData: ProfileType;
+    accountData: ProfileType,
+    rank: number,
+    rankDiff: number,
 }
 const getImage = (filePath: string): string => {
     return new URL(`../../assets/${filePath}`, import.meta.url).href;
@@ -11,26 +13,17 @@ const getImage = (filePath: string): string => {
 const RankCm = (props : RankCmProps) => {
     const [itemNum, setItemNum] = useState(0);
     const accountData = props.accountData;
-    if(accountData === undefined){
-        return <div>plz reload</div>;
-    }else{
-        // setItemNum(accountData.items);
-    }
-    
 
-    useEffect(() => {
-        // var nowEx = accountData.exp/100;
-    }, [accountData])
     return (
         <div className="rank_comp">
             <div className="rank_box">
                 {/* <h3>Rank: {accountData.exp/100}</h3> */}
                 <p>ランク</p>
-                <p>15</p>
+                <p>{props.rank}</p>
             </div>
             <div className="rankProgress">
-                <div className="rankText">次のランクまで{
-                    
+                <div className="rankText">次のランクマであと{
+                    props.rankDiff
                 }</div>
                 <div className="progressbar_box">
                     <div className="p-bar rankProgress_bar_inner"></div>
