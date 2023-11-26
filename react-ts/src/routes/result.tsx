@@ -7,6 +7,7 @@ import { ProfileType } from "../types/tables";
 import { Json } from "../types/database";
 import "../assets/scss/result.scss";
 import RankCm from "../components/result/RankComponent";
+import QuizResult from "../components/result/QuizResComponent";
 
 const Result = () => {
     const Navigate = useNavigate();
@@ -112,7 +113,12 @@ const Result = () => {
           <div className="result_title" style={{textAlign:"center"}}>
             <h1>挑戦結果</h1>
           </div>
-          <RankCm accountData={user}/>
+          <div>
+            <h2 className="result_h2">-５問正解！-</h2>
+            {/* 満点は全問正解 */}
+            {/* テストのときは討伐成功 */}
+          </div>
+          <RankCm accountData={user as ProfileType}/>
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -123,7 +129,8 @@ const Result = () => {
 
               {/* 正答案の一覧表示 */}
               <h2 className="result_h2">-今回の問題-</h2>
-              
+              <QuizResult quizData={{}}/>
+
               {/*  */}
               <div className="reBtn">
                   <button className="toHome" onClick={goHome}>

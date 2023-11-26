@@ -28,7 +28,8 @@ img {
   min-width: 500px;
   max-width: 800px;
   margin: 0 auto;
-  height: 660px;
+  min-height: 660px;
+  max-height: 780px;
   position: relative;
   background-image: url(@assets/sougen.jpg);
   overflow: hidden;
@@ -38,25 +39,28 @@ img {
 }
 .Result {
   background: #fff;
-  text-align: center;
   box-shadow: 0 0 30px 3px rgba(110, 90, 70, 0.7);
-  width: 100vw;
-  max-width: 500px;
+  width: 20vw;
+  min-width: 500px;
+  max-width: 800px;
   margin: 0 auto;
-  height: 100vh;
-  height: 100dvh;
-  position: relative;
-  // background-image: url(@assets/);
+  min-height: 660px;
+  max-height: 780px;
   overflow: hidden;
+  background-position:center center;
+  background-repeat: no-repeat;
+  background-size:cover;
 }
 .Home {
   background: #fff;
   box-shadow: 0 0 30px 3px rgba(110, 90, 70, 0.7);
   width: 100vw;
-  max-width: 500px;
+  min-width: 500px;
+  max-width: 800px;
   margin: 0 auto;
-  height: 100vh;
-  height: 100dvh;
+  min-height: 660px;
+  max-height: 780px;
+  // height: 100vh;
   position: relative;
   overflow: hidden;
 }
