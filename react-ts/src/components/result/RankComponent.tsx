@@ -11,9 +11,15 @@ const getImage = (filePath: string): string => {
 const RankCm = (props : RankCmProps) => {
     const [itemNum, setItemNum] = useState(0);
     const accountData = props.accountData;
+    if(accountData === undefined){
+        return <div>plz reload</div>;
+    }else{
+        // setItemNum(accountData.items);
+    }
+    
 
     useEffect(() => {
-        var nowEx = accountData.exp/100;
+        // var nowEx = accountData.exp/100;
     }, [accountData])
     return (
         <div className="rank_comp">
