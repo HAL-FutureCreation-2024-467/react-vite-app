@@ -76,7 +76,6 @@ const Result = () => {
             }
         }
       }
-
     //取得経験値の計算 and ランクの計算
 
     const replayBtn = () => {
@@ -87,7 +86,6 @@ const Result = () => {
             Navigate(`/game/${gamemode}/${mode}/${grade}`);
         }
     }
-
     const goHome = () => {
         //ホームに戻るボタンを押したときの処理
         Navigate(`/home`);
@@ -231,15 +229,3 @@ const Result = () => {
 }
 
 export default Result;
-
-// 大まかな構造
-// プロフィール情報を取得
-// 経験値を取得
-// 経験値を元にランクを計算
-// ランクをDBに保存
-// ランクを表示
-
-// title
-// exp + level component
-// 結果表示 component
-// ボタン component

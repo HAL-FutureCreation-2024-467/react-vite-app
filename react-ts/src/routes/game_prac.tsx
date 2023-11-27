@@ -34,7 +34,6 @@ const Game = () => {
     explain: "",
   });
   const [quizChoice, setChoice] = useState<string[]>([]);
-
   if(mode == "rank"){
     console.log(mode);
     const [quizRank, setQuizRank] = useState<QuizRankType[] | null>(null);
@@ -93,6 +92,7 @@ const Game = () => {
           const { data, error } = await supabase.from('quiz_class').select('*').eq('class', grade).eq('episodes', episode);
           if (error) {Navigate('/404');console.log(error);return;}
           if (data) {const selected = data.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 10);setQuizClass(selected);}
+          if (data) {let selected = data.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 10);setQuizClass(selected);}
         }
       }
       fetchQuiz(); // 非同期関数を実行
@@ -135,9 +135,10 @@ const Game = () => {
       setShowChoice(false);}
     };
   
-    const toggleshowExplain = () => {
+  const toggleshowExplain = () => {
       setShowExplain(!showExplain);
     }
+
   // canvas関連 --------------------------------------
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [showCanvasText, setShowCanvasText] = useState<boolean>(false);
@@ -154,9 +155,10 @@ const Game = () => {
   };
 
    const HandingSaveImg = async() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const base64 = canvas.toDataURL("image/png");
+   const canvas = canvasRef.current;
+   if (!canvas) return;
+   const base64 = canvas.toDataURL("image/png");
+
     //Download
     // ダウンロード用のリンクを作成
     const downloadLink = document.createElement('a');
@@ -281,7 +283,7 @@ const Game = () => {
           </div>
           ) : null
         }
-
+        
         {/* 問題についての解説文表示領域 */}
         { showExplain && showChoice ? (
             <div className="explain-box">
@@ -291,7 +293,6 @@ const Game = () => {
             </div> 
           ) : null
         }
-
         <div style={{ display: "inline-block" }}>
           <div
             className={"mozi-canvas-wrap canvas-add"}
@@ -309,7 +310,6 @@ const Game = () => {
           <button className="erase-btn" onClick={clearChildCanvas}>
             <img src={getImage('kesi.png')} alt="" />
           </button>
-
           {/* 答えの薄文字表示btn */}
           <button className="ans-wrap" onClick={ toggleCanvasText }>
             {/* <img src={getImage('scope.png')} alt="" /> */}
@@ -320,12 +320,10 @@ const Game = () => {
           <button className="epl-wrap" onClick={ toggleshowExplain }>
             <img src={getImage('scope.png')} alt="" />
           </button>
-
         </div>  
       </div>
     </div>
   </>
   );
 };
-
 export default Game;

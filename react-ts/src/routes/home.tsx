@@ -7,7 +7,6 @@ import StoryTab from "../components/home/StoryTab";
 import HomeModal from "../components/home/HomeModal";
 import { useLocation, useNavigate } from 'react-router-dom';
 
-
 const Home = () => {
   const [sessions, setSession] = useState<Session | null>(null)
   const [user, setUser] = useState<ProfileType | null>(null)
@@ -56,10 +55,10 @@ const Home = () => {
       }
     }
     setupUser()
-
     if(tab === 'story'){
       setTab(tab)
     }
+
   }, [sessions])
 
   useEffect(() => {
@@ -127,8 +126,7 @@ const Home = () => {
             ) : showTab['story'] ? (
               <>
                 <h1>ストーリー</h1>
-                <StoryTab 
-                />
+                <StoryTab />
               </>
             ) : null}
           </section>

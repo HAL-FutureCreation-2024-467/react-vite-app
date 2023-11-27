@@ -7,6 +7,7 @@ import CanComp from "../components/game/canvas";
 import Timer from "../components/game/timer";
 import { motion } from "framer-motion";
 
+
 interface Quiz {
   question: string | null;
   answer: string | null;
@@ -71,6 +72,7 @@ const Game = () => {
   const [lifeNow, setLifeNow] = useState<number>(3);
 
   if(mode == "rank"){
+
     const [quizRank, setQuizRank] = useState<QuizRankType[] | null>(null);
     useEffect(() => {//rank Modeランダムに取得した問題を出す
       const fetchQuiz = async () => {
@@ -186,7 +188,6 @@ const Game = () => {
       childCanvasRef.current.clearCanvas();
       setShowChoice(false);}
   };
-
   const toggleshowExplain = () => {
     setShowExplain(!showExplain);
   }
@@ -252,28 +253,6 @@ const Game = () => {
         }, 4000);
     }
   }, [nowNum]);
-
-  // useEffect(() => {//時間切れ
-  //   if(timeLeft == 0){
-  //     setGameStatus([true, false, true]);
-
-  //     setTimeout(() => {
-  //       Navigate('/result' ,
-  //         { state: 
-  //           { 
-  //             gamemode: "test", 
-  //             type: false, 
-  //             result : {
-  //               mode : mode,
-  //               grade : grade,
-  //               clearNum: nowNum-1,
-  //             }
-  //           },
-  //         }); 
-  //       }, 4000);
-  //   }
-  // }, [timeLeft]);
-
   // 判定関連ここまで
 
   return (
@@ -389,6 +368,7 @@ const Game = () => {
 
         {/*  */}
         <Timer ref={timerRef}/>
+
         <div style={{ display: "inline-block" }}>
           <div
             className={"mozi-canvas-wrap canvas-add"}
@@ -410,7 +390,6 @@ const Game = () => {
             <img src={getImage('heart.png')} alt="" />
             <h2>{lifeNow}</h2>
           </div>
-
           {/* 解説表示btn */}
           <button className="epl-wrap" onClick={ toggleshowExplain }>
             <img src={getImage('scope.png')} alt="" />

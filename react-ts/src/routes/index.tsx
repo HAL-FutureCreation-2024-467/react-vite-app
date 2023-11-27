@@ -61,7 +61,6 @@ function App() {
     if (error) {
       throw error;
     }
-
     if(data){
       location.href = "/home";
     }
