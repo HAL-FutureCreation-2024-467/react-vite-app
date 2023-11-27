@@ -5,6 +5,7 @@ import { Link, useNavigate, useLocation, useParams } from 'react-router-dom'
 import { QuizClassType, QuizRankType } from '../types/tables'
 import CanComp from "../components/game/canvas";
 import Timer from "../components/game/timer";
+import { motion } from "framer-motion";
 
 interface Quiz {
   question: string | null;
@@ -28,7 +29,7 @@ const Game = () => {
     const interval = setInterval(() => {
       if (timerRef.current && timerRef.current.times) {
         console.log("親コンポーネントからのTimerのtimes:", timerRef.current.times);
-        if(timerRef.current.times == 0){
+        if(timerRef.current.times <= 0){
           //時間切れ処理
           setGameStatus([true, false, true]);
           setTimeout(() => {
@@ -40,7 +41,7 @@ const Game = () => {
                   result : {
                     mode : mode,
                     grade : grade,
-                    clearNum: 0,
+                    clearNum: nowNum,
                   }
                 },
               }); 
@@ -371,15 +372,20 @@ const Game = () => {
         }
 
         {/* 問題についての解説文表示領域 */}
-        { showExplain && showChoice ? (
+        {showExplain && showChoice ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            exit={{ opacity: 0 }} 
+            animate={{ opacity: 1 }}
+            transition={{ duration: 2 }}                             
+          >
             <div className="explain-box">
               <div className="exp-inbox">
                 <h2>{quizNow.explain}</h2>
               </div>
             </div> 
-          ) : null
-        }
-
+          </motion.div>
+        ) : null}
 
         {/*  */}
         <Timer ref={timerRef}/>

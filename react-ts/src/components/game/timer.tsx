@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 const Timer = React.forwardRef((props, ref) => {
   const timerRef = useRef(null);
-  const [times, setTime] = useState(1);
+  const [times, setTime] = useState(3);
   const [maxTime] = useState(180); // 最大時間を設定 (秒)
   const timerBarRef = useRef(null);
   const [maxWidth, setMaxWidth] = useState(400);
@@ -16,12 +16,6 @@ const Timer = React.forwardRef((props, ref) => {
       };
     }
   }, [ref, times]);
-
-  useEffect(() => {
-    if(times <= 0){
-      clearInterval();
-    }
-  }, [times]);  
 
   useEffect(() => {
     if (timerBarRef.current) {
@@ -45,6 +39,10 @@ const Timer = React.forwardRef((props, ref) => {
     const interval = setInterval(() => {
       setTime((prevTime) => (prevTime > 0 ? prevTime - 0.1 : maxTime)); // 0になったら最大値に戻る
     }, 100);
+    // タイマーを止める処理
+    if(times === 0){
+      clearInterval(interval);
+    }
 
     return () => clearInterval(interval);
   }, [maxTime]);

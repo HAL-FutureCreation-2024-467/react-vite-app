@@ -312,7 +312,8 @@ const Game = () => {
 
           {/* 答えの薄文字表示btn */}
           <button className="ans-wrap" onClick={ toggleCanvasText }>
-            <img src={getImage('scope.png')} alt="" />
+            {/* <img src={getImage('scope.png')} alt="" /> */}
+            <p>回答を見る</p>
           </button>
 
           {/* 解説表示btn */}
