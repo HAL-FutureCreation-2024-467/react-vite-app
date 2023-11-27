@@ -37,6 +37,18 @@ const QuizResult = (props : qRProps) => {
         setShowStates(newShowStates);
     };
 
+    const handleShowDetail = (index) => {
+        const newShowStates = [...showStates];
+        newShowStates[index] = true;
+        setShowStates(newShowStates);
+    };
+
+    const handleHideDetail = (index) => {
+        const newShowStates = [...showStates];
+        newShowStates[index] = false;
+        setShowStates(newShowStates);
+    };
+
     // onclickで表示を切り替える　各項目で個別にshowクラスの付け替え
      const showToggle = () => {
         
@@ -68,7 +80,11 @@ const QuizResult = (props : qRProps) => {
                         (<div className="quiz_result_text_exp">{quiz.expl}</div>)
                     }
                 </div>
-                <div className="quiz_result_button" onClick={() => handleToggle(index)}>
+                <div className="quiz_result_button" 
+                    onMouseDown={() => handleShowDetail(index)}
+                    onMouseUp={() => handleHideDetail(index)}
+                    onMouseLeave={() => handleHideDetail(index)}
+                    >
                     {/* 1割 */}
                     <img src={getImage('scope.png')} alt={'scope.png'} />
                 </div>

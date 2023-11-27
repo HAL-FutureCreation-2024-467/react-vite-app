@@ -135,10 +135,13 @@ const Game = () => {
       setShowChoice(false);}
     };
   
-  const toggleshowExplain = () => {
-      setShowExplain(!showExplain);
-    }
+  const handleShowDetail = () => {
+      setShowExplain(true);
+  };
 
+  const handleHideDetail = () => {
+      setShowExplain(false);
+  };
   // canvas関連 --------------------------------------
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [showCanvasText, setShowCanvasText] = useState<boolean>(false);
@@ -312,12 +315,15 @@ const Game = () => {
           </button>
           {/* 答えの薄文字表示btn */}
           <button className="ans-wrap" onClick={ toggleCanvasText }>
-            {/* <img src={getImage('scope.png')} alt="" /> */}
-            <p>回答を見る</p>
+            <img src={getImage('scope.png')} alt="" />
           </button>
 
           {/* 解説表示btn */}
-          <button className="epl-wrap" onClick={ toggleshowExplain }>
+          <button className="epl-wrap"
+            onMouseDown={() => handleShowDetail()}
+            onMouseUp={() => handleHideDetail()}
+            onMouseLeave={() => handleHideDetail()}
+          >
             <img src={getImage('scope.png')} alt="" />
           </button>
         </div>  
