@@ -9,6 +9,7 @@ interface Quiz {
   question: string | null;
   answer: string | null;
   choices: string[] | null;
+  explain: string | null;
 }
 
 //ゲームプレイ画面
@@ -25,14 +26,14 @@ const Game = () => {
   const [nowNum, setNowNum] = useState<number>(0);
   const [showQuiz, setShowQuiz] = useState<boolean>(false);
   const [showChoice, setShowChoice] = useState<boolean>(false);
+  const [showExplain, setShowExplain] = useState<boolean>(false);
   const [quizNow, setQuizNow] = useState<Quiz>({
     question: "",
     answer: "答え",
     choices: ["", "", ""],
+    explain: "",
   });
   const [quizChoice, setChoice] = useState<string[]>([]);
-
-  const [lifeNow, setLifeNow] = useState<number>(3);
   if(mode == "rank"){
     console.log(mode);
     const [quizRank, setQuizRank] = useState<QuizRankType[] | null>(null);
@@ -46,7 +47,7 @@ const Game = () => {
           }
       
           if (data) {
-            let selected = data.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 10);
+            const selected = data.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 10);
             setQuizRank(selected);
           }
         }
@@ -56,12 +57,13 @@ const Game = () => {
 
     useEffect(() => {
       if(quizRank){
-        var tmpChoice = quizChoice.slice(0,6);
+        let tmpChoice = quizChoice.slice(0,6);
         tmpChoice = tmpChoice.map(element => element.replace(/[ 　\n]/g, ""));
         setQuizNow({
           question: quizRank[nowNum].problem,
           answer: quizRank[nowNum].write,
           choices: tmpChoice,
+          explain: quizRank[nowNum].expl
         })
         setShowChoice(true);
       }
@@ -76,6 +78,7 @@ const Game = () => {
           question: quizRank[nowNum].problem,
           answer: quizRank[nowNum].write,
           choices: [],
+          explain: quizRank[nowNum].expl
         }),
         setShowQuiz(true),
         setShowChoice(true)
@@ -88,6 +91,7 @@ const Game = () => {
         if(grade != null && episode != null){
           const { data, error } = await supabase.from('quiz_class').select('*').eq('class', grade).eq('episodes', episode);
           if (error) {Navigate('/404');console.log(error);return;}
+          if (data) {const selected = data.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 10);setQuizClass(selected);}
           if (data) {let selected = data.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 10);setQuizClass(selected);}
         }
       }
@@ -96,12 +100,13 @@ const Game = () => {
 
     useEffect(() => {
       if(quizClass){
-        var tmpChoice = quizChoice.slice(0,6);
+        let tmpChoice = quizChoice.slice(0,6);
         tmpChoice = tmpChoice.map(element => element.replace(/[ 　\n]/g, ""));
         setQuizNow({
           question: quizClass[nowNum].problem,
           answer: quizClass[nowNum].write,
-          choices: tmpChoice
+          choices: tmpChoice,
+          explain: quizClass[nowNum].expl
         })
         setShowChoice(true);
       }
@@ -115,6 +120,7 @@ const Game = () => {
           question: quizClass[nowNum].problem,
           answer: quizClass[nowNum].write,
           choices: [],
+          explain: quizClass[nowNum].expl
         }),
         setShowQuiz(true),
         setShowChoice(true)
@@ -129,7 +135,10 @@ const Game = () => {
       setShowChoice(false);}
     };
   
-  
+  const toggleshowExplain = () => {
+      setShowExplain(!showExplain);
+    }
+
   // canvas関連 --------------------------------------
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [showCanvasText, setShowCanvasText] = useState<boolean>(false);
@@ -146,9 +155,10 @@ const Game = () => {
   };
 
    const HandingSaveImg = async() => {
-    let canvas = canvasRef.current;
-    if (!canvas) return;
-    let base64 = canvas.toDataURL("image/png");
+   const canvas = canvasRef.current;
+   if (!canvas) return;
+   const base64 = canvas.toDataURL("image/png");
+
     //Download
     // ダウンロード用のリンクを作成
     const downloadLink = document.createElement('a');
@@ -170,11 +180,10 @@ const Game = () => {
           setNowNum(nowNum + 1);
           clearChildCanvas();
         } else {
-          setLifeNow(lifeNow - 1);
           clearChildCanvas();
         }
       }
-    };    
+    }    
   }
   
   useEffect(() => {//問題が10問終わったらクリア
@@ -274,7 +283,16 @@ const Game = () => {
           </div>
           ) : null
         }
-
+        
+        {/* 問題についての解説文表示領域 */}
+        { showExplain && showChoice ? (
+            <div className="explain-box">
+              <div className="exp-inbox">
+                <h2>{quizNow.explain}</h2>
+              </div>
+            </div> 
+          ) : null
+        }
         <div style={{ display: "inline-block" }}>
           <div
             className={"mozi-canvas-wrap canvas-add"}
@@ -288,16 +306,18 @@ const Game = () => {
             
           </div>
           <br />
+          {/* 消しゴムbtn */}
           <button className="erase-btn" onClick={clearChildCanvas}>
             <img src={getImage('kesi.png')} alt="" />
           </button>
-
-          <div className="life-wrap">
-            <img src={getImage('heart.png')} alt="" />
-            <h2>{lifeNow}</h2>
-          </div>
-
+          {/* 答えの薄文字表示btn */}
           <button className="ans-wrap" onClick={ toggleCanvasText }>
+            {/* <img src={getImage('scope.png')} alt="" /> */}
+            <p>回答を見る</p>
+          </button>
+
+          {/* 解説表示btn */}
+          <button className="epl-wrap" onClick={ toggleshowExplain }>
             <img src={getImage('scope.png')} alt="" />
           </button>
         </div>  
@@ -306,7 +326,4 @@ const Game = () => {
   </>
   );
 };
-
 export default Game;
-
- {/* <button className="save-btn" onClick={recognizeChildCanvas}><img src={getImage('tp.png')} alt="" /></button> */}

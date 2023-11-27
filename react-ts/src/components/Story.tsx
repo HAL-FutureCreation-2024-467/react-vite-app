@@ -48,7 +48,7 @@ const Story = ({ storyHidden }) => {
         this.currentScene._render();
 
         this._scenes.each(function (scene) {
-          var c = scene.canvas;
+          const c = scene.canvas;
           if (c) {
             this.canvas.context.drawImage(
               c.domElement,
@@ -61,9 +61,9 @@ const Story = ({ storyHidden }) => {
         }, this);
       }
     };
-    let serifParent = serifwrapRef.current;
-    let screenWidth = serifParent.clientWidth; //縦と横
-    let screenHeight = serifParent.clientHeight;
+    const serifParent = serifwrapRef.current;
+    const screenWidth = serifParent.clientWidth; //縦と横
+    const screenHeight = serifParent.clientHeight;
 
     if (window.innerWidth < 768) {
       var minusx = 54;
@@ -82,8 +82,8 @@ const Story = ({ storyHidden }) => {
 
     phina.globalize();
 
-    var MESSAGE_SPEED = 2; //1<n 低いほど早い
-    var FONT_SIZE = fontsize;
+    const MESSAGE_SPEED = 2; //1<n 低いほど早い
+    const FONT_SIZE = fontsize;
     const MAINNTEXTS = [
       "……。",
       "皆はどうしているのでしょうか……\n心細い……",
@@ -164,7 +164,7 @@ const Story = ({ storyHidden }) => {
         }
       },
       showAllText: function () {
-        var text = this.texts[this.textIndex];
+        const text = this.texts[this.textIndex];
         this.labelArea.text = text;
         this.textAll = true;
         this.charIndex = text.length;
@@ -184,7 +184,7 @@ const Story = ({ storyHidden }) => {
         this.labelArea.text += this.getChar();
       },
       getChar: function () {
-        var text = this.texts[this.textIndex];
+        const text = this.texts[this.textIndex];
         if (text.length <= this.charIndex) {
           this.textAll = true;
           return "";
@@ -255,7 +255,7 @@ const Story = ({ storyHidden }) => {
       },
     });
     phina.main(function () {
-      var app = GameApp({
+      const app = GameApp({
         // 表示先のcanvasを指定
         domElement: serifRef.current,
         // MainScene から開始

@@ -2,11 +2,9 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 2;
   font-weight: 400;
-
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -40,13 +38,14 @@ button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
-  font-size: 1em;
+  margin: 2px;
+  font-size: 2.3em;
   font-weight: 500;
-  font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
@@ -67,3 +66,74 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+/*Levelアイコン*/
+
+
+/*ユーザー情報とアイテム欄*/
+
+/*navigatebar*/
+.home-bottom-btn {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  z-index: 8;
+  width: 100%;
+  height: 80px;
+}
+.home-bottom-btn button {
+  /* ３分割均等にしたい */
+  flex-grow: 1;
+  flex-basis: 0;
+  border-radius: 0;
+  font-size: 1.5em;
+  padding: 0.5em 0.5em;
+  /* margin-bottom: 2px; */
+  height: 100%;
+}
+
+/*QuizTabのcss記述*/
+.QTab{
+  font-weight: bold;
+  margin-top: 2.3em;
+  text-align: center;
+}
+
+.QTab .KYomenai{
+  color: #1a1a1a;
+  font-size: 2.3em;
+}
+
+.QTab .KYomenai button{
+  font-size: 80%;
+}
+
+.QTab .KKentei {
+  color:#1a1a1a;
+  font-size: 2.3em;
+  margin-top: 2.3em;
+
+}
+
+.QTab .KKentei button{
+  font-size: 80%;
+}
+
+/*Quiz一覧*/
+.Quizbox {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  max-height:500px; /* 最大の高さを設定 */
+  overflow-y: auto; /*スクロール表示*/
+
+}
+
+
+
+
+
+
+
+

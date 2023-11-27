@@ -4,11 +4,8 @@ import { Session } from "@supabase/supabase-js";
 import { ProfileType } from "../types/tables";
 import QuizTab from "../components/home/QuizTab";
 import StoryTab from "../components/home/StoryTab";
-import Avatar from '../components/Avatar'
-import { error } from "console";
 import HomeModal from "../components/home/HomeModal";
-import { useNavigate } from 'react-router-dom';
-
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [sessions, setSession] = useState<Session | null>(null)
@@ -22,7 +19,8 @@ const Home = () => {
   const navigate = useNavigate();
   const [showConfigModal, setShowModal] = useState(false);
   const [menuBar, setMenu] = useState("line_menu.png");
-
+  const location = useLocation(); // useLocationを使ってlocationオブジェクトを取得
+  const { tab } = location.state || {}; // stateからtabを取得
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
@@ -57,6 +55,10 @@ const Home = () => {
       }
     }
     setupUser()
+    if(tab === 'story'){
+      setTab(tab)
+    }
+
   }, [sessions])
 
   useEffect(() => {
@@ -128,7 +130,7 @@ const Home = () => {
               </>
             ) : null}
           </section>
-          <div>
+          <div className="home-bottom-btn">
             <button onClick={() => setTab('home')}>ホーム</button>
             <button onClick={() => setTab('quiz')}>クイズ</button>
             <button onClick={() => setTab('story')}>ストーリー</button>

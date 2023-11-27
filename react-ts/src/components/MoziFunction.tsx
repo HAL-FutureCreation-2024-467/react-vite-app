@@ -2,10 +2,10 @@ import axios from "axios";
 
 const MoziFunction = (reset) => {
   (function (window, document) {
-    var root = (typeof self === "object" && self.self === self && self) || this;
+    const root = (typeof self === "object" && self.self === self && self) || this;
 
     // Create a safe reference to the handwriting object for use below.
-    var handwriting = function (obj) {
+    const handwriting = function (obj) {
       if (obj instanceof handwriting) return obj;
       if (!(this instanceof handwriting)) return new handwriting(obj);
       this._wrapped = obj;
@@ -68,9 +68,9 @@ const MoziFunction = (reset) => {
       this.handwritingY = [];
       this.drawing = true;
       this.cxt.beginPath();
-      var rect = this.canvas.getBoundingClientRect();
-      var x = e.clientX - rect.left;
-      var y = e.clientY - rect.top;
+      const rect = this.canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
       this.cxt.moveTo(x, y);
       this.handwritingX.push(x);
       this.handwritingY.push(y);
@@ -79,9 +79,9 @@ const MoziFunction = (reset) => {
 
     handwriting.Canvas.prototype.mouseMove = function (e) {
       if (this.drawing) {
-        var rect = this.canvas.getBoundingClientRect();
-        var x = e.clientX - rect.left;
-        var y = e.clientY - rect.top;
+        const rect = this.canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
         this.cxt.lineTo(x, y);
         this.cxt.stroke();
         this.handwritingX.push(x);
@@ -90,7 +90,7 @@ const MoziFunction = (reset) => {
     };
 
     handwriting.Canvas.prototype.mouseUp = function () {
-      var w = [];
+      const w = [];
       w.push(this.handwritingX);
       w.push(this.handwritingY);
       w.push([]);
@@ -107,13 +107,13 @@ const MoziFunction = (reset) => {
       this.cxt.lineWidth = this.lineWidth;
       this.handwritingX = [];
       this.handwritingY = [];
-      var de = document.documentElement;
-      var box = this.canvas.getBoundingClientRect();
-      var top = box.top + window.pageYOffset - de.clientTop;
-      var left = box.left + window.pageXOffset - de.clientLeft;
-      var touch = e.changedTouches[0];
-      var touchX = touch.pageX - left;
-      var touchY = touch.pageY - top;
+      const de = document.documentElement;
+      const box = this.canvas.getBoundingClientRect();
+      const top = box.top + window.pageYOffset - de.clientTop;
+      const left = box.left + window.pageXOffset - de.clientLeft;
+      const touch = e.changedTouches[0];
+      const touchX = touch.pageX - left;
+      const touchY = touch.pageY - top;
       this.handwritingX.push(touchX);
       this.handwritingY.push(touchY);
       this.cxt.beginPath();
@@ -123,13 +123,13 @@ const MoziFunction = (reset) => {
 
     handwriting.Canvas.prototype.touchMove = function (e) {
       e.preventDefault();
-      var touch = e.targetTouches[0];
-      var de = document.documentElement;
-      var box = this.canvas.getBoundingClientRect();
-      var top = box.top + window.pageYOffset - de.clientTop;
-      var left = box.left + window.pageXOffset - de.clientLeft;
-      var x = touch.pageX - left;
-      var y = touch.pageY - top;
+      const touch = e.targetTouches[0];
+      const de = document.documentElement;
+      const box = this.canvas.getBoundingClientRect();
+      const top = box.top + window.pageYOffset - de.clientTop;
+      const left = box.left + window.pageXOffset - de.clientLeft;
+      const x = touch.pageX - left;
+      const y = touch.pageY - top;
       this.handwritingX.push(x);
       this.handwritingY.push(y);
       this.cxt.lineTo(x, y);
@@ -137,7 +137,7 @@ const MoziFunction = (reset) => {
     };
 
     handwriting.Canvas.prototype.touchEnd = function (e) {
-      var w = [];
+      const w = [];
       w.push(this.handwritingX);
       w.push(this.handwritingY);
       w.push([]);
@@ -174,8 +174,8 @@ const MoziFunction = (reset) => {
         options = this.options;
         callback = this.callback;
       } else if (!options) options = {};
+      const data = JSON.stringify({
 
-      var data = JSON.stringify({
         app_version: 0.1,
         api_level: "537.36",
         device: window.navigator.userAgent,
@@ -202,17 +202,17 @@ const MoziFunction = (reset) => {
           }
         )
         .then(function (response) {
-          var results;
+          let results;
           if (response.data.length === 1)
             callback(undefined, new Error(response.data[0]));
           else results = response.data[1][0][1];
 
-          if (!!options.numOfWords) {
+          if (options.numOfWords) {
             results = results.filter(function (result) {
               return result.length == options.numOfWords;
             });
           }
-          if (!!options.numOfReturn) {
+          if (options.numOfReturn) {
             results = results.slice(0, options.numOfReturn);
           }
           callback(results, undefined);

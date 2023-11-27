@@ -36,32 +36,35 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
   const canvas = canvasRef.current;
   const backCanvas = backareaCanvasRef.current;
   const [trace, setTrace] = useState<any[]>([]);
-  var Xarr = useState<number[]>([]);
-  var Yarr = useState<number[]>([]);
+  let Xarr = useState<number[]>([]);
+  let Yarr = useState<number[]>([]);
+
 
   let mouseX: number | null = null;
   let mouseY: number | null = null;
 
   const getContext = (): CanvasRenderingContext2D => {
-    let canvas: any = canvasRef.current;
+    const canvas: any = canvasRef.current;
     return canvas.getContext('2d');
   };
 
   const OnClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (e.button !== 0) { return; }
-    let canvas: any = canvasRef.current;
-    let rect: IRect = canvas.getBoundingClientRect();
-    let x = ~~(e.clientX - rect.left);
-    let y = ~~(e.clientY - rect.top);
+    const canvas: any = canvasRef.current;
+    const rect: IRect = canvas.getBoundingClientRect();
+    const x = ~~(e.clientX - rect.left);
+    const y = ~~(e.clientY - rect.top);
+
     Draw(x, y);
   }
 
   const OnMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (e.buttons !== 1) { return; }
-    let canvas: any = canvasRef.current;
-    let rect: IRect = canvas.getBoundingClientRect();
-    let x = (e.clientX - rect.left);
-    let y = (e.clientY - rect.top);
+    const canvas: any = canvasRef.current;
+    const rect: IRect = canvas.getBoundingClientRect();
+    const x = (e.clientX - rect.left);
+    const y = (e.clientY - rect.top);
+
     Draw(x, y);
     Xarr.push(x);
     Yarr.push(y);
@@ -75,7 +78,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
   }
 
   const Draw = (x: number, y: number) => {
-    let ctx = getContext();
+    const ctx = getContext();
     ctx.beginPath();
     ctx.globalAlpha = 1.0;
     if (mouseX === null || mouseY === null) {
@@ -96,7 +99,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
 
   function drawTextOnCanvas(text: string) {
     if(!backCanvas) return;
-    let ctx = backCanvas.getContext("2d");
+    const ctx = backCanvas.getContext("2d");
     if (ctx) {
       ctx.clearRect(0, 0, backCanvas.width, backCanvas.height); // キャンバスをクリア
       ctx.font = "100px Arial"; // テキストのフォントとサイズを設定
@@ -110,7 +113,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
 
   const clearCanvas = () => {
     if (canvas) {
-      let ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext('2d');
       if (ctx) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
@@ -126,7 +129,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
   useEffect(() => {
     if (canvas) {
       if (showCanvasText) {(quizNow.answer !== null) ? drawTextOnCanvas(quizNow.answer) : null;}
-      else{if(backCanvas){let ctx = backCanvas.getContext("2d");if(ctx) {ctx.clearRect(0, 0, backCanvas.width, backCanvas.height);}}
+      else{if(backCanvas){const ctx = backCanvas.getContext("2d");if(ctx) {ctx.clearRect(0, 0, backCanvas.width, backCanvas.height);}}
       }
     }
 
@@ -141,7 +144,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
           width: rect.width,
           height: rect.height,
         });
-      };
+      }
     };
     updateCanvasSize();
 
@@ -153,13 +156,13 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
   }, []);
 
   const recognize = () => { 
-    var w = [];
+  const w = [];
         w.push(Xarr);
         w.push(Yarr);
         w.push([]);
         trace.push(w);
     console.log(trace); 
-    var data = JSON.stringify({
+    const data = JSON.stringify({
       app_version: 0.1,
       api_level: "537.36",
       device: window.navigator.userAgent,
@@ -186,7 +189,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
         }
       )
       .then(function (response) {
-        var result = response.data[1][0][1];
+        const result = response.data[1][0][1];
         props.setChoice(result);
       })
       .catch(function (error) {

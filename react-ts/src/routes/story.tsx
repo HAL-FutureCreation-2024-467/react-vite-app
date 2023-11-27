@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import { StorySentence } from "../types/tables";
 import { StoryType } from "../types/tables";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const story = () => {
+const story = (props) => {
+
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { chapter, paragraph } = useParams();
   const chp = Number(chapter);
@@ -21,7 +22,7 @@ const story = () => {
   const [storyText, setStoryText] = useState<string>("");
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [storyTextIndex, setStoryTextIndex] = useState(0);
-
+  const navigate = useNavigate();
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     async function fetchStories() {
@@ -85,7 +86,9 @@ const story = () => {
   };
 
   const storySkip = () => {
-    location.href = ""
+    //props.setTab('story')
+    navigate("/home", { state: { tab: "story" } });
+
   };
 
   return (
@@ -109,9 +112,12 @@ const story = () => {
                       </div>
 
                       <div>
-                        <img src={getImage('egao.png')} alt="" />
-                        <div className="sentenceArea" onClick={handleNextClick}>
-                          {<h3>{storyText}</h3>}
+                        <div onClick={handleNextClick}>
+                          <img src={getImage('egao.png')} alt="" />
+                          <div className="name_box">a</div>
+                          <div className="message_box">
+                            {<h3>{storyText}</h3>}
+                          </div>
                         </div>
                       </div>
                     </div>
