@@ -99,7 +99,7 @@ const Home = () => {
               </div>
               <div>
                 <p>{user && user.username}</p>
-                <p>アイテム数</p>
+                <p>{user && user.items}</p>
               </div>
               <div>
                 <p>モーダルを表示</p>
