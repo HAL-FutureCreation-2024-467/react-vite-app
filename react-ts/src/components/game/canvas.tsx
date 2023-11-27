@@ -39,6 +39,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
   let Xarr = useState<number[]>([]);
   let Yarr = useState<number[]>([]);
 
+
   let mouseX: number | null = null;
   let mouseY: number | null = null;
 
@@ -53,6 +54,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
     const rect: IRect = canvas.getBoundingClientRect();
     const x = ~~(e.clientX - rect.left);
     const y = ~~(e.clientY - rect.top);
+
     Draw(x, y);
   }
 
@@ -62,6 +64,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
     const rect: IRect = canvas.getBoundingClientRect();
     const x = (e.clientX - rect.left);
     const y = (e.clientY - rect.top);
+
     Draw(x, y);
     Xarr.push(x);
     Yarr.push(y);
@@ -153,7 +156,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
   }, []);
 
   const recognize = () => { 
-    const w = [];
+  const w = [];
         w.push(Xarr);
         w.push(Yarr);
         w.push([]);

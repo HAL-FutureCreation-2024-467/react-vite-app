@@ -63,7 +63,6 @@ const QuizTab = () => {
     }
     fetchCategory();
   }, [classLevel, rankLevel])
-
   const getButtonLabel = (stage: EpisodeData) => {
     const matchingClass = grades.find((grade) => grade.rank === stage.class);
     const matchingRank = grades.find((grade) => grade.rank === stage.rank);
@@ -113,7 +112,8 @@ const QuizTab = () => {
                 {getButtonLabel(stage)}
               </button>
             ))}
-          </div></>
+          </div>
+        </>
       )}
     </div>
   );

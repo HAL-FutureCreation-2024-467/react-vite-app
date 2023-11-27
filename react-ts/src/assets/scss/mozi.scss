@@ -73,6 +73,7 @@
   width: 98%;
   margin: 220px auto 0 auto;
   min-height: 120px;
+
   text-align: center;
   -webkit-text-stroke: 1.5px #fff;
   h1 {
@@ -199,6 +200,7 @@
 
 .ans-wrap{
   padding: 0;
+
   width: 46px;
   height: 46px;
   position: absolute;
@@ -209,7 +211,6 @@
   appearance: none;
   cursor: pointer;
   border-radius: 5px;
-
   &:active {
 
   }
@@ -226,6 +227,7 @@
   position: absolute;
   left: 1.2%;
   bottom: 28%;
+
   border: none;
   appearance: none;
   cursor: pointer;
@@ -290,7 +292,6 @@
   margin: 0 7%;
 	padding: 10px;
 }
-
 .result-push:first-child {
   // scroll-snap-align: start
 }

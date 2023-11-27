@@ -174,8 +174,8 @@ const MoziFunction = (reset) => {
         options = this.options;
         callback = this.callback;
       } else if (!options) options = {};
-
       const data = JSON.stringify({
+
         app_version: 0.1,
         api_level: "537.36",
         device: window.navigator.userAgent,

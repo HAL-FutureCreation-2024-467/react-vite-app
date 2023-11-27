@@ -6,6 +6,7 @@ import { StoryType } from "../types/tables";
 import { useNavigate, useParams } from "react-router-dom";
 
 const story = (props) => {
+
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { chapter, paragraph } = useParams();
   const chp = Number(chapter);
@@ -87,6 +88,7 @@ const story = (props) => {
   const storySkip = () => {
     //props.setTab('story')
     navigate("/home", { state: { tab: "story" } });
+
   };
 
   return (
