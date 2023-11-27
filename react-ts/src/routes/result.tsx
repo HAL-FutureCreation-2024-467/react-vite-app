@@ -8,6 +8,7 @@ import { Json } from "../types/database";
 import "../assets/scss/result.scss";
 import RankCm from "../components/result/RankComponent";
 import QuizResult from "../components/result/QuizResComponent";
+import 'react-tooltip/dist/react-tooltip.css'
 
 const Result = () => {
     const Navigate = useNavigate();
@@ -109,6 +110,7 @@ const Result = () => {
 
     const [rank, setRank] = useState(0);
     const [rankDiff, setRankDiff] = useState(0);
+    const [nextExp, setNextExp] = useState(0);
 
     const calculateLevel = (EXP: number | null) => { //現在の経験値からレベルを計算する関数
             const exPerLevel = 12;
@@ -132,6 +134,7 @@ const Result = () => {
         setRank(calculateLevel(user.exp));
         let diff = ExpRequired(rank + 1) - user.exp;
         setRankDiff(diff);
+        setNextExp(ExpRequired(rank + 1));
       }
     }, [user, rank]);
 
@@ -145,7 +148,7 @@ const Result = () => {
             {/* 満点は全問正解 */}
             {/* テストのときは討伐成功 */}
           </div>
-          <RankCm accountData={user as ProfileType} rank={rank} rankDiff={rankDiff}/>
+          <RankCm accountData={user as ProfileType} rank={rank} rankDiff={rankDiff} next={nextExp}/>
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

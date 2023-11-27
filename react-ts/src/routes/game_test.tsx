@@ -170,27 +170,33 @@ const Game = () => {
   const [showCanvasText, setShowCanvasText] = useState<boolean>(false);
   const childCanvasRef = useRef(null);
 
-  const HandingSaveImg = async() => {//canvasの保存
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const base64 = canvas.toDataURL("image/png");
-    //Download
-    // ダウンロード用のリンクを作成
-    const downloadLink = document.createElement('a');
-          downloadLink.href = base64;
-          downloadLink.download = 'image.png'; // ファイル名を指定
-          // リンクをクリックしてダウンロードを開始
-          downloadLink.click();
-  }
+  // const HandingSaveImg = async() => {//canvasの保存
+  //   const canvas = canvasRef.current;
+  //   if (!canvas) return;
+  //   const base64 = canvas.toDataURL("image/png");
+  //   //Download
+  //   // ダウンロード用のリンクを作成
+  //   const downloadLink = document.createElement('a');
+  //         downloadLink.href = base64;
+  //         downloadLink.download = 'image.png'; // ファイル名を指定
+  //         // リンクをクリックしてダウンロードを開始
+  //         downloadLink.click();
+  // }
 
   const clearChildCanvas = () => {//canvasのクリア
     if (childCanvasRef.current && childCanvasRef.current.clearCanvas) {
       childCanvasRef.current.clearCanvas();
-      setShowChoice(false);}
+      setShowChoice(false);
+    }
   };
-  const toggleshowExplain = () => {
-    setShowExplain(!showExplain);
-  }
+  
+  const handleShowDetail = () => {
+    setShowExplain(true);
+  };
+
+  const handleHideDetail = () => {
+      setShowExplain(false);
+  };
   // 正誤判定 --------------------------------------
   const jg = (e : any) => {//正誤判定
     if (quizNow.answer, quizNow.choices) {
@@ -394,7 +400,11 @@ const Game = () => {
           </div>
 
           {/* 解説表示btn */}
-          <button className="epl-wrap" onClick={ toggleshowExplain }>
+          <button className="epl-wrap" 
+            onMouseDown={() => handleShowDetail()}
+            onMouseUp={() => handleHideDetail()}
+            onMouseLeave={() => handleHideDetail()}
+          >
             <img src={getImage('scope.png')} alt="" />
           </button>
 

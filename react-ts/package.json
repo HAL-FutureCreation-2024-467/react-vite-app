@@ -18,11 +18,13 @@
     "@mui/material": "^5.14.15",
     "@supabase/supabase-js": "^2.38.4",
     "axios": "^1.6.0",
+    "countup.js": "^2.8.0",
     "framer-motion": "^10.16.5",
     "phina.js": "npm:@pentamania/phina-es@^0.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.17.0",
+    "react-tooltip": "^5.24.0",
     "sass": "^1.69.4",
     "use-sound": "^4.0.1"
   },
