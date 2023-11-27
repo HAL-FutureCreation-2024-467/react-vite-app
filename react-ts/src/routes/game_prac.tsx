@@ -172,22 +172,43 @@ const Game = () => {
   const jg = (e : any) => {
     if (quizNow.answer, quizNow.choices) {
       const dataV = e.target.closest('[data-v]')?.getAttribute('data-v');
-      
+      setShowCanvasText(false);
       if (dataV !== null && quizNow.answer && quizNow.choices) {
         console.log(dataV);
     
         if (quizNow.answer === quizNow.choices[Number(dataV)]) {
           setNowNum(nowNum + 1);
+          correctAction();
           clearChildCanvas();
         } else {
+          failedAction();
           clearChildCanvas();
         }
       }
     }    
   }
   
+  const [failedState, setFailedState] = useState<boolean>(false);
+  const [correctState, setCorrectState] = useState<boolean>(false);
+
+  const failedAction = () => {
+    setFailedState(true);
+    setTimeout(() => {
+      
+    }, 1100);
+    setTimeout(() => {
+      setFailedState(false);
+    }, 1000);
+  }
+
+  const correctAction = () => {
+    setCorrectState(true);
+    setTimeout(() => {
+      setCorrectState(false);
+    }, 1000);
+  }
   useEffect(() => {//問題が10問終わったらクリア
-    if(nowNum == 1){//クリア
+    if(nowNum == 10){//クリア
       //showClearModalの表示
       setGameStatus([true, true]);
       setTimeout(() => {
@@ -211,6 +232,8 @@ const Game = () => {
       <>
       <div className="App">
       <div className="mozi-wrap">
+        <div className={!failedState ? "" : "red-zone"}></div>
+        <div className={!correctState ? "" : "red-zone"}></div>
         <div className="num-wrap">
           {question.map((v, i) => {
             return (
@@ -320,7 +343,19 @@ const Game = () => {
           <button className="epl-wrap" onClick={ toggleshowExplain }>
             <img src={getImage('scope.png')} alt="" />
           </button>
-        </div>  
+        </div>
+        <div className="check-wrap">
+          <img
+            className={!correctState ? "" : "maru-add"}
+            src="/images/maru.png"
+            alt=""
+          />
+          <img
+            className={!failedState ? "" : "batu-add"}
+            src="/images/batu.png"
+            alt=""
+          />
+        </div> 
       </div>
     </div>
   </>

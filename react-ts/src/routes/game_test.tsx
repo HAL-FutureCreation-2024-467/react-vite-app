@@ -381,7 +381,9 @@ const Game = () => {
               />
             
           </div>
+          
           <br />
+          
           <button className="erase-btn" onClick={clearChildCanvas}>
             <img src={getImage('kesi.png')} alt="" />
           </button>
@@ -390,6 +392,7 @@ const Game = () => {
             <img src={getImage('heart.png')} alt="" />
             <h2>{lifeNow}</h2>
           </div>
+
           {/* 解説表示btn */}
           <button className="epl-wrap" onClick={ toggleshowExplain }>
             <img src={getImage('scope.png')} alt="" />
