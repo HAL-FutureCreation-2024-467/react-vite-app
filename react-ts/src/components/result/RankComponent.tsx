@@ -20,8 +20,6 @@ const RankCm = (props : RankCmProps) => {
     const options = {
         duration: 3,
     };
-
-    // let rank = new CountUp('rankNum', props.rank, options);
     let rankdiff = new CountUp('rankDiffNum', props.rankDiff, options);
 
     useEffect(() => {
@@ -60,7 +58,6 @@ const RankCm = (props : RankCmProps) => {
                     <p className="itemText">x</p>
                     <div className="itemText">{itemNum}</div>
                 </div>
-                {/* <Tooltip id="bounus-tips" isOpen/> */}
                 <Tooltip id="bounus-tips"/>
             </div>
         </div>
