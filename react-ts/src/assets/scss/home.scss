@@ -385,8 +385,8 @@ h3 {
 
 .rank_box{
   border: 1px solid #333;
-  width: 70px;
-  height: 70px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   font-size: 12px;
   font-weight: bold;
@@ -398,7 +398,16 @@ h3 {
 
 .TabSection{
   width: 100%;
-  padding: 0 24px;
+  h1{
+    background-color: #D9D9D9;
+    width: 30%;
+    font-size: 24px;
+    padding: 4px;
+    left: 0;
+  }
+  div{
+    padding: 0 24px;
+  }
   img{
     height: 550px;
     margin: 0 auto;
@@ -433,4 +442,14 @@ h3 {
 
 .show {
   opacity: 1; /* 不透明度を変更して表示 */
+}
+
+.tactive{
+  // デザインをいい感じにする
+  background-color: #fff;
+  border: 3px solid #333;
+  border-radius: 6px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: bold;
 }

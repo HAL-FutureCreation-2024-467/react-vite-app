@@ -11,11 +11,14 @@ const Home = () => {
   const [sessions, setSession] = useState<Session | null>(null)
   const [user, setUser] = useState<ProfileType | null>(null)
   const [showTab, setShowTab] = useState<{ [key: string]: boolean }>({
-    'home': true,
     'quiz': false,
+    'home': true,
     'story': false
   })
-
+  const homeTab = document.getElementById('homeTab');
+  const quizTab = document.getElementById('quizTab');
+  const storyTab = document.getElementById('storyTab');
+  
   const navigate = useNavigate();
   const [showConfigModal, setShowModal] = useState(false);
   const [menuBar, setMenu] = useState("line_menu.png");
@@ -49,7 +52,6 @@ const Home = () => {
         if (error) {
           console.error("データの取得に失敗しました", error);
         } else {
-          console.log("データの取得に成功しました", profiles);
           setUser(profiles[0])
         }
       }
@@ -66,7 +68,6 @@ const Home = () => {
       if (user?.username === null) {
         navigate('/RegForm');
       } else {
-        console.log(user?.username);
       }
     };
     navigateRegFrom();
@@ -107,9 +108,26 @@ const Home = () => {
       }
     }, [user, rank]);
 
-  const touchTest = () => {
-    console.log("メッセージ機能用");
-  }
+  useEffect(() => {
+    //showTabの状態によってボタンの色を変える
+    const tabNames = {
+      'home': homeTab,
+      'quiz': quizTab,
+      'story': storyTab
+    };
+    
+    for (const tabName in tabNames) {
+      const tab = tabNames[tabName];
+      const isActive = showTab[tabName];
+      
+      if (isActive) {
+        tab?.classList.add('tactive');
+      } else {
+        tab?.classList.remove('tactive');
+      }
+    }
+    
+  }, [showTab]);
 
   const [showF, setshowF] = useState<boolean>(false);
   const [fpMes, setFp] = useState<string>("");
@@ -144,7 +162,6 @@ const Home = () => {
     
     // ランダムなインデックスを生成
     const ri = Math.floor(Math.random() * leng);
-    console.log(array[ri]);
     // ランダムな要素を返す
     return array[ri];
   }
@@ -209,9 +226,9 @@ const Home = () => {
             </div>
           </div>
           <div className="home-bottom-btn">
-            <button onClick={() => setTab('home')}>ホーム</button>
-            <button onClick={() => setTab('quiz')}>クイズ</button>
-            <button onClick={() => setTab('story')}>ストーリー</button>
+            <button className="tabBtn" id="quizTab" onClick={() => setTab('quiz')}>クイズ</button>
+            <button className="tabBtn tactive" id="homeTab" onClick={() => setTab('home')}>ホーム</button>
+            <button className="tabBtn" id="storyTab" onClick={() => setTab('story')}>ストーリー</button>
           </div>
         </div>
       ) : null}
