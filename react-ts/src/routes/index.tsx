@@ -91,6 +91,10 @@ function App() {
             </div>
             <div
               className="home-btn"
+              style={{
+                position: "absolute",
+                right: "0",
+              }}
               onClick={toggleModal}
             >
               <img src={getImage(menuBar)} alt="" />

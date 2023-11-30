@@ -7,7 +7,7 @@ const Live2d = ({ quizHidden, flag }) => {
   const live2dRef = useRef(null);
   const live2dwrapRef = useRef(null);
 
-  let app;
+
 
   // PixiJS
   const {
