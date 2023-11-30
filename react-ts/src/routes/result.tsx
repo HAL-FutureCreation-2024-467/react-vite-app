@@ -25,6 +25,7 @@ const Result = () => {
     const grade = useLocation().state.result.grade;
     const episode = useLocation().state.result.episode;
     const clnum = useLocation().state.result.clearNum;
+    const quizData = useLocation().state.result.content;
     // const score = useLocation().state.score;
     const [score, setScore] = useState(0);
 
@@ -112,30 +113,41 @@ const Result = () => {
     const [rankDiff, setRankDiff] = useState(0);
     const [nextExp, setNextExp] = useState(0);
 
-    const calculateLevel = (EXP: number | null) => { //現在の経験値からレベルを計算する関数
-            const exPerLevel = 12;
-            let level = 1;
-            let requiredExperience = 0;
-            while (EXP !== null && EXP >= requiredExperience) {
-                requiredExperience += exPerLevel;
-                level++;
-            }
-        
-            return level - 1; // whileループを抜けるときに1回余分にインクリメントされているので、1を引いて正しいレベルを返す
-        }
+    const calculateLevel = (EXP: number | null) => {
+      var exPerLevel = 100;
+      let level = 0;
+      let requiredExperience = 0;
+  
+      while (EXP !== null && EXP >= requiredExperience) {
+          requiredExperience += exPerLevel;
+          level++;
+          exPerLevel += 50;
+      }
+      console.log(level);
+      return level;
+    }
     
     const ExpRequired = (level: number) => {
-      const exPerLevel = 12;
-      return level * exPerLevel;
-    };
-
-    useEffect(() => {
-      if (user?.exp != null) {
-        setRank(calculateLevel(user.exp));
-        let diff = ExpRequired(rank + 1) - user.exp;
-        setRankDiff(diff);
-        setNextExp(ExpRequired(rank + 1));
+      //引数のレベル分ループで計算
+      //上昇値の初期値は100
+      let ExPerLevel = 100;
+      const incrementalExPerLevel = 50;
+      let ExpRequiredLevel = 0;
+      for (let i = 1; i < level; i++) {
+          ExpRequiredLevel += ExPerLevel;
+          ExPerLevel  += incrementalExPerLevel;
       }
+      return ExpRequiredLevel;
+    };
+    
+    useEffect(() => {
+        if (user?.exp != null) {
+            setRank(calculateLevel(user.exp));
+            if(rank != 0){
+              let diff = ExpRequired(rank + 1) - user.exp;
+              setRankDiff(diff);
+              setNextExp(ExpRequired(rank + 1));  
+            }}
     }, [user, rank]);
 
     return (
@@ -144,7 +156,7 @@ const Result = () => {
             <h1>挑戦結果</h1>
           </div>
           <div>
-            <h2 className="result_h2">-５問正解！-</h2>
+            <h2 className="result_h2">-{clnum}問正解！-</h2>
             {/* 満点は全問正解 */}
             {/* テストのときは討伐成功 */}
           </div>
@@ -159,62 +171,7 @@ const Result = () => {
 
               {/* 正答案の一覧表示 */}
               <h2 className="result_h2">-今回の問題-</h2>
-              <QuizResult quizData={[
-                {
-                    write: '日本',//書き
-                    read : 'にほん',//読み
-                    problem: 'にほん海側',//問題
-                    expl: 'Japan の日本語訳Japan の日本語訳',//解説
-                    correct: true,//正解かどうか
-                },
-                {
-                    write: '海外',//書き
-                    read : 'かいがい',//読み
-                    problem: 'かいがい線',//問題
-                    expl: '海を挟んだ外の世界',//解説
-                    correct: false,//正解かどうか
-                },
-                {
-                    write: '札幌',//書き
-                    read : 'に',//読み
-                    problem: 'にほん海側',//問題
-                    expl: 'Japan の日本語訳',//解説
-                    correct: true,//正解かどうか
-                },
-                {
-                    write: '山梨',//書き
-                    read : 'かいがい',//読み
-                    problem: 'かいがい線',//問題
-                    expl: '海を挟んだ外の世界',//解説
-                    correct: false,//正解かどうか
-                },
-                {
-                    write: '御座敷',//書き
-                    read : 'にほん',//読み
-                    problem: 'にほん海側',//問題
-                    expl: 'Japan の日本語訳',//解説
-                    correct: true,//正解かどうか
-                },
-                {
-                    write: '鳥胸',//書き
-                    read : 'かいがい',//読み
-                    problem: 'かいがい線',//問題
-                    expl: '海を挟んだ外の世界',//解説
-                    correct: false,//正解かどうか
-                },{
-                    write: '灌漑',//書き
-                    read : 'にほん',//読み
-                    problem: 'にほん海側',//問題
-                    expl: 'Japan の日本語訳',//解説
-                    correct: true,//正解かどうか
-                },
-                {
-                    write: '僧都',//書き
-                    read : 'かいがい',//読み
-                    problem: 'かいがい線',//問題
-                    expl: '海を挟んだ外の世界',//解説
-                    correct: false,//正解かどうか
-                }]}/>
+              <QuizResult quizData={quizData}/>
 
               {/*  */}
               <div className="reBtn">

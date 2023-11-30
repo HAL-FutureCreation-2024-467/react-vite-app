@@ -21,13 +21,12 @@ const RankCm = (props : RankCmProps) => {
         duration: 3,
     };
 
-    // let rank = new CountUp('rankNum', props.rank, options);
     let rankdiff = new CountUp('rankDiffNum', props.rankDiff, options);
-
+    let ranks = new CountUp('rankNum', props.rank, options);
     useEffect(() => {
         if (rankdiff) {
             rankdiff.start();
-            // rank.start();
+            ranks.start();
         }
         if (accountData) {
             setItemNum(accountData.item);
@@ -37,12 +36,11 @@ const RankCm = (props : RankCmProps) => {
     return (
         <div className="rank_comp">
             <div className="rank_box">
-                {/* <h3>Rank: {accountData.exp/100}</h3> */}
                 <p>ランク</p>
-                <p id="rankNum">{props.rank}</p>
+                <p id="rankNum"></p>
             </div>
             <div className="rankProgress">
-                <div className="rankText">次のランクまであと<span id="rankDiffNum"></span>経験値</div>
+                <div className="rankText">次のランクまであと<span id="rankDiffNum"></span></div>
                 <div className="progressbar_box">
                     <div className="p-bar rankProgress_bar_inner"></div>
                     <div className="p-bar rankProgress_bar_inner_active" id="progressBar"></div>
