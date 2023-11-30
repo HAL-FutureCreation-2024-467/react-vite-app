@@ -23,8 +23,6 @@ const getImage = (filePath: string): string => {
     return new URL(`../../assets/${filePath}`, import.meta.url).href;
 };
 
-
-
 const QuizResult = (props : qRProps) => {
     // const [quizRes, setQuizRes] = useState(props.quizData);
     const [quizRes, setQuizRes] = useState(props.quizData);
