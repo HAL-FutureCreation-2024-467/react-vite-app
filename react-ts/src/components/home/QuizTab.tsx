@@ -90,7 +90,7 @@ const QuizTab = () => {
               ))}
             </div>
           </div>
-          <p>日本語漢字能力検定（漢検）編</p>
+          <p><span><span className="span-bg"></span>日本語漢字能力検定（漢検）編</span></p>
           <div className="KKentei">
             <div className="KKentei-btns">
               {grades.slice(3).map((grade, index) => (
