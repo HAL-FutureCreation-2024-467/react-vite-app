@@ -80,9 +80,9 @@ const QuizTab = () => {
     <div>
       {(!classLevel && !rankLevel) ? (
         <div className="QTab">
+          <p><span><span className="span-bg"></span>読めるけど書けない漢字</span></p>
           <div className="KYomenai">
-            <p>読めるけど書けない漢字</p>
-            <div>
+            <div className="KYomenai-btns">
               {grades.slice(0, 3).map((grade, index) => (
                 <button key={index} onClick={() => selectDifficulty(grade.rank, 'class')}>
                   {grade.name}
@@ -90,8 +90,8 @@ const QuizTab = () => {
               ))}
             </div>
           </div>
+          <p>日本語漢字能力検定（漢検）編</p>
           <div className="KKentei">
-            <p>日本語漢字能力検定（漢検）編</p>
             <div className="KKentei-btns">
               {grades.slice(3).map((grade, index) => (
                 <button key={index} onClick={() => selectDifficulty(grade.rank, 'rank')}>
