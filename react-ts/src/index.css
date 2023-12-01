@@ -130,6 +130,7 @@ button:focus-visible {
 
 .QTab .KYomenai button{
   font-size: 80%;
+  margin: 5px; 
 }
 
 .QTab .KKentei {
@@ -146,6 +147,7 @@ button:focus-visible {
   flex: 0 0 calc(33.33% - 10px); /* 3ボタンで均等に配置、余白を調整 */
   width: 100%; /* ボタンの横幅を均等に設定 */
   font-size: 80%;
+  margin: 5px; 
 }
 
 /*Quiz一覧*/
