@@ -29,6 +29,7 @@ export default defineConfig({
       '@assets': path.join(__dirname, './src/assets/'),
       '@css' : path.join(__dirname, './src/assets/css/'),
       '@scss': path.join(__dirname, './src/assets/scss/'),
+      '@components': path.join(__dirname, './src/components/'),
     },
   },
 })
