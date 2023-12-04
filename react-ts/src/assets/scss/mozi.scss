@@ -385,6 +385,8 @@ $button-size: 5.4vw;
 .check-wrap {
   width: 100%;
   height: 100%;
+  position: absolute;
+  z-index: 100;
  
   pointer-events: none;
   img {
@@ -406,12 +408,14 @@ $button-size: 5.4vw;
   width: 75%;
   visibility: visible;
   animation: maru-up 1s ease-out 1 forwards;
+  z-index: 100;
 }
 
 .batu-add {
   width: 70%;
   visibility: visible;
   animation: batu-up 1s ease-out 1 forwards;
+  z-index: 100;
 }
 
 @keyframes maru-up {

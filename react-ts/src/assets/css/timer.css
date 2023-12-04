@@ -1,0 +1,5 @@
+.timer-bar{
+    height: 10px;
+    background-color: #3498db; /* 棒の色 */
+    transition: width 0.5s ease; /* アニメーションの設定 */
+}

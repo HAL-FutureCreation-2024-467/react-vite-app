@@ -3,9 +3,6 @@ import axios from 'axios';
 
 const url = 'https://inputtools.google.com/request?itc=ja-t-i0-handwrit';
 
-// const Appkey = '5dfc227a-bcf2-4b86-a3d3-e222442e22ea';
-// const HMACkey = '9c2568f8-69e3-40bb-aebc-fd10e0f6a164';
-
 interface Quiz {
   question: string | null;
   answer: string | null;

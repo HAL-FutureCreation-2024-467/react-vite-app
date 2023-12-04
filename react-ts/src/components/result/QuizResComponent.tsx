@@ -23,8 +23,11 @@ const getImage = (filePath: string): string => {
     return new URL(`../../assets/${filePath}`, import.meta.url).href;
 };
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> origin/dev
 const QuizResult = (props : qRProps) => {
     // const [quizRes, setQuizRes] = useState(props.quizData);
     const [quizRes, setQuizRes] = useState(props.quizData);
@@ -37,6 +40,21 @@ const QuizResult = (props : qRProps) => {
         setShowStates(newShowStates);
     };
 
+<<<<<<< HEAD
+=======
+    const handleShowDetail = (index) => {
+        const newShowStates = [...showStates];
+        newShowStates[index] = true;
+        setShowStates(newShowStates);
+    };
+
+    const handleHideDetail = (index) => {
+        const newShowStates = [...showStates];
+        newShowStates[index] = false;
+        setShowStates(newShowStates);
+    };
+
+>>>>>>> origin/dev
     // onclickで表示を切り替える　各項目で個別にshowクラスの付け替え
      const showToggle = () => {
         
@@ -68,7 +86,15 @@ const QuizResult = (props : qRProps) => {
                         (<div className="quiz_result_text_exp">{quiz.expl}</div>)
                     }
                 </div>
+<<<<<<< HEAD
                 <div className="quiz_result_button" onClick={() => handleToggle(index)}>
+=======
+                <div className="quiz_result_button" 
+                    onMouseDown={() => handleShowDetail(index)}
+                    onMouseUp={() => handleHideDetail(index)}
+                    onMouseLeave={() => handleHideDetail(index)}
+                    >
+>>>>>>> origin/dev
                     {/* 1割 */}
                     <img src={getImage('scope.png')} alt={'scope.png'} />
                 </div>

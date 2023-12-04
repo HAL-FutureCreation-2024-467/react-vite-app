@@ -8,6 +8,10 @@ import { Json } from "../types/database";
 import "../assets/scss/result.scss";
 import RankCm from "../components/result/RankComponent";
 import QuizResult from "../components/result/QuizResComponent";
+<<<<<<< HEAD
+=======
+import 'react-tooltip/dist/react-tooltip.css'
+>>>>>>> origin/dev
 
 const Result = () => {
     const Navigate = useNavigate();
@@ -24,6 +28,10 @@ const Result = () => {
     const grade = useLocation().state.result.grade;
     const episode = useLocation().state.result.episode;
     const clnum = useLocation().state.result.clearNum;
+<<<<<<< HEAD
+=======
+    const quizData = useLocation().state.result.content;
+>>>>>>> origin/dev
     // const score = useLocation().state.score;
     const [score, setScore] = useState(0);
 
@@ -109,6 +117,7 @@ const Result = () => {
 
     const [rank, setRank] = useState(0);
     const [rankDiff, setRankDiff] = useState(0);
+<<<<<<< HEAD
 
     const calculateLevel = (EXP: number | null) => { //現在の経験値からレベルを計算する関数
             const exPerLevel = 12;
@@ -133,6 +142,45 @@ const Result = () => {
         let diff = ExpRequired(rank + 1) - user.exp;
         setRankDiff(diff);
       }
+=======
+    const [nextExp, setNextExp] = useState(0);
+
+    const calculateLevel = (EXP: number | null) => {
+      var exPerLevel = 100;
+      let level = 0;
+      let requiredExperience = 0;
+  
+      while (EXP !== null && EXP >= requiredExperience) {
+          requiredExperience += exPerLevel;
+          level++;
+          exPerLevel += 50;
+      }
+      console.log(level);
+      return level;
+    }
+    
+    const ExpRequired = (level: number) => {
+      //引数のレベル分ループで計算
+      //上昇値の初期値は100
+      let ExPerLevel = 100;
+      const incrementalExPerLevel = 50;
+      let ExpRequiredLevel = 0;
+      for (let i = 1; i < level; i++) {
+          ExpRequiredLevel += ExPerLevel;
+          ExPerLevel  += incrementalExPerLevel;
+      }
+      return ExpRequiredLevel;
+    };
+    
+    useEffect(() => {
+        if (user?.exp != null) {
+            setRank(calculateLevel(user.exp));
+            if(rank != 0){
+              let diff = ExpRequired(rank + 1) - user.exp;
+              setRankDiff(diff);
+              setNextExp(ExpRequired(rank + 1));  
+            }}
+>>>>>>> origin/dev
     }, [user, rank]);
 
     return (
@@ -141,11 +189,19 @@ const Result = () => {
             <h1>挑戦結果</h1>
           </div>
           <div>
+<<<<<<< HEAD
             <h2 className="result_h2">-５問正解！-</h2>
             {/* 満点は全問正解 */}
             {/* テストのときは討伐成功 */}
           </div>
           <RankCm accountData={user as ProfileType} rank={rank} rankDiff={rankDiff}/>
+=======
+            <h2 className="result_h2">-{clnum}問正解！-</h2>
+            {/* 満点は全問正解 */}
+            {/* テストのときは討伐成功 */}
+          </div>
+          <RankCm accountData={user as ProfileType} rank={rank} rankDiff={rankDiff} next={nextExp}/>
+>>>>>>> origin/dev
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -156,6 +212,7 @@ const Result = () => {
 
               {/* 正答案の一覧表示 */}
               <h2 className="result_h2">-今回の問題-</h2>
+<<<<<<< HEAD
               <QuizResult quizData={[
                 {
                     write: '日本',//書き
@@ -212,6 +269,9 @@ const Result = () => {
                     expl: '海を挟んだ外の世界',//解説
                     correct: false,//正解かどうか
                 }]}/>
+=======
+              <QuizResult quizData={quizData}/>
+>>>>>>> origin/dev
 
               {/*  */}
               <div className="reBtn">

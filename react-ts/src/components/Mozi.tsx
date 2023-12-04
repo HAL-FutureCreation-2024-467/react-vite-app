@@ -194,9 +194,7 @@ const Mozi = ({ motion, motion2, motion3, motion4, moziHidden, flagprop }) => {
 
       <button
         className="quiz-skip-btn"
-        onClick={() => {
-          setShowModal(!showModal);
-        }}
+        onClick={() => {setShowModal(!showModal);}}
       ></button>
 
       <div className="modal-wrap">

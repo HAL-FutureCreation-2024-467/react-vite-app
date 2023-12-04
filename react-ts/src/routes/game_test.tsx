@@ -15,10 +15,17 @@ interface Quiz {
   explain: string | null;
 }
 
+export interface quiz {//受け渡し用
+  write: string;//書き
+  read : string;//読み
+  problem: string;//問題
+  expl: string;//解説
+  correct: boolean;//正解かどうか
+};
+
 //ゲームプレイ画面
 const Game = () => {
   const Navigate = useNavigate();
-  const { search } = useLocation();
   const {mode, grade} = useParams();
   //['ゲームが終わっているか','クリア=> true, 失敗=> false']
   const [gameStatus, setGameStatus] = useState<boolean[]>([false, false, false]);
@@ -29,7 +36,11 @@ const Game = () => {
     // 一定間隔でTimerコンポーネント内のtimesを取得してログに出力する例
     const interval = setInterval(() => {
       if (timerRef.current && timerRef.current.times) {
+<<<<<<< HEAD
         console.log("親コンポーネントからのTimerのtimes:", timerRef.current.times);
+=======
+        // console.log("親コンポーネントからのTimerのtimes:", timerRef.current.times);
+>>>>>>> origin/dev
         if(timerRef.current.times <= 0){
           //時間切れ処理
           setGameStatus([true, false, true]);
@@ -49,7 +60,11 @@ const Game = () => {
             }, 4000);
         }
       }
+<<<<<<< HEAD
     }, 1000);
+=======
+    }, 100);
+>>>>>>> origin/dev
 
     return () => clearInterval(interval);
   }, []);
@@ -70,6 +85,20 @@ const Game = () => {
   });
   const [quizChoice, setChoice] = useState<string[]>([]);
   const [lifeNow, setLifeNow] = useState<number>(3);
+<<<<<<< HEAD
+=======
+  //回答した問題を格納する配列 型はquiz
+  const [quizRes, setQuizRes] = useState<quiz[]>([
+    {
+      write: '日本',//書き
+      read : 'にほん',//読み
+      problem: 'にほん海側',//問題
+      expl: 'Japan の日本語訳Japan の日本語訳',//解説
+      correct: true,//正解かどうか
+    },
+  ]);
+  
+>>>>>>> origin/dev
 
   if(mode == "rank"){
 
@@ -170,6 +199,7 @@ const Game = () => {
   const [showCanvasText, setShowCanvasText] = useState<boolean>(false);
   const childCanvasRef = useRef(null);
 
+<<<<<<< HEAD
   const HandingSaveImg = async() => {//canvasの保存
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -182,16 +212,45 @@ const Game = () => {
           // リンクをクリックしてダウンロードを開始
           downloadLink.click();
   }
+=======
+  // const HandingSaveImg = async() => {//canvasの保存
+  //   const canvas = canvasRef.current;
+  //   if (!canvas) return;
+  //   const base64 = canvas.toDataURL("image/png");
+  //   //Download
+  //   // ダウンロード用のリンクを作成
+  //   const downloadLink = document.createElement('a');
+  //         downloadLink.href = base64;
+  //         downloadLink.download = 'image.png'; // ファイル名を指定
+  //         // リンクをクリックしてダウンロードを開始
+  //         downloadLink.click();
+  // }
+>>>>>>> origin/dev
 
   const clearChildCanvas = () => {//canvasのクリア
     if (childCanvasRef.current && childCanvasRef.current.clearCanvas) {
       childCanvasRef.current.clearCanvas();
-      setShowChoice(false);}
+      setShowChoice(false);
+    }
+  };
+  
+  const handleShowDetail = () => {
+    setShowExplain(true);
+  };
+
+  const handleHideDetail = () => {
+      setShowExplain(false);
   };
   const toggleshowExplain = () => {
     setShowExplain(!showExplain);
   }
   // 正誤判定 --------------------------------------
+  const [maru, setMaru] = useState<boolean>(true);
+  const [batu, setBatu] = useState<boolean>(true);
+  const timerRef = useRef(null);
+  const [alert, setAlert] = useState("LEVEL UP");
+  const [showlevel, setLevel] = useState(true);
+
   const jg = (e : any) => {//正誤判定
     if (quizNow.answer, quizNow.choices) {
       const dataV = e.target.closest('[data-v]')?.getAttribute('data-v');
@@ -200,11 +259,15 @@ const Game = () => {
         console.log(dataV);
     
         if (quizNow.answer === quizNow.choices[Number(dataV)]) {
+<<<<<<< HEAD
           setNowNum(nowNum + 1);
           // if(countTime + 20 > 180){setCountTime(180)}else{setCountTime(countTime + 20)}
+=======
+          maruAct();
+>>>>>>> origin/dev
           clearChildCanvas();
         } else {
-          setLifeNow(lifeNow - 1);
+          batuAct();
           clearChildCanvas();
         }
       }
@@ -212,7 +275,7 @@ const Game = () => {
   }
     
   useEffect(() => {//Lifeが0になったらゲームオーバー
-    if(lifeNow == 0){//残機なしでゲームオーバー
+    if(lifeNow == 2){//残機なしでゲームオーバー
       //showFaildModalの表示
       setGameStatus([true, false, false]);
       //2秒後にリザルト画面へ
@@ -225,7 +288,8 @@ const Game = () => {
               result : {
                 mode : mode,
                 grade : grade,
-                clearNum: nowNum-1,
+                clearNum: nowNum == 0 ? nowNum : nowNum-1,
+                content : quizRes,
               }
             },
           }); 
@@ -246,19 +310,75 @@ const Game = () => {
               result : {
                 mode : mode,
                 grade : grade,
-                clearNum: nowNum,
+                clearNum: nowNum == 0 ? nowNum : nowNum-1,
+                content : quizRes,
               }
             },
           }); 
         }, 4000);
     }
   }, [nowNum]);
+<<<<<<< HEAD
   // 判定関連ここまで
+=======
+
+  useEffect(() => {//時間切れでゲームオーバー
+    timerRef.current && timerRef.current.times == 0 ? 
+    (
+      setGameStatus([true, false, true]),
+      setTimeout(() => {
+        Navigate('/result' ,
+          { state: 
+            { 
+              gamemode: "test",
+              type: false, 
+              result : {
+                mode : mode,
+                grade : grade,
+                clearNum: nowNum == 0 ? nowNum : nowNum-1,
+                content : quizRes,
+              }
+            },
+          }); 
+        }, 4000)
+    ) : null;
+  })
+  
+  const alertAlert = (str : string) => {//アラートを表示
+    setAlert(str);
+    //2秒後にアラートを消す
+    setTimeout(() => {setAlert("");}, 2000);
+  }
+
+  const batuAct = () => {
+    setBatu(false);
+    setTimeout(() => {
+      setLifeNow(lifeNow - 1);
+    }, 1100);
+  };
+
+  const maruAct = () => {//問題数によって演出を実行
+    setMaru(false);
+    // if (quizNow == 1) {
+    //   alertAlert("FINAL");
+    // }
+    setTimeout(() => {//正解問題数を増やを
+      setQuizNow((quizNow) => quizNow + 1);
+    }, 1100);
+
+    setTimeout(() => {setMaru(true);}, 1800);
+  };
+
+  
+    // 判定関連ここまで
+
+>>>>>>> origin/dev
 
   return (
       <>
       <div className="App">
       <div className="mozi-wrap">
+      <div className={batu ? "normal" : "red-zone"}></div>
         <div className="num-wrap">
           {question.map((v, i) => {
             return (
@@ -292,6 +412,12 @@ const Game = () => {
                 )
             ) : null
           }
+        </div>
+
+        <div className="alert-area">
+          <div className={showlevel ? "level" : "level-add"}>
+            <h2>{alert}</h2>
+          </div>
         </div>
 
         {/* ランダムに取得した問題を出す */}
@@ -368,7 +494,22 @@ const Game = () => {
 
         {/*  */}
         <Timer ref={timerRef}/>
+<<<<<<< HEAD
 
+=======
+        <div className="check-wrap">
+            <img
+              className={maru ? "maru" : "maru-add"}
+              src={getImage('maru.png')}
+              alt=""
+            />
+            <img
+              className={batu ? "batu" : "batu-add"}
+              src={getImage('batu.png')}
+              alt=""
+            />
+        </div>
+>>>>>>> origin/dev
         <div style={{ display: "inline-block" }}>
           <div
             className={"mozi-canvas-wrap canvas-add"}
@@ -381,7 +522,9 @@ const Game = () => {
               />
             
           </div>
+          
           <br />
+          
           <button className="erase-btn" onClick={clearChildCanvas}>
             <img src={getImage('kesi.png')} alt="" />
           </button>
@@ -390,6 +533,7 @@ const Game = () => {
             <img src={getImage('heart.png')} alt="" />
             <h2>{lifeNow}</h2>
           </div>
+<<<<<<< HEAD
           {/* 解説表示btn */}
           <button className="epl-wrap" onClick={ toggleshowExplain }>
             <img src={getImage('scope.png')} alt="" />
@@ -397,6 +541,19 @@ const Game = () => {
 
         </div>  
       </div>
+=======
+
+          {/* 解説表示btn */}
+          <button className="epl-wrap" 
+            onMouseDown={() => handleShowDetail()}
+            onMouseUp={() => handleHideDetail()}
+            onMouseLeave={() => handleHideDetail()}
+          >
+            <img src={getImage('scope.png')} alt="" />
+          </button>
+        </div>
+      </div>  
+>>>>>>> origin/dev
     </div>
   </>
   );

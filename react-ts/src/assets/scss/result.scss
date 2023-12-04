@@ -55,7 +55,11 @@
     .p-bar{
         border-radius: 10px;
         top: 4px;
+<<<<<<< HEAD
         right: 0;
+=======
+        left: 0;
+>>>>>>> origin/dev
         height: 18px;
         position: absolute;
     }
@@ -70,6 +74,7 @@
 }
 
 .item_box{
+<<<<<<< HEAD
     display: flex;
     flex-direction: row;
     align-items: center; /* 中央寄せ */
@@ -88,6 +93,31 @@
         justify-content: center;
         font-size: 24px;
         font-weight: bold;
+=======
+    .item_row{
+        display: flex;
+        flex-direction: row;
+        align-items: center; /* 中央寄せ */
+        justify-content: space-evenly; /* 上下均等配置 */
+        //親要素に対して上下均等配置
+        height: 100%;
+
+        .itemImg{
+            margin: 4px;
+            width: 24px;
+            height: 24px;
+        }
+        .itemText{
+            margin: 4px;
+            margin: 0; /* パラグラフの余白をリセット */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+>>>>>>> origin/dev
     }
 }
 

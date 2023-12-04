@@ -1,10 +1,20 @@
 import { useEffect, useState } from "react";
 import { ProfileType } from "../../types/tables";
+<<<<<<< HEAD
+=======
+import { Tooltip } from 'react-tooltip'
+import { CountUp } from 'countup.js'
+
+>>>>>>> origin/dev
 
 export interface RankCmProps {
     accountData: ProfileType,
     rank: number,
     rankDiff: number,
+<<<<<<< HEAD
+=======
+    next: number,
+>>>>>>> origin/dev
 }
 const getImage = (filePath: string): string => {
     return new URL(`../../assets/${filePath}`, import.meta.url).href;
@@ -13,10 +23,28 @@ const getImage = (filePath: string): string => {
 const RankCm = (props : RankCmProps) => {
     const [itemNum, setItemNum] = useState(0);
     const accountData = props.accountData;
+<<<<<<< HEAD
+=======
+    const options = {
+        duration: 3,
+    };
+    let rankdiff = new CountUp('rankDiffNum', props.rankDiff, options);
+    let ranks = new CountUp('rankNum', props.rank, options);
+    useEffect(() => {
+        if (rankdiff) {
+            rankdiff.start();
+            ranks.start();
+        }
+        if (accountData) {
+            setItemNum(accountData.item);
+        }
+    }, [accountData, rankdiff]);
+>>>>>>> origin/dev
 
     return (
         <div className="rank_comp">
             <div className="rank_box">
+<<<<<<< HEAD
                 {/* <h3>Rank: {accountData.exp/100}</h3> */}
                 <p>ランク</p>
                 <p>{props.rank}</p>
@@ -34,6 +62,31 @@ const RankCm = (props : RankCmProps) => {
                 <img className="itemImg" src={getImage('item.png')} alt="" />
                 <p className="itemText">x</p>
                 <div className="itemText">{itemNum}</div>
+=======
+                <p>ランク</p>
+                <p id="rankNum"></p>
+            </div>
+            <div className="rankProgress">
+                <div className="rankText">次のランクまであと<span id="rankDiffNum"></span></div>
+                <div className="progressbar_box">
+                    <div className="p-bar rankProgress_bar_inner"></div>
+                    <div className="p-bar rankProgress_bar_inner_active" id="progressBar"></div>
+                </div>
+            </div>
+            <div className="item_box">
+                <div 
+                data-tooltip-id="bounus-tips"
+                data-tooltip-content="初回クリアボーナス! +100"
+                data-tooltip-place="bottom"
+                //tooltipの常時表示
+                data-tooltip-visible="true"
+                className="item_row">
+                    <img className="itemImg" src={getImage('item.png')} alt="" />
+                    <p className="itemText">x</p>
+                    <div className="itemText">{itemNum}</div>
+                </div>
+                <Tooltip id="bounus-tips"/>
+>>>>>>> origin/dev
             </div>
         </div>
     );

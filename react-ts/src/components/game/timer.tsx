@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+<<<<<<< HEAD
 
 const Timer = React.forwardRef((props, ref) => {
   const timerRef = useRef(null);
@@ -14,6 +15,27 @@ const Timer = React.forwardRef((props, ref) => {
         times: times,
         // 他のメソッドやプロパティも追加可能
       };
+=======
+import '@css/timer.css';
+const Timer = React.forwardRef((props, ref) => {
+  const timerRef = useRef(null);
+  const [times, setTime] = useState(180);
+  const [maxTime] = useState(180); // 最大時間を設定 (秒)
+  const timerBarRef = useRef(null);
+  const [maxWidth, setMaxWidth] = useState(400);
+  
+  useEffect(() => {
+    if (ref) {
+      if (times <= 0) {
+        ref.current = {
+          times: 0,
+        };
+      } else {
+        ref.current = {
+          times: times,
+        };
+      }
+>>>>>>> origin/dev
     }
   }, [ref, times]);
 
@@ -35,6 +57,7 @@ const Timer = React.forwardRef((props, ref) => {
     return () => window.removeEventListener('resize', updateMaxWidth);
   }, []);
 
+<<<<<<< HEAD
   useEffect(() => {
     const interval = setInterval(() => {
       setTime((prevTime) => (prevTime > 0 ? prevTime - 0.1 : maxTime)); // 0になったら最大値に戻る
@@ -51,6 +74,37 @@ const Timer = React.forwardRef((props, ref) => {
   const width = Math.max(times * decreasePerSecond, 0); // ゲージの幅を計算
 
   //秒数が0になった際にタイマーを止める
+=======
+  const animationDuration = 180; // アニメーションの時間（秒）
+
+  useEffect(() => {
+    const startTime = Date.now();
+
+    const animate = () => {
+      const currentTime = Date.now();
+      const elapsedTime = (currentTime - startTime) / 1000; // 経過時間（秒）
+
+      if (elapsedTime < animationDuration) {
+        const animatedWidth = maxWidth - (maxWidth / animationDuration) * elapsedTime;
+        timerBarRef.current.style.width = `${Math.max(animatedWidth, 0)}px`;
+
+        // 1秒ごとにtimesを減少させる
+        const remainingTime = Math.max(Math.ceil(maxTime - elapsedTime), 0);
+        if (remainingTime !== 0) {
+          setTime(remainingTime);
+        }else{
+          timerBarRef.current.style.width = '0px';
+          setTime(0);
+        }
+        requestAnimationFrame(animate);
+      } else {
+        
+      }
+    };
+
+    animate();
+  }, [maxWidth]);
+>>>>>>> origin/dev
 
   return (
     <div
@@ -60,6 +114,10 @@ const Timer = React.forwardRef((props, ref) => {
         minHeight: '20px',
         borderRadius: '4px',
         position: 'relative',
+<<<<<<< HEAD
+=======
+        transition: 'width 1s', // トランジションの設定
+>>>>>>> origin/dev
       }}
       ref={timerBarRef}
     >
@@ -82,7 +140,12 @@ const Timer = React.forwardRef((props, ref) => {
           height: '20px',
           backgroundColor: '#ff0000',
           borderRadius: '6px',
+<<<<<<< HEAD
           width: `${width}px`,
+=======
+          width: '100%', // 最初は100%で表示
+          transition: 'width 1s', // トランジションの設定
+>>>>>>> origin/dev
         }}
       />
       <div
@@ -102,7 +165,11 @@ const Timer = React.forwardRef((props, ref) => {
           zIndex: 3,
         }}
       >
+<<<<<<< HEAD
         <p ref={timerRef}>残り時間{Math.floor(times)}秒</p>
+=======
+        <p ref={timerRef}>残り時間{times}秒</p>
+>>>>>>> origin/dev
       </div>
     </div>
   );

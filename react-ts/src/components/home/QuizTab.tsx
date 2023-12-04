@@ -76,13 +76,31 @@ const QuizTab = () => {
     }
   };
 
+  const getNameLabel = (grade : String | null) => {
+      if(grade=="class"){
+        const matchingGrade = grades.find(grade => grade.rank === classLevel);
+        const displayText = matchingGrade?.name || '';
+        return `漢伐 -${displayText}漢獣-`;
+      }else{
+        const matchingGrade = grades.find(grade => grade.rank === rankLevel);
+        const displayText = matchingGrade?.name || '';
+        return `漢伐 -${displayText}漢獣-`;
+      }
+  }
+
   return (
     <div>
       {(!classLevel && !rankLevel) ? (
         <div className="QTab">
+<<<<<<< HEAD
           <div className="KYomenai">
             <p>読めるけど書けない漢字</p>
             <div>
+=======
+          <p><span><span className="span-bg"></span>読めるけど書けない漢字</span></p>
+          <div className="KYomenai">
+            <div className="KYomenai-btns">
+>>>>>>> origin/dev
               {grades.slice(0, 3).map((grade, index) => (
                 <button key={index} onClick={() => selectDifficulty(grade.rank, 'class')}>
                   {grade.name}
@@ -90,8 +108,13 @@ const QuizTab = () => {
               ))}
             </div>
           </div>
+<<<<<<< HEAD
           <div className="KKentei">
             <p>日本語漢字能力検定（漢検）編</p>
+=======
+          <p><span><span className="span-bg"></span>日本語漢字能力検定（漢検）編</span></p>
+          <div className="KKentei">
+>>>>>>> origin/dev
             <div className="KKentei-btns">
               {grades.slice(3).map((grade, index) => (
                 <button key={index} onClick={() => selectDifficulty(grade.rank, 'rank')}>
@@ -104,7 +127,11 @@ const QuizTab = () => {
       ) : (
         <>
         <div>
+<<<<<<< HEAD
           <button onClick={() => gameTest(grade,!classLevel ? rankLevel: classLevel)}>本番</button>
+=======
+          <button onClick={() => gameTest(grade,!classLevel ? rankLevel: classLevel)}> {getNameLabel(grade)}</button>
+>>>>>>> origin/dev
         </div>
           <div className="Quizbox">
             {Array.isArray(quizClass) && quizClass.map((stage, index) => (
