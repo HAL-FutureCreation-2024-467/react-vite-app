@@ -20,6 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "src/assets/live2dcubismcore.js", "src/assets/live2d.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

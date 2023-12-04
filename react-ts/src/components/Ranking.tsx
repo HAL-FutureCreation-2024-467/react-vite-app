@@ -1,6 +1,7 @@
+import{ supabase } from "../supabaseClient";
 
 const channel = supabase
-  .channel("table-db-changes") // 任意のチャンネル名
+  .channel("ranking") // 任意のチャンネル名
   .on(
     "postgres_changes",
     {
