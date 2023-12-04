@@ -76,6 +76,18 @@ const QuizTab = () => {
     }
   };
 
+  const getNameLabel = (grade : String | null) => {
+      if(grade=="class"){
+        const matchingGrade = grades.find(grade => grade.rank === classLevel);
+        const displayText = matchingGrade?.name || '';
+        return `漢伐 -${displayText}漢獣-`;
+      }else{
+        const matchingGrade = grades.find(grade => grade.rank === rankLevel);
+        const displayText = matchingGrade?.name || '';
+        return `漢伐 -${displayText}漢獣-`;
+      }
+  }
+
   return (
     <div>
       {(!classLevel && !rankLevel) ? (
@@ -104,7 +116,7 @@ const QuizTab = () => {
       ) : (
         <>
         <div>
-          <button onClick={() => gameTest(grade,!classLevel ? rankLevel: classLevel)}>本番</button>
+          <button onClick={() => gameTest(grade,!classLevel ? rankLevel: classLevel)}> {getNameLabel(grade)}</button>
         </div>
           <div className="Quizbox">
             {Array.isArray(quizClass) && quizClass.map((stage, index) => (
