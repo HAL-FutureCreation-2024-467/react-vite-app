@@ -14,7 +14,7 @@ export const Router: FC = () => {
   return (
     <Routes>
       <Route path="/" element={<Index />} />
-      <Route path="/test" element={<Test />} />
+      {/* <Route path="/test" element={<Test />} /> */}
       <Route path="/RegForm" element={<RegForm />} />
       <Route path="/home" element={<Home />} />
       <Route path="/story/:chapter?/:paragraph?" element={<Story />} />
