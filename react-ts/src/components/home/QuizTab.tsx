@@ -3,11 +3,11 @@ import { supabase } from "../../supabaseClient";
 import { useNavigate } from 'react-router-dom';
 import { QuizClassEpi, QuizRankEpi } from "../../types/tables";
 
-const QuizTab = () => {
+const QuizTab = (props : any) => {
 
   type EpisodeData = QuizRankEpi & QuizClassEpi
 
-  const [classLevel, setClassLevel] = useState<string>("")
+const [classLevel, setClassLevel] = useState<string>("")
   const [rankLevel, setRankLevel] = useState<string>("")
   const [TABLE_NAME, setTABLE_NAME] = useState("")
   const [quizClass, setQuizClass] = useState<EpisodeData[]>([]);
@@ -25,7 +25,8 @@ const QuizTab = () => {
   ];
   const navigate = useNavigate();
   const selectDifficulty = (rank: string, value: string) => {
-    setGrade(value);
+    setGrade(value)
+    props.setQuizSelectMode(value)
     console.log(rank)
     if (value == 'class') {
       setClassLevel(rank)
@@ -79,7 +80,8 @@ const QuizTab = () => {
   const getNameLabel = (grade : String | null) => {
       if(grade=="class"){
         const matchingGrade = grades.find(grade => grade.rank === classLevel);
-        const displayText = matchingGrade?.name || '';
+        const displayText : string |null = matchingGrade?.name || '';
+        props.setQuizDfText(displayText)
         return `漢伐 -${displayText}漢獣-`;
       }else{
         const matchingGrade = grades.find(grade => grade.rank === rankLevel);

@@ -11,6 +11,8 @@ import Live2DModule from '../components/Live2D/Live2d';
 const Home = () => {
   const [sessions, setSession] = useState<Session | null>(null)
   const [user, setUser] = useState<ProfileType | null>(null)
+  const [quizSelectMode,setQuizSelectMode] = useState<string | null>(null)
+  const [quizDfText,setQuizDfText] = useState<string | null>(null)
   const [showTab, setShowTab] = useState<{ [key: string]: boolean }>({
     'story': false,
     'home': true,
@@ -19,7 +21,7 @@ const Home = () => {
   const homeTab = document.getElementById('homeTab');
   const quizTab = document.getElementById('quizTab');
   const storyTab = document.getElementById('storyTab');
-  
+
   const navigate = useNavigate();
   const [showConfigModal, setShowModal] = useState(false);
   const [menuBar, setMenu] = useState("line_menu.png");
@@ -41,6 +43,7 @@ const Home = () => {
       updatedTabs[key] = key === tabName;
     });
     setShowTab(updatedTabs);
+    setQuizSelectMode("")
     setshowF(false);
   };
 
@@ -75,6 +78,15 @@ const Home = () => {
     navigateRegFrom();
   }, [user]);
 
+  const showLavel = (value : string | null, diff :string | null ) => {
+    if(value=="class"){
+      return `読めるけど書けない漢字編 -${diff}-`
+    }else if(value == "rank"){
+      return `日本語漢字能力検定編-${diff}-`
+    }else{
+      return "クイズ"
+    }
+  }
 
   const toggleModal = () => {
     setShowModal(!showConfigModal);
@@ -231,8 +243,11 @@ const Home = () => {
               
             ) : showTab['quiz'] ? (
               <>
-                <h1>クイズ</h1>
-                <QuizTab />
+                <h1>{showLavel(quizSelectMode,quizDfText)}</h1>
+                <QuizTab 
+                setQuizSelectMode={setQuizSelectMode}
+                setQuizDfText={setQuizDfText}
+                />
               </>
             ) : showTab['story'] ? (
               <>
@@ -252,7 +267,9 @@ const Home = () => {
           </div>
           <div className="home-bottom-btn">
             <button className="tabBtn" id="storyTab" onClick={() => setTab('story')}>ストーリー</button>            
+            <button className="tabBtn" id="storyTab" onClick={() => setTab('story')}>ストーリー</button>
             <button className="tabBtn tactive" id="homeTab" onClick={() => setTab('home')}>ホーム</button>
+            <button className="tabBtn" id="quizTab" onClick={() => setTab('quiz')}>クイズ</button>
             <button className="tabBtn" id="quizTab" onClick={() => setTab('quiz')}>クイズ</button>
           </div>
         </div>
