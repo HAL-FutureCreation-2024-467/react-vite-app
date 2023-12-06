@@ -10,6 +10,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 const Home = () => {
   const [sessions, setSession] = useState<Session | null>(null)
   const [user, setUser] = useState<ProfileType | null>(null)
+  const [quizSelectMode,setQuizSelectMode] = useState<string | null>(null)
+  const [quizDfText,setQuizDfText] = useState<string | null>(null)
   const [showTab, setShowTab] = useState<{ [key: string]: boolean }>({
     'quiz': false,
     'home': true,
@@ -18,7 +20,7 @@ const Home = () => {
   const homeTab = document.getElementById('homeTab');
   const quizTab = document.getElementById('quizTab');
   const storyTab = document.getElementById('storyTab');
-  
+
   const navigate = useNavigate();
   const [showConfigModal, setShowModal] = useState(false);
   const [menuBar, setMenu] = useState("line_menu.png");
@@ -40,6 +42,7 @@ const Home = () => {
       updatedTabs[key] = key === tabName;
     });
     setShowTab(updatedTabs);
+    setQuizSelectMode("")
   };
 
   useEffect(() => {
@@ -73,6 +76,15 @@ const Home = () => {
     navigateRegFrom();
   }, [user]);
 
+  const showLavel = (value : string | null, diff :string | null ) => {
+    if(value=="class"){
+      return `読めるけど書けない漢字編 -${diff}-`
+    }else if(value == "rank"){
+      return `日本語漢字能力検定編-${diff}-`
+    }else{
+      return "クイズ"
+    }
+  }
 
   const toggleModal = () => {
     setShowModal(!showConfigModal);
@@ -206,8 +218,11 @@ const Home = () => {
               <img src={getImage('sinken.png')} onClick={toggleF} />
             ) : showTab['quiz'] ? (
               <>
-                <h1>クイズ</h1>
-                <QuizTab />
+                <h1>{showLavel(quizSelectMode,quizDfText)}</h1>
+                <QuizTab 
+                setQuizSelectMode={setQuizSelectMode}
+                setQuizDfText={setQuizDfText}
+                />
               </>
             ) : showTab['story'] ? (
               <>
@@ -226,73 +241,13 @@ const Home = () => {
             </div>
           </div>
           <div className="home-bottom-btn">
-            <button className="tabBtn" id="quizTab" onClick={() => setTab('quiz')}>クイズ</button>
-            <button className="tabBtn tactive" id="homeTab" onClick={() => setTab('home')}>ホーム</button>
             <button className="tabBtn" id="storyTab" onClick={() => setTab('story')}>ストーリー</button>
+            <button className="tabBtn tactive" id="homeTab" onClick={() => setTab('home')}>ホーム</button>
+            <button className="tabBtn" id="quizTab" onClick={() => setTab('quiz')}>クイズ</button>
           </div>
         </div>
       ) : null}
     </>
   );
-
-
-
-
-
-
-  // return (
-  //     <>
-  //         <div className="App">
-  //             <div className={"black"}></div>
-  //             <section className={"home-wrap"}>
-  //                 <section>
-  //                     <div>
-  //                         <p>レベル</p>
-  //                     </div>
-  //                     <div>
-  //                         <p>{user && user.username}</p>
-  //                         <p>アイテム数</p>
-  //                     </div>
-  //                     <div>
-  //                         <p>モーダルを表示</p>
-  //                     </div>
-  //                 </section>
-  //                 <div className={showConfigModal ? "overlay-add" : "overlay"}>
-  //                     <HomeModal />
-  //                 </div>
-  //                 {user?.username ? (
-
-
-  //                     showTab['home'] ? (
-  //                         <>
-  //                             <h1>ホーム</h1>
-  //                         </>
-  //                     ) : showTab['quiz'] ? (
-  //                         // Quiz コンポーネントの内容
-  //                         <>
-  //                             <h1>クイズ</h1>
-  //                             <QuizTab />
-  //                         </>
-  //                     ) : showTab['story'] ? (
-  //                         // Story コンポーネントの内容
-  //                         <>
-  //                             <h1>ストーリー</h1>
-  //                             <StoryTab />
-  //                         </>
-  //                     ) : null
-  //                 ) : (
-  //                     <>
-
-  //                     </>
-  //                 )}
-  //             </section>
-  //             <div>
-  //                 <button onClick={() => setTab('home')}>ホーム</button>
-  //                 <button onClick={() => setTab('quiz')}>クイズ</button>
-  //                 <button onClick={() => setTab('story')}>ストーリー</button>
-  //             </div>
-  //         </div>
-  //     </>
-  // );
 }
 export default Home;
