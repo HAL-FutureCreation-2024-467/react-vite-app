@@ -8,9 +8,9 @@ import 'react-tooltip/dist/react-tooltip.css'
 // import '@assets/js/live2d.min.js';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <BrowserRouter>
       <Router />
     </BrowserRouter>
-  </React.StrictMode>
+  // </React.StrictMode>
 )

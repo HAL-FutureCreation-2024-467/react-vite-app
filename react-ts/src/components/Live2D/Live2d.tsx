@@ -1,153 +1,91 @@
-import React, { useEffect, useRef } from "react";
-import "@assets/js/live2d.min.js";
-import "@assets/js/live2dcubismcore.js";
-import { Live2DModel } from "pixi-live2d-display";
+import React, { forwardRef, useEffect, useRef, useImperativeHandle } from "react";
+//assets内のファイルを読み込むためのモジュール
 import * as PIXI from "pixi.js";
-import "kalidokit";
+import { Live2DModel } from 'pixi-live2d-display';
 
+import '@scss/Live2D.scss';
 
-const Live2d = ({}) => {
-  // appをindex.jsで使いたいのでスコープを外しています。
-    const live2dRef = useRef(null);
-    const live2dwrapRef = useRef(null);
+interface CanvasProps {
+    modelPath: string;
+  }
+  
+const Live2d = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
+  const live2dRef = useRef<HTMLCanvasElement>(null);
+  const live2dwrapRef = useRef<HTMLDivElement>(null);
+  let app: PIXI.Application<PIXI.ICanvas>;
+  let currentModel: Live2DModel;
+  const ModelPath = props.modelPath;
 
-    // PixiJS
-    let app: PIXI.Application | null = null;
+  useEffect(() => {
+    const main = async () => {
+      app = new PIXI.Application({
+        view: live2dRef.current!,
+        autoStart: true,
+        backgroundAlpha: 0,
+        resizeTo: window,
+      });
+      app.stage.interactive = false;
+      // Live2Dモデルの初期化
+      currentModel = await Live2DModel.from(ModelPath, { autoInteract: false });
 
-    // 1, Live2Dモデルへのパスを指定する
-    const modelUrl = "@assets/rutika-model/runtime/rutika.model3.json";
-    let currentModel:  | null = null;
+      // モデルの初期化
+      currentModel.scale.set(0.4); // モデルの大きさ
+      currentModel.anchor.set(0.5, 0.5); // モデルのアンカー位置
+      
+      // Live2Dモデルを配置
+      app.stage.addChild(currentModel);
 
-    // メインの処理開始
-    useEffect(() => {
-      (async function main() {
-        // 2, PixiJSを準備する
-        app = new PIXI.Application({
-          view: live2dRef.current,
-          transparent: true,
-          autoStart: true,
-          backgroundAlpha: 0,
-          resizeTo: window,
-        });
+      // ウィンドウのリサイズイベントに対応
+      const handleResize = () => {
+        const parent = live2dwrapRef.current!;
+        const canvas = live2dRef.current!;
+        const ratio = window.devicePixelRatio;
+      
+        canvas.width = parent.clientWidth * ratio;
+        canvas.height = parent.clientHeight * ratio;
+        canvas.style.width = parent.clientWidth + "px";
+        canvas.style.height = parent.clientHeight + "px";
+        // Resize the renderer
+        app.renderer.resize(canvas.width, canvas.height);
+      
+        // Set the position after the renderer is resized
+        currentModel.position.set(app.renderer.width / 2, app.renderer.height / 2);
+      };
 
-        // 3, Live2Dモデルをロードする
-        currentModel = await Live2DModel.from(modelUrl, { autoInteract: false });
-        if (window.innerWidth < 768) {
-          currentModel.scale.set(0.8); //モデルの大きさ★
-          currentModel.anchor.set(0.5, 0.5); //モデルのアンカー★
-        } else {
-          //pc
-          currentModel.scale.set(0.57); //モデルの大きさ★
-          currentModel.anchor.set(0.5, 0.5); //モデルのアンカー★
-        }
-        currentModel.interactive = true;
+      window.addEventListener("resize", handleResize);
+      handleResize();
 
-        // 6, Live2Dモデルを配置する
-        app.stage.addChild(currentModel);
+      // Cleanup function
+      return () => {
+          window.removeEventListener("resize", handleResize);
+      };
+    };
 
-        function handleResize() {
-          const parent = live2dwrapRef.current;
-          const canvas = live2dRef.current;
-          const ratio = window.devicePixelRatio;
-          canvas.width = parent.clientWidth * ratio;
-          canvas.height = parent.clientHeight * ratio;
-          canvas.style.width = parent.clientWidth + "px";
-          canvas.style.height = parent.clientHeight + "px";
-
-          currentModel.position.set(app.view.width / 2, app.view.height / 2); //モデルの位置★
-
-          // PixiJSのrendererにcanvasのサイズを更新する
-          app.renderer.resize(canvas.width, canvas.height);
-        }
-
-        window.addEventListener("resize", handleResize);
-        handleResize();
-      })();
-    }, [live2dRef]);
-
-    // メインの処理開始
-    useEffect(() => {
-      (async function main() {
-        // 2, PixiJSを準備する
-        app = new PIXI.Application({
-          view: live2dRef.current,
-          transparent: true,
-          autoStart: true,
-          backgroundAlpha: 0,
-          resizeTo: window,
-        });
-
-        // 3, Live2Dモデルをロードする
-        currentModel = await Live2DModel.from(modelUrl, { autoInteract: false });
-        if (window.innerWidth < 768) {
-          currentModel.scale.set(0.8); //モデルの大きさ★
-          currentModel.anchor.set(0.5, 0.5); //モデルのアンカー★
-        } else {
-          //pc
-          currentModel.scale.set(0.57); //モデルの大きさ★
-          currentModel.anchor.set(0.5, 0.5); //モデルのアンカー★
-        }
-        currentModel.interactive = true;
-
-        // 6, Live2Dモデルを配置する
-        app.stage.addChild(currentModel);
-
-        function handleResize() {
-          const parent = live2dwrapRef.current;
-          const canvas = live2dRef.current;
-          const ratio = window.devicePixelRatio;
-          canvas.width = parent.clientWidth * ratio;
-          canvas.height = parent.clientHeight * ratio;
-          canvas.style.width = parent.clientWidth + "px";
-          canvas.style.height = parent.clientHeight + "px";
-
-          currentModel.position.set(app.view.width / 2, app.view.height / 2); //モデルの位置★
-
-          // PixiJSのrendererにcanvasのサイズを更新する
-          app.renderer.resize(canvas.width, canvas.height);
-        }
-
-        window.addEventListener("resize", handleResize);
-        handleResize();
-      })();
-    }, [live2dRef]);
+    main();
+  }, []);
 
     const slash = () => {
-      app?.stage.children[0].internalModel.motionManager.startMotion(
-        "Slash",
-        0,
-        2
-      );
+      app.stage.children[0].internalModel.motionManager.startMotion("Slash",0,2);
     };
     const second = () => {
-      app?.stage.children[0].internalModel.motionManager.startMotion(
-        "Second",
-        0,
-        2
-      );
+      app.stage.children[0].internalModel.motionManager.startMotion("Second",0,2);
     };
     const three = () => {
-      app?.stage.children[0].internalModel.motionManager.startMotion(
-        "Three",
-        0,
-        2
-      );
+      app.stage.children[0].internalModel.motionManager.startMotion("Three",0,2);
     };
     const final = () => {
-      app?.stage.children[0].internalModel.motionManager.startMotion(
-        "Final",
-        0,
-        2
-      );
+      app.stage.children[0].internalModel.motionManager.startMotion("Final",0,2);
     };
-
+    
+    // 親コンポーネントが呼び出せるようにする
+    useImperativeHandle(ref, () => ({slash,second,three,final}));
     return (
-      <>
-        <div className="live2d-canvas-wrap" ref={live2dwrapRef}>
-          <canvas className="my-live2d" ref={live2dRef}></canvas>
+        <>
+        <div id="live2d_box" className="live2d-canvas-wrap" ref={live2dwrapRef}>
+            <canvas className="my-live2d" ref={live2dRef}></canvas>
         </div>
-      </>
+        </>
     );
-  };
+});
 
-  export default Live2d;
+export default Live2d;
