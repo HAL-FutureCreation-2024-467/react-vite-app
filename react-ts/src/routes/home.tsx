@@ -12,9 +12,9 @@ const Home = () => {
   const [sessions, setSession] = useState<Session | null>(null)
   const [user, setUser] = useState<ProfileType | null>(null)
   const [showTab, setShowTab] = useState<{ [key: string]: boolean }>({
-    'quiz': false,
+    'story': false,
     'home': true,
-    'story': false
+    'quiz': false,
   })
   const homeTab = document.getElementById('homeTab');
   const quizTab = document.getElementById('quizTab');
@@ -154,8 +154,7 @@ const Home = () => {
     "夢を追い求めて。",
     "終わりなき冒険。",
     "英雄の休息。",
-    "I am",
-    "アトミック"
+    "I am アトミック",
   ];
   
   const randText = (array: string[]): string => {
@@ -168,7 +167,27 @@ const Home = () => {
     return array[ri];
   }
 
+
+  // Luve2D関連
+  const modelPath = '/rutika-model/runtime/rutika.model3.json';
+  const childRef = useRef<any>(null);
+  const slash = () => {childRef.current ? childRef.current.slash() : null};
+  const playSecond = () => {childRef.current ? childRef.current.second() : null};
+  const playThree = () => {childRef.current ? childRef.current.three() : null};
+  const playFinal = () => {childRef.current ? childRef.current.final() : null};
+  const animationArray = [slash, playSecond, playThree, playFinal];
+
+  function executeRandomFunction() {
+    // ランダムに関数を選択
+    const randomIndex = Math.floor(Math.random() * animationArray.length);
+    const selectedFunction = animationArray[randomIndex];
+    
+    // 選択された関数を実行
+    selectedFunction();
+  }
+
   const toggleF = (() => {
+    // executeRandomFunction();
     if(showF != true){
       setFp(randText(fmes));
     }
@@ -176,14 +195,7 @@ const Home = () => {
     console.log('randText');
   });
 
-  // Luve2D関連
-  const modelPath = '/rutika-model/runtime/rutika.model3.json';
-  const childRef = useRef<any>(null);
-  const playSlash = () => {childRef.current ? childRef.current.slash() : null};
-  const playSecond = () => {childRef.current ? childRef.current.second() : null};
-  const playThree = () => {childRef.current ? childRef.current.three() : null};
-  const playFinal = () => {childRef.current ? childRef.current.final() : null};
-  
+
   return (
     <>
       {user?.username ? (
@@ -213,7 +225,7 @@ const Home = () => {
             </div>
             <div className="TabSection">
             {showTab['home'] ? (
-              <div onClick={toggleF}>
+              <div className="live2dWidget" onClick={toggleF}>
                 <Live2DModule ref={childRef} modelPath={modelPath as string} />
               </div>
               
@@ -239,73 +251,13 @@ const Home = () => {
             </div>
           </div>
           <div className="home-bottom-btn">
-            <button className="tabBtn" id="quizTab" onClick={() => setTab('quiz')}>クイズ</button>
+            <button className="tabBtn" id="storyTab" onClick={() => setTab('story')}>ストーリー</button>            
             <button className="tabBtn tactive" id="homeTab" onClick={() => setTab('home')}>ホーム</button>
-            <button className="tabBtn" id="storyTab" onClick={() => setTab('story')}>ストーリー</button>
+            <button className="tabBtn" id="quizTab" onClick={() => setTab('quiz')}>クイズ</button>
           </div>
         </div>
       ) : null}
     </>
   );
-
-
-
-
-
-
-  // return (
-  //     <>
-  //         <div className="App">
-  //             <div className={"black"}></div>
-  //             <section className={"home-wrap"}>
-  //                 <section>
-  //                     <div>
-  //                         <p>レベル</p>
-  //                     </div>
-  //                     <div>
-  //                         <p>{user && user.username}</p>
-  //                         <p>アイテム数</p>
-  //                     </div>
-  //                     <div>
-  //                         <p>モーダルを表示</p>
-  //                     </div>
-  //                 </section>
-  //                 <div className={showConfigModal ? "overlay-add" : "overlay"}>
-  //                     <HomeModal />
-  //                 </div>
-  //                 {user?.username ? (
-
-
-  //                     showTab['home'] ? (
-  //                         <>
-  //                             <h1>ホーム</h1>
-  //                         </>
-  //                     ) : showTab['quiz'] ? (
-  //                         // Quiz コンポーネントの内容
-  //                         <>
-  //                             <h1>クイズ</h1>
-  //                             <QuizTab />
-  //                         </>
-  //                     ) : showTab['story'] ? (
-  //                         // Story コンポーネントの内容
-  //                         <>
-  //                             <h1>ストーリー</h1>
-  //                             <StoryTab />
-  //                         </>
-  //                     ) : null
-  //                 ) : (
-  //                     <>
-
-  //                     </>
-  //                 )}
-  //             </section>
-  //             <div>
-  //                 <button onClick={() => setTab('home')}>ホーム</button>
-  //                 <button onClick={() => setTab('quiz')}>クイズ</button>
-  //                 <button onClick={() => setTab('story')}>ストーリー</button>
-  //             </div>
-  //         </div>
-  //     </>
-  // );
 }
 export default Home;

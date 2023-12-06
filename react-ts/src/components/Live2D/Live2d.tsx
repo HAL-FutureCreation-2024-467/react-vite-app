@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef, useImperativeHandle } from "react";
+import React, { forwardRef, useEffect, useRef, useImperativeHandle, useState } from "react";
 //assets内のファイルを読み込むためのモジュール
 import * as PIXI from "pixi.js";
 import { Live2DModel } from 'pixi-live2d-display';
@@ -12,9 +12,10 @@ interface CanvasProps {
 const Live2d = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
   const live2dRef = useRef<HTMLCanvasElement>(null);
   const live2dwrapRef = useRef<HTMLDivElement>(null);
+  const [live2DInitialized, setLive2DInitialized] = useState(false);
   let app: PIXI.Application<PIXI.ICanvas>;
   let currentModel: Live2DModel;
-  const ModelPath = props.modelPath;
+  const ModelPath = '/Live2dModel/rutika/rutika.model3.json';
 
   useEffect(() => {
     const main = async () => {
@@ -24,12 +25,13 @@ const Live2d = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
         backgroundAlpha: 0,
         resizeTo: window,
       });
+      setLive2DInitialized(true);
       app.stage.interactive = false;
       // Live2Dモデルの初期化
       currentModel = await Live2DModel.from(ModelPath, { autoInteract: false });
 
       // モデルの初期化
-      currentModel.scale.set(0.4); // モデルの大きさ
+      currentModel.scale.set(0.55); // モデルの大きさ
       currentModel.anchor.set(0.5, 0.5); // モデルのアンカー位置
       
       // Live2Dモデルを配置
@@ -65,16 +67,37 @@ const Live2d = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
   }, []);
 
     const slash = () => {
-      app.stage.children[0].internalModel.motionManager.startMotion("Slash",0,2);
+      if (live2DInitialized) {
+        // 既にLive2Dが初期化されている場合のみ関数を実行
+        app.stage.children[0].internalModel.motionManager.startMotion("RushCharge",0,2);
+      } else {
+        // Live2Dが初期化されていない場合は何もしない
+        console.error("Live2Dが初期化されていません");
+      }
     };
     const second = () => {
-      app.stage.children[0].internalModel.motionManager.startMotion("Second",0,2);
+      if (live2DInitialized) {
+        app.stage.children[0].internalModel.motionManager.startMotion("Idle",0,2);
+      } else {
+        // Live2Dが初期化されていない場合は何もしない
+        console.error("Live2Dが初期化されていません");
+      }
     };
     const three = () => {
-      app.stage.children[0].internalModel.motionManager.startMotion("Three",0,2);
+      if (live2DInitialized) {
+        app.stage.children[0].internalModel.motionManager.startMotion("Three",0,2);
+      } else {
+        // Live2Dが初期化されていない場合は何もしない
+        console.error("Live2Dが初期化されていません");
+      }
     };
     const final = () => {
-      app.stage.children[0].internalModel.motionManager.startMotion("Final",0,2);
+      if (live2DInitialized) {
+        app.stage.children[0].internalModel.motionManager.startMotion("Final",0,2);
+      } else {
+        // Live2Dが初期化されていない場合は何もしない
+        console.error("Live2Dが初期化されていません");
+      }
     };
     
     // 親コンポーネントが呼び出せるようにする

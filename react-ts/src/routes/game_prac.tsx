@@ -4,6 +4,7 @@ import "@scss/mozi.scss";
 import { Link, useNavigate, useLocation, useParams } from 'react-router-dom'
 import { QuizClassType, QuizRankType } from '../types/tables'
 import CanComp from "../components/game/canvas";
+import Live2DModule from '../components/Live2D/Live2d-slime';
 
 interface Quiz {
   question: string | null;
@@ -182,6 +183,7 @@ const Game = () => {
         if (quizNow.answer === quizNow.choices[Number(dataV)]) {
           setNowNum(nowNum + 1);
           correctAction();
+          playRush();
           clearChildCanvas();
         } else {
           failedAction();
@@ -231,6 +233,11 @@ const Game = () => {
     }
   }, [nowNum]);
 
+  // Luve2D関連
+  const modelPath = '/Live2dModel/slime/silme.model3.json';
+  const childRef = useRef<any>(null);
+  const playRush = () => {childRef.current ? childRef.current.rush() : console.log("animationError")};
+
   return (
       <>
       <div className="App">
@@ -255,7 +262,7 @@ const Game = () => {
             </div>
             ) : null}
         </div>
-
+        <Live2DModule ref={childRef} modelPath={modelPath as string} />
         {/* ランダムに取得した問題を出す */}
         { showQuiz ? (
           <div className="q-wrap">
@@ -309,7 +316,7 @@ const Game = () => {
           </div>
           ) : null
         }
-        
+
         {/* 問題についての解説文表示領域 */}
         { showExplain && showChoice ? (
             <div className="explain-box">

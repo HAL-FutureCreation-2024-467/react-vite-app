@@ -1,36 +1,35 @@
 import React, { forwardRef, useEffect, useRef, useImperativeHandle } from "react";
 //assets内のファイルを読み込むためのモジュール
-import { Live2DModel } from 'pixi-live2d-display';
 import * as PIXI from "pixi.js";
+import { Live2DModel } from 'pixi-live2d-display';
 import '@scss/Live2D.scss';
 
 interface CanvasProps {
-    modelPath: string;
-  }
+  modelPath: string;
+}
 
 const Live2d = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
   const live2dRef = useRef<HTMLCanvasElement>(null);
   const live2dwrapRef = useRef<HTMLDivElement>(null);
   let app: PIXI.Application<PIXI.ICanvas>;
   let currentModel: Live2DModel;
-  const ModelPath = props.modelPath;
+  const ModelPath = '/Live2dModel/slime/silme.model3.json';
 
   useEffect(() => {
     const main = async () => {
-      // PixiJSの初期化 インスタンス生成
       app = new PIXI.Application({
         view: live2dRef.current!,
         autoStart: true,
         backgroundAlpha: 0,
         resizeTo: window,
       });
-
+      app.stage.interactive = false;
       // Live2Dモデルの初期化
-      currentModel = await Live2DModel.from(ModelPath, { autoInteract: false });    
+      currentModel = await Live2DModel.from(ModelPath, { autoInteract: false });
 
       // モデルの初期化
-      currentModel.scale.set(0.4); // モデルの大きさ
-      currentModel.anchor.set(0.5, 0.5); // モデルのアンカー位置
+      currentModel.scale.set(1.2); // モデルの大きさ
+      currentModel.anchor.set(0.5, 0.9); // モデルのアンカー位置
       
       // Live2Dモデルを配置
       app.stage.addChild(currentModel);
@@ -62,17 +61,16 @@ const Live2d = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
     };
 
     main();
-  }, [ModelPath]);
+  }, []);
 
-    // const slash = () => {app.stage.children[0].internalModel.motionManager.startMotion("Slash",0,2);};
-    // const second = () => {app.stage.children[0].internalModel.motionManager.startMotion("Second",0,2);};
-    // const three = () => {app.stage.children[0].internalModel.motionManager.startMotion("Three",0,2);};
-    // const final = () => {app.stage.children[0].internalModel.motionManager.startMotion("Final",0,2);};
+    const rush = () => {
+      app.stage.children[0].internalModel.motionManager.startMotion("RushCharge",0,2);
+    };
     // 親コンポーネントが呼び出せるようにする
-    //  useImperativeHandle(ref, () => ({slash,second,three,final}));
+    useImperativeHandle(ref, () => (rush));
     return (
         <>
-        <div className="live2d-canvas-wrap" ref={live2dwrapRef}>
+        <div id="live2d_box" className="live2d-canvas-wrap" ref={live2dwrapRef}>
             <canvas className="my-live2d" ref={live2dRef}></canvas>
         </div>
         </>
