@@ -266,10 +266,8 @@ const Home = () => {
             </div>
           </div>
           <div className="home-bottom-btn">
-            <button className="tabBtn" id="storyTab" onClick={() => setTab('story')}>ストーリー</button>            
             <button className="tabBtn" id="storyTab" onClick={() => setTab('story')}>ストーリー</button>
             <button className="tabBtn tactive" id="homeTab" onClick={() => setTab('home')}>ホーム</button>
-            <button className="tabBtn" id="quizTab" onClick={() => setTab('quiz')}>クイズ</button>
             <button className="tabBtn" id="quizTab" onClick={() => setTab('quiz')}>クイズ</button>
           </div>
         </div>
