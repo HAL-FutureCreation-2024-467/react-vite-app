@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "../supabaseClient";
 import { Session } from "@supabase/supabase-js";
 import { ProfileType } from "../types/tables";
@@ -6,6 +6,7 @@ import QuizTab from "../components/home/QuizTab";
 import StoryTab from "../components/home/StoryTab";
 import HomeModal from "../components/home/HomeModal";
 import { useLocation, useNavigate } from 'react-router-dom';
+import Live2DModule from '../components/Live2D/Live2d';
 
 const Home = () => {
   const [sessions, setSession] = useState<Session | null>(null)
@@ -43,6 +44,7 @@ const Home = () => {
     });
     setShowTab(updatedTabs);
     setQuizSelectMode("")
+    setshowF(false);
   };
 
   useEffect(() => {
@@ -183,8 +185,16 @@ const Home = () => {
       setFp(randText(fmes));
     }
     setshowF(!showF)
+    console.log('randText');
   });
 
+  // Luve2D関連
+  const modelPath = '/rutika-model/runtime/rutika.model3.json';
+  const childRef = useRef<any>(null);
+  const playSlash = () => {childRef.current ? childRef.current.slash() : null};
+  const playSecond = () => {childRef.current ? childRef.current.second() : null};
+  const playThree = () => {childRef.current ? childRef.current.three() : null};
+  const playFinal = () => {childRef.current ? childRef.current.final() : null};
   
   return (
     <>
@@ -215,7 +225,10 @@ const Home = () => {
             </div>
             <div className="TabSection">
             {showTab['home'] ? (
-              <img src={getImage('sinken.png')} onClick={toggleF} />
+              <div onClick={toggleF}>
+                <Live2DModule ref={childRef} modelPath={modelPath as string} />
+              </div>
+              
             ) : showTab['quiz'] ? (
               <>
                 <h1>{showLavel(quizSelectMode,quizDfText)}</h1>

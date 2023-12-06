@@ -1,32 +1,80 @@
-import { Application } from '@pixi/app';
-import { Ticker, TickerPlugin } from '@pixi/ticker';
-import { InteractionManager } from '@pixi/interaction';
+import React, { forwardRef, useEffect, useRef } from "react";
+//assets内のファイルを読み込むためのモジュール
 import { Live2DModel } from 'pixi-live2d-display';
-import { Renderer } from 'pixi.js';
+import * as PIXI from "pixi.js";
+import '@scss/Live2D.scss';
 
-// register Ticker for Live2DModel
-Live2DModel.registerTicker(Ticker);
+interface CanvasProps {
+    modelPath: string;
+  }
 
-// register Ticker for Application
-Application.registerPlugin(TickerPlugin);
+const Live2d = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
+  const live2dRef = useRef<HTMLCanvasElement>(null);
+  const live2dwrapRef = useRef<HTMLDivElement>(null);
+  let app: PIXI.Application<PIXI.ICanvas>;
+  let currentModel: Live2DModel;
+  const ModelPath = props.modelPath;
 
-// register InteractionManager to make Live2D models interactive
-Renderer.registerPlugin('interaction', InteractionManager);
+  useEffect(() => {
+    const main = async () => {
+      // PixiJSの初期化 インスタンス生成
+      app = new PIXI.Application({
+        view: live2dRef.current!,
+        autoStart: true,
+        backgroundAlpha: 0,
+        resizeTo: window,
+      });
 
-const live2dModule = async(modelPath : string) => {
-    const app = new Application({
-        view: document.getElementById('live2d'),
-    });
+      // Live2Dモデルの初期化
+      currentModel = await Live2DModel.from(ModelPath, { autoInteract: false });    
 
-    const model = await Live2DModel.from(modelPath);
+      // モデルの初期化
+      currentModel.scale.set(0.4); // モデルの大きさ
+      currentModel.anchor.set(0.5, 0.5); // モデルのアンカー位置
+      
+      // Live2Dモデルを配置
+      app.stage.addChild(currentModel);
 
-    app.stage.addChild(model);
-    model.motion('idle');
+      // ウィンドウのリサイズイベントに対応
+      const handleResize = () => {
+        const parent = live2dwrapRef.current!;
+        const canvas = live2dRef.current!;
+        const ratio = window.devicePixelRatio;
+      
+        canvas.width = parent.clientWidth * ratio;
+        canvas.height = parent.clientHeight * ratio;
+        canvas.style.width = parent.clientWidth + "px";
+        canvas.style.height = parent.clientHeight + "px";
+        // Resize the renderer
+        app.renderer.resize(canvas.width, canvas.height);
+      
+        // Set the position after the renderer is resized
+        currentModel.position.set(app.renderer.width / 2, app.renderer.height / 2);
+      };
+
+      window.addEventListener("resize", handleResize);
+      handleResize();
+
+      // Cleanup function
+      return () => {
+          window.removeEventListener("resize", handleResize);
+      };
+    };
+
+    main();
+  }, [ModelPath]);
+
+    const slash = () => {app.stage.children[0].internalModel.motionManager.startMotion("Slash",0,2);};
+    const second = () => {app.stage.children[0].internalModel.motionManager.startMotion("Second",0,2);};
+    const three = () => {app.stage.children[0].internalModel.motionManager.startMotion("Three",0,2);};
+    const final = () => {app.stage.children[0].internalModel.motionManager.startMotion("Final",0,2);};
     return (
         <>
-            <div id="live2d"></div>
+        <div className="live2d-canvas-wrap" ref={live2dwrapRef}>
+            <canvas className="my-live2d" ref={live2dRef}></canvas>
+        </div>
         </>
-    )
-}
+    );
+});
 
-export default live2dModule;
+export default Live2d;
