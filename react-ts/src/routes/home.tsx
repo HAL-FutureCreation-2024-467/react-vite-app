@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState} from "react";
 import { supabase } from "../supabaseClient";
 import { Session } from "@supabase/supabase-js";
 import { ProfileType } from "../types/tables";
@@ -192,32 +192,36 @@ const Home = () => {
 
 
   // Luve2D関連
-  const modelPath = '/rutika-model/runtime/rutika.model3.json';
-  const childRef = useRef<any>(null);
-  const slash = () => {childRef.current ? childRef.current.slash() : null};
-  const playSecond = () => {childRef.current ? childRef.current.second() : null};
-  const playThree = () => {childRef.current ? childRef.current.three() : null};
-  const playFinal = () => {childRef.current ? childRef.current.final() : null};
-  const animationArray = [slash, playSecond, playThree, playFinal];
+  const modelPath = '/Live2dModel/rutika/rutika.model3.json';
+  const childRef = useRef<any>();
+  const [functions, setFunc] = useState<Function[]>([]);
 
   function executeRandomFunction() {
     // ランダムに関数を選択
-    const randomIndex = Math.floor(Math.random() * animationArray.length);
-    const selectedFunction = animationArray[randomIndex];
+    const randomIndex = Math.floor(Math.random() * functions.length);
+    const selectedFunction = functions[randomIndex];
     
     // 選択された関数を実行
     selectedFunction();
   }
 
-  const toggleF = (() => {
-    // executeRandomFunction();
-    if(showF != true){
+  const toggleF = () => {
+    if (showF !== true) {
       setFp(randText(fmes));
     }
-    setshowF(!showF)
+    setshowF(!showF);
+    executeRandomFunction();
     console.log('randText');
-  });
+  };
 
+  useEffect(() => {
+      const slash = () => {childRef.current?.slash()};
+      const second = () => {childRef.current?.second()};
+      const three = () => {childRef.current?.three()};
+      const final = () => {childRef.current?.final()};
+      const animationArray = [slash, second, three, final];
+      setFunc(animationArray);
+  }, [childRef]);
 
   return (
     <>

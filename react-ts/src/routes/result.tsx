@@ -26,6 +26,7 @@ const Result = () => {
     const episode = useLocation().state.result.episode;
     const clnum = useLocation().state.result.clearNum;
     const quizData = useLocation().state.result.content;
+    
     // const score = useLocation().state.score;
     const [score, setScore] = useState(0);
 

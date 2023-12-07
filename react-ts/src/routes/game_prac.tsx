@@ -11,7 +11,16 @@ interface Quiz {
   answer: string | null;
   choices: string[] | null;
   explain: string | null;
+  read : string | null;
 }
+
+export interface quiz {//受け渡し用
+  write: string;//書き
+  read : string;//読み
+  problem: string;//問題
+  expl: string;//解説
+  correct: boolean;//正解かどうか
+};
 
 //ゲームプレイ画面
 const Game = () => {
@@ -33,7 +42,10 @@ const Game = () => {
     answer: "答え",
     choices: ["", "", ""],
     explain: "",
+    read: "",
   });
+
+  const [resinfo, setResinfo] = useState<quiz[]>([]);//結果の情報を格納
   const [quizChoice, setChoice] = useState<string[]>([]);
   if(mode == "rank"){
     console.log(mode);
@@ -64,7 +76,8 @@ const Game = () => {
           question: quizRank[nowNum].problem,
           answer: quizRank[nowNum].write,
           choices: tmpChoice,
-          explain: quizRank[nowNum].expl
+          explain: quizRank[nowNum].expl,
+          read: quizRank[nowNum].read
         })
         setShowChoice(true);
       }
@@ -107,7 +120,8 @@ const Game = () => {
           question: quizClass[nowNum].problem,
           answer: quizClass[nowNum].write,
           choices: tmpChoice,
-          explain: quizClass[nowNum].expl
+          explain: quizClass[nowNum].expl,
+          read: quizClass[nowNum].read
         })
         setShowChoice(true);
       }
@@ -121,7 +135,8 @@ const Game = () => {
           question: quizClass[nowNum].problem,
           answer: quizClass[nowNum].write,
           choices: [],
-          explain: quizClass[nowNum].expl
+          explain: quizClass[nowNum].expl,
+          read: quizClass[nowNum].read
         }),
         setShowQuiz(true),
         setShowChoice(true)
@@ -133,61 +148,60 @@ const Game = () => {
   const clearChildCanvas = () => {
     if (childCanvasRef.current && childCanvasRef.current.clearCanvas) {
       childCanvasRef.current.clearCanvas();
-      setShowChoice(false);}
+      setShowChoice(false);
+      }
     };
   
-  const handleShowDetail = () => {
-      setShowExplain(true);
-  };
+    const handleShowDetail = () => {
+        setShowExplain(true);
+    };
 
-  const handleHideDetail = () => {
-      setShowExplain(false);
-  };
-  // canvas関連 --------------------------------------
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [showCanvasText, setShowCanvasText] = useState<boolean>(false);
-  const toggleCanvasText = () => {
-    console.log(showCanvasText);
-    setShowCanvasText(!showCanvasText);
-  };
-  const childCanvasRef = useRef(null);
+    const handleHideDetail = () => {
+        setShowExplain(false);
+    };
+    // canvas関連 --------------------------------------
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const [showCanvasText, setShowCanvasText] = useState<boolean>(false);
+    const toggleCanvasText = () => {
+      console.log(showCanvasText);
+      setShowCanvasText(!showCanvasText);
+    };
+    const childCanvasRef = useRef(null);
 
-  const recognizeChildCanvas = () => {
-    if (childCanvasRef.current && childCanvasRef.current.recognize) {
-      childCanvasRef.current.recognize();
+    const recognizeChildCanvas = () => {
+      if (childCanvasRef.current && childCanvasRef.current.recognize) {
+        childCanvasRef.current.recognize();
+      }
+    };
+
+    const HandingSaveImg = async() => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const base64 = canvas.toDataURL("image/png");
+
+        //Download
+        // ダウンロード用のリンクを作成
+        const downloadLink = document.createElement('a');
+              downloadLink.href = base64;
+              downloadLink.download = 'image.png'; // ファイル名を指定
+              // リンクをクリックしてダウンロードを開始
+              downloadLink.click();
     }
-  };
-
-   const HandingSaveImg = async() => {
-   const canvas = canvasRef.current;
-   if (!canvas) return;
-   const base64 = canvas.toDataURL("image/png");
-
-    //Download
-    // ダウンロード用のリンクを作成
-    const downloadLink = document.createElement('a');
-          downloadLink.href = base64;
-          downloadLink.download = 'image.png'; // ファイル名を指定
-          // リンクをクリックしてダウンロードを開始
-          downloadLink.click();
-  }
 
   // 正誤判定 --------------------------------------
   const jg = (e : any) => {
     if (quizNow.answer, quizNow.choices) {
       const dataV = e.target.closest('[data-v]')?.getAttribute('data-v');
       setShowCanvasText(false);
+      clearChildCanvas();
       if (dataV !== null && quizNow.answer && quizNow.choices) {
         console.log(dataV);
-    
         if (quizNow.answer === quizNow.choices[Number(dataV)]) {
           setNowNum(nowNum + 1);
           correctAction();
           playRush();
-          clearChildCanvas();
         } else {
           failedAction();
-          clearChildCanvas();
         }
       }
     }    
@@ -211,7 +225,15 @@ const Game = () => {
     setTimeout(() => {
       setCorrectState(false);
     }, 1000);
+    setResinfo([...resinfo, {
+      write: quizNow.answer as string,
+      read : quizNow.read as string,
+      problem: quizNow.question as string,
+      expl: quizNow.explain as string,
+      correct: true
+    }]);
   }
+
   useEffect(() => {//問題が10問終わったらクリア
     if(nowNum == 10){//クリア
       //showClearModalの表示
@@ -226,9 +248,10 @@ const Game = () => {
                 mode : mode,
                 grade : grade,
                 clearNum: nowNum,
+                content: resinfo,
               }
             },
-          }); 
+          });
         }, 4000);
     }
   }, [nowNum]);
@@ -236,7 +259,7 @@ const Game = () => {
   // Luve2D関連
   const modelPath = '/Live2dModel/slime/silme.model3.json';
   const childRef = useRef<any>(null);
-  const playRush = () => {childRef.current ? childRef.current.rush() : console.log("animationError")};
+  const playRush = () => {childRef.current.rush()};
 
   return (
       <>
@@ -318,7 +341,7 @@ const Game = () => {
         }
 
         {/* 問題についての解説文表示領域 */}
-        { showExplain && showChoice ? (
+        { showExplain ? (
             <div className="explain-box">
               <div className="exp-inbox">
                 <h2>{quizNow.explain}</h2>
@@ -340,7 +363,7 @@ const Game = () => {
           </div>
           <br />
           {/* 消しゴムbtn */}
-          <button className="erase-btn" onClick={clearChildCanvas}>
+          <button className="erase-btn" onClick={ clearChildCanvas }>
             <img src={getImage('kesi.png')} alt="" />
           </button>
           {/* 答えの薄文字表示btn */}
