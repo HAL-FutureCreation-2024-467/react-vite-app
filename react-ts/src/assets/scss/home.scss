@@ -320,8 +320,33 @@
     .c-card {
       position: relative;
       width: 100%;
-      max-width: 400px;
-      border: 2px solid #ccc;
+      height: 100%;
+      // border: 2px solid #ccc;
+      border-radius: 12px 12px 0 0;
+      .c-card_title{
+        height: 40%;
+        background-color: #fff;
+        border-radius: 12px 12px 0 0;
+        position: relative;
+      }
+      .c-card_text{
+        width: 90%;
+        height: 30%;
+        margin: 0 auto;
+        height: 24px;
+        text-align: left;
+      }
+      .c-card_btn{
+        height: 30%;
+        button{
+          width: 140px;
+          height: 42px;
+          line-height: 42px;
+          margin: 2%;
+          padding: 0%;
+          font-size: 24px;
+        }
+      }
     }
   }
 }

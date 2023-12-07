@@ -45,6 +45,8 @@ const Home = () => {
     setShowTab(updatedTabs);
     setQuizSelectMode("")
     setshowF(false);
+    setShowModal(false);
+    setMenu('line_menu.png');
   };
 
   useEffect(() => {
