@@ -31,9 +31,12 @@ const Live2d = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
       currentModel = await Live2DModel.from(ModelPath, { autoInteract: false });
 
       // モデルの初期化
-      currentModel.scale.set(0.55); // モデルの大きさ
-      currentModel.anchor.set(0.5, 0.5); // モデルのアンカー位置
-      
+      if (window.innerWidth < 768) {
+        currentModel.scale.set(0.4); //モデルの大きさ★
+      } else {
+        currentModel.scale.set(0.6); //モデルの大きさ★
+      }
+      currentModel.anchor.set(0.5, 0.5); //モデルのアンカー★
       // Live2Dモデルを配置
       app.stage.addChild(currentModel);
 
