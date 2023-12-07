@@ -26,7 +26,9 @@ const Home = () => {
   const [showConfigModal, setShowModal] = useState(false);
   const [menuBar, setMenu] = useState("line_menu.png");
   const location = useLocation(); // useLocationを使ってlocationオブジェクトを取得
-  const { tab } = location.state || {}; // stateからtabを取得
+  const { tab, mode,grade} = location.state || {}; // stateからtabを取得
+  const [flagMode,setFlagMode] = useState(mode)
+  const [flagGrade,setFlagGrade] = useState(grade)
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
@@ -36,7 +38,10 @@ const Home = () => {
       setSession(session)
     })
   }, [])
-
+  useEffect(()=>{
+    setFlagMode(mode)
+    setFlagGrade(grade)
+  },[location])
   const setTab = (tabName: string) => {
     const updatedTabs: { [key: string]: boolean } = {};
     Object.keys(showTab).forEach((key) => {
@@ -105,6 +110,10 @@ const Home = () => {
   };
 
   const [rank, setRank] = useState(0);
+
+//他に変数用意して送るのがはやいか？
+
+
 
   const calculateLevel = (EXP: number | null) => { //現在の経験値からレベルを計算する関数
           const exPerLevel = 12;
@@ -249,6 +258,10 @@ const Home = () => {
                 <QuizTab 
                 setQuizSelectMode={setQuizSelectMode}
                 setQuizDfText={setQuizDfText}
+                mode={flagMode}
+                grade={flagGrade}
+                setFlagMode={setFlagMode}
+                setFlagGrade={setFlagGrade}
                 />
               </>
             ) : showTab['story'] ? (

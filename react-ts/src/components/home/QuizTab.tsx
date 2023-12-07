@@ -45,7 +45,13 @@ const [classLevel, setClassLevel] = useState<string>("")
     navigate(`/game/test/${grade}/${rank}`);
   };
 
+
   useEffect(() => {
+    if(props.mode == 'class'){
+      selectDifficulty(props.grade,props.mode)
+    }else if(props.mode == 'rank'){
+      selectDifficulty(props.grade,props.mode)
+    }
     async function fetchCategory() {
       try {
         const { data, error } = await supabase
@@ -64,6 +70,7 @@ const [classLevel, setClassLevel] = useState<string>("")
     }
     fetchCategory();
   }, [classLevel, rankLevel])
+  
   const getButtonLabel = (stage: EpisodeData) => {
     const matchingClass = grades.find((grade) => grade.rank === stage.class);
     const matchingRank = grades.find((grade) => grade.rank === stage.rank);
@@ -117,6 +124,8 @@ const [classLevel, setClassLevel] = useState<string>("")
         </div>
       ) : (
         <>
+        {props.setFlagMode("")}
+        {props.setFlagGrade("")}
         <div>
           <button onClick={() => gameTest(grade,!classLevel ? rankLevel: classLevel)}> {getNameLabel(grade)}</button>
         </div>
