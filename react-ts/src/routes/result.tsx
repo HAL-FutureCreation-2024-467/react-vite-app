@@ -90,7 +90,7 @@ const Result = () => {
     }
     const goHome = () => {
         //ホームに戻るボタンを押したときの処理
-        Navigate(`/home`);
+        Navigate(`/home`, { state: { tab: "quiz" } });
     }
 
     useEffect(() => {

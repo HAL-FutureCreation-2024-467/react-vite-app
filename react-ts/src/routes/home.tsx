@@ -64,7 +64,7 @@ const Home = () => {
       }
     }
     setupUser()
-    if(tab === 'story'){
+    if(tab === 'story' || tab === 'quiz'){
       setTab(tab)
     }
 
