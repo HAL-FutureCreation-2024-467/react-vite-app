@@ -2,16 +2,19 @@ import { useState, useEffect } from "react"
 import { supabase } from "../../supabaseClient";
 import { useNavigate } from 'react-router-dom';
 import { QuizClassEpi, QuizRankEpi } from "../../types/tables";
+import { ProfileGameStateType } from "../../types/tables";
 
 const QuizTab = (props : any) => {
 
   type EpisodeData = QuizRankEpi & QuizClassEpi
 
-const [classLevel, setClassLevel] = useState<string>("")
+  const [classLevel, setClassLevel] = useState<string>("")
   const [rankLevel, setRankLevel] = useState<string>("")
   const [TABLE_NAME, setTABLE_NAME] = useState("")
   const [quizClass, setQuizClass] = useState<EpisodeData[]>([]);
   const [grade, setGrade] = useState<string | null>(null);
+  const [gameState, setGameState] = useState<ProfileGameStateType | null>(null)
+
   const grades: { name: string; rank: string }[] = [
     { name: "初級", rank: 'low' },
     { name: "中級", rank: 'mediam' },
@@ -27,7 +30,8 @@ const [classLevel, setClassLevel] = useState<string>("")
   const selectDifficulty = (rank: string, value: string) => {
     setGrade(value)
     props.setQuizSelectMode(value)
-    console.log(rank)
+    setGameState(props.gameState)
+    //console.log(rank)
     if (value == 'class') {
       setClassLevel(rank)
       setTABLE_NAME('quiz_class_epi')
@@ -47,11 +51,6 @@ const [classLevel, setClassLevel] = useState<string>("")
 
 
   useEffect(() => {
-    if(props.mode == 'class'){
-      selectDifficulty(props.grade,props.mode)
-    }else if(props.mode == 'rank'){
-      selectDifficulty(props.grade,props.mode)
-    }
     async function fetchCategory() {
       try {
         const { data, error } = await supabase
@@ -67,6 +66,12 @@ const [classLevel, setClassLevel] = useState<string>("")
       } catch (error) {
         console.error("エラーが発生しました", error);
       }
+    }
+    if(props.mode == 'class'){
+      selectDifficulty(props.grade,props.mode)
+      console.log("class")
+    }else if(props.mode == 'rank'){
+      selectDifficulty(props.grade,props.mode)
     }
     fetchCategory();
   }, [classLevel, rankLevel])
@@ -131,7 +136,7 @@ const [classLevel, setClassLevel] = useState<string>("")
         </div>
           <div className="Quizbox">
             {Array.isArray(quizClass) && quizClass.map((stage, index) => (
-              <button key={index} onClick={() => gameButton(stage.episodes, grade === 'class' ? stage.class : stage.rank, grade)}>
+              <button key={index} onClick={() => gameButton(stage.episodes, grade === 'class' ? stage.class : stage.rank, grade)} disabled={!gameState["release"][stage.class][index]}>
                 {getButtonLabel(stage)}
               </button>
             ))}

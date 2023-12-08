@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState} from "react";
 import { supabase } from "../supabaseClient";
 import { Session } from "@supabase/supabase-js";
-import { ProfileType } from "../types/tables";
+import { ProfileType,ProfileGameStateType } from "../types/tables";
 import QuizTab from "../components/home/QuizTab";
 import StoryTab from "../components/home/StoryTab";
 import HomeModal from "../components/home/HomeModal";
@@ -13,6 +13,7 @@ const Home = () => {
   const [user, setUser] = useState<ProfileType | null>(null)
   const [quizSelectMode,setQuizSelectMode] = useState<string | null>(null)
   const [quizDfText,setQuizDfText] = useState<string | null>(null)
+  const [gameState, setGameState] = useState<ProfileGameStateType | null>(null)
   const [showTab, setShowTab] = useState<{ [key: string]: boolean }>({
     'story': false,
     'home': true,
@@ -65,6 +66,7 @@ const Home = () => {
           console.error("データの取得に失敗しました", error);
         } else {
           setUser(profiles[0])
+          setGameState(profiles[0]["game_state"])
         }
       }
     }
@@ -274,6 +276,7 @@ const Home = () => {
                 grade={flagGrade}
                 setFlagMode={setFlagMode}
                 setFlagGrade={setFlagGrade}
+                gameState={gameState}
                 />
               </>
             ) : showTab['story'] ? (

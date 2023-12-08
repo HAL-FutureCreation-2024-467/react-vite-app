@@ -19,3 +19,5 @@ export type QuizRankEpi = Database["public"]["Views"]["quiz_rank_epi"]["Row"]
 export type QuizClassEpi = Database["public"]["Views"]["quiz_class_epi"]["Row"]
 
 export type StorySentence = Database["public"]["Views"]["sentence_only"]["Row"]
+
+export type ProfileGameStateType = Database["public"]["Tables"]["profiles"]["Row"]["game_state"]
