@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
+    "test" : "npm install && vite", 
     "dev": "vite",
     "tbuild": "tsc && vite build",
     "build": "vite build",

@@ -254,6 +254,14 @@ const Home = () => {
             {showTab['home'] ? (
               <div className="live2dWidget" onClick={toggleF}>
                 <Live2DModule ref={childRef} modelPath={modelPath as string} />
+                <div className={showF ? "fukidashi show" : "fukidashi"}>
+                  {/* showクラスの付与 メッセージのランダム性を持たせる */}
+                  <div>
+                    <p id="fukidashi-p">
+                      {fpMes}
+                    </p>
+                  </div>
+                </div>
               </div>
               
             ) : showTab['quiz'] ? (
@@ -276,14 +284,7 @@ const Home = () => {
             ) : null}
             </div>
           </section>
-          <div className={showF ? "fukidashi show" : "fukidashi"}>
-            {/* showクラスの付与 メッセージのランダム性を持たせる */}
-            <div>
-              <p id="fukidashi-p">
-                {fpMes}
-              </p>
-            </div>
-          </div>
+          
           <div className="home-bottom-btn">
             <button className={showTab['story'] ? "tabBtn tactive" : "tabBtn"} id="storyTab" onClick={() => setTab('story')}>ストーリー</button>
             <button className={showTab['home'] ? "tabBtn tactive" : "tabBtn"}id="homeTab" onClick={() => setTab('home')}>ホーム</button>

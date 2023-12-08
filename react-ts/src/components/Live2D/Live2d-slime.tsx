@@ -1,5 +1,4 @@
 import React, { forwardRef, useEffect, useRef, useImperativeHandle } from "react";
-//assets内のファイルを読み込むためのモジュール
 import * as PIXI from "pixi.js";
 import { Live2DModel } from 'pixi-live2d-display';
 import '@scss/Live2D.scss';
@@ -8,7 +7,7 @@ interface CanvasProps {
   modelPath: string;
 }
 
-const Live2d = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
+const Live2d = forwardRef<HTMLCanvasElement, CanvasProps>((ref) => {
   const live2dRef = useRef<HTMLCanvasElement>(null);
   const live2dwrapRef = useRef<HTMLDivElement>(null);
   let app: PIXI.Application<PIXI.ICanvas>;
@@ -19,6 +18,7 @@ const Live2d = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
     const main = async () => {
       app = new PIXI.Application({
         view: live2dRef.current!,
+        transparent: true,
         autoStart: true,
         backgroundAlpha: 0,
         resizeTo: window,
@@ -57,28 +57,23 @@ const Live2d = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
 
       window.addEventListener("resize", handleResize);
       handleResize();
-
-      // Cleanup function
-      return () => {
-          window.removeEventListener("resize", handleResize);
-      };
     };
 
     main();
   }, []);
 
-    const rush = () => {
-      app.stage.children[0].internalModel.motionManager.startMotion("RushCharge",0,2);
-    };
-    // 親コンポーネントが呼び出せるようにする
-    useImperativeHandle(ref, () => (rush));
-    return (
-        <>
-        <div id="live2d_box" className="live2d-canvas-wrap" ref={live2dwrapRef}>
-            <canvas className="my-live2d" ref={live2dRef}></canvas>
-        </div>
-        </>
-    );
+  const rush = () => {app.stage.children[0].internalModel.motionManager.startMotion("RushCharge",0,2);};
+
+  // 親コンポーネントが呼び出せるようにする
+  useImperativeHandle(ref, () => (rush));
+  
+  return (
+      <>
+      <div id="live2d_box" className="live2d-canvas-wrap" ref={live2dwrapRef}>
+          <canvas className="my-live2d" ref={live2dRef}></canvas>
+      </div>
+      </>
+  );
 });
 
 export default Live2d;
