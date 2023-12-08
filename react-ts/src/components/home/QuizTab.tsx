@@ -51,11 +51,6 @@ const QuizTab = (props : any) => {
 
 
   useEffect(() => {
-    if(props.mode == 'class'){
-      selectDifficulty(props.grade,props.mode)
-    }else if(props.mode == 'rank'){
-      selectDifficulty(props.grade,props.mode)
-    }
     async function fetchCategory() {
       try {
         const { data, error } = await supabase
@@ -71,6 +66,12 @@ const QuizTab = (props : any) => {
       } catch (error) {
         console.error("エラーが発生しました", error);
       }
+    }
+    if(props.mode == 'class'){
+      selectDifficulty(props.grade,props.mode)
+      console.log("class")
+    }else if(props.mode == 'rank'){
+      selectDifficulty(props.grade,props.mode)
     }
     fetchCategory();
   }, [classLevel, rankLevel])
@@ -128,8 +129,8 @@ const QuizTab = (props : any) => {
         </div>
       ) : (
         <>
-        {props.setFlagMode("")}
-        {props.setFlagGrade("")}
+        {/* {props.setFlagMode("")} */}
+        {/* {props.setFlagGrade("")} */}
         <div>
           <button onClick={() => gameTest(grade,!classLevel ? rankLevel: classLevel)}> {getNameLabel(grade)}</button>
         </div>
