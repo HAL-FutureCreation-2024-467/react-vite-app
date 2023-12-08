@@ -138,7 +138,7 @@ const QuizTab = (props : any) => {
             {Array.isArray(quizClass) && quizClass.map((stage, index) => (
               <button key={index} 
               onClick={() => gameButton(stage.episodes, grade === 'class' ? stage.class : stage.rank, grade)} 
-              disabled={grade === 'class' ? !gameState["release"][stage.class][index] : !gameState["release"][stage.rank][index]}>
+              disabled={grade === 'class' ? !gameState["release"][stage.class]["practice"][index] : !gameState["release"][stage.rank]["practice"][index]}>
                 {getButtonLabel(stage)}
               </button>
             ))}
