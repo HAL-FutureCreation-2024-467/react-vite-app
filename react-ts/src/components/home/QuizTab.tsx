@@ -129,8 +129,8 @@ const QuizTab = (props : any) => {
         </div>
       ) : (
         <>
-        {/* {props.setFlagMode("")} */}
-        {/* {props.setFlagGrade("")} */}
+        {props.setFlagMode("")}
+        {props.setFlagGrade("")}
         <div>
           <button onClick={() => gameTest(grade,!classLevel ? rankLevel: classLevel)}> {getNameLabel(grade)}</button>
         </div>
