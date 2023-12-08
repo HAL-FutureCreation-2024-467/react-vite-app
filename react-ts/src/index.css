@@ -98,6 +98,7 @@ button:focus-visible {
   font-weight: bold;
   margin-top: 2.3em;
   text-align: center;
+  height: 300px;
 }
 .QTab p{
   position: relative;
@@ -155,11 +156,16 @@ button:focus-visible {
   text-align: center;
   display: flex;
   flex-direction: column;
-  max-height:500px; /* 最大の高さを設定 */
+  max-height:330px; /* 最大の高さを設定 */
   overflow-y: auto; /*スクロール表示*/
-
+  /*IE(Interne t Explorer)・Microsoft Edgeへの対応*/
+  -ms-overflow-style: none;
+  /*Firefoxへの対応*/
+  scrollbar-width: none;
 }
-
+.Quizbox::-webkit-scrollbar{
+  display: none;
+}
 
 
 
