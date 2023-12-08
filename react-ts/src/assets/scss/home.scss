@@ -353,6 +353,7 @@
 
 .home-wrap {
   display: block;
+  padding: 12px; 
 }
 .home-diss {
   display: none;
@@ -502,7 +503,7 @@ h3 {
 .tactive{
   // デザインをいい感じにする
   background-color: #fff;
-  border: 3px solid #333;
+  border: 1px solid #333;
   border-radius: 6px;
   padding: 0 10px;
   font-size: 12px;
