@@ -64,10 +64,12 @@ const Live2d = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
 
     main();
   }, [ModelPath]);
+
   const slash = () => (app.stage.children[0].internalModel.motionManager.startMotion("Slash",0,2));
   const second = () => (app.stage.children[0].internalModel.motionManager.startMotion("Second",0,2));
   const three = () => (app.stage.children[0].internalModel.motionManager.startMotion("Three",0,2));
   const final = () => (app.stage.children[0].internalModel.motionManager.startMotion("Final",0,2));
+
   // 親コンポーネントが呼び出せるようにする
   useImperativeHandle(ref, () => ({
     slash,
@@ -79,7 +81,9 @@ const Live2d = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
     return (
         <>
         <div className="live2d-canvas-wrap" ref={live2dwrapRef}>
-            <canvas className="my-live2d" ref={live2dRef}></canvas>
+            <canvas className="my-live2d" ref={live2dRef}>
+              {/*  */}
+            </canvas>
         </div>
         </>
     );
