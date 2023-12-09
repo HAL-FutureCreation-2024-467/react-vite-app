@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ProfileType } from "../../types/tables";
 import { Tooltip } from 'react-tooltip'
 import { CountUp } from 'countup.js'
+import ProgressBar from './ProgressBar';
 
 
 export interface RankCmProps {
@@ -9,6 +10,7 @@ export interface RankCmProps {
     rank: number,
     rankDiff: number,
     next: number,
+    nowRankEX: number
 }
 const getImage = (filePath: string): string => {
     return new URL(`../../assets/${filePath}`, import.meta.url).href;
@@ -22,13 +24,14 @@ const RankCm = (props : RankCmProps) => {
     };
     let rankdiff = new CountUp('rankDiffNum', props.rankDiff, options);
     let ranks = new CountUp('rankNum', props.rank, options);
+
     useEffect(() => {
         if (rankdiff) {
             rankdiff.start();
             ranks.start();
         }
         if (accountData) {
-            setItemNum(accountData.item);
+            setItemNum(accountData.items);
         }
     }, [accountData, rankdiff]);
 
@@ -41,8 +44,9 @@ const RankCm = (props : RankCmProps) => {
             <div className="rankProgress">
                 <div className="rankText">次のランクまであと<span id="rankDiffNum"></span></div>
                 <div className="progressbar_box">
-                    <div className="p-bar rankProgress_bar_inner"></div>
-                    <div className="p-bar rankProgress_bar_inner_active" id="progressBar"></div>
+                    {/* <div className="p-bar rankProgress_bar_inner"></div>
+                    <div className="p-bar rankProgress_bar_inner_active" id="progressBar"></div> */}
+                    <ProgressBar currentExp={props.nowRankEX} rankDiff={props.rankDiff} nextRankExp={props.next} />
                 </div>
             </div>
             <div className="item_box">

@@ -161,7 +161,7 @@ const Result = () => {
             {/* 満点は全問正解 */}
             {/* テストのときは討伐成功 */}
           </div>
-          <RankCm accountData={user as ProfileType} rank={rank} rankDiff={rankDiff} next={nextExp}/>
+          <RankCm accountData={user as ProfileType} rank={rank} rankDiff={rankDiff} nowRankEX={ExpRequired(rank)} next={ExpRequired(rank+1)}/>
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

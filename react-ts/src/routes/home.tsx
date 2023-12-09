@@ -117,17 +117,19 @@ const Home = () => {
 
 
 
-  const calculateLevel = (EXP: number | null) => { //現在の経験値からレベルを計算する関数
-          const exPerLevel = 12;
-          let level = 1;
-          let requiredExperience = 0;
-          while (EXP !== null && EXP >= requiredExperience) {
-              requiredExperience += exPerLevel;
-              level++;
-          }
-      
-          return level - 1; // whileループを抜けるときに1回余分にインクリメントされているので、1を引いて正しいレベルを返す
-      }
+const calculateLevel = (EXP: number | null) => {
+  var exPerLevel = 100;
+  let level = 0;
+  let requiredExperience = 0;
+
+  while (EXP !== null && EXP >= requiredExperience) {
+      requiredExperience += exPerLevel;
+      level++;
+      exPerLevel += 50;
+  }
+  console.log(level);
+  return level;
+}
 
     useEffect(() => {
       if (user?.exp != null) {

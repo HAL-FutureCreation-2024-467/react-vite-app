@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "../supabaseClient";   
 import "@scss/mozi.scss";
 import { Link, useNavigate, useLocation, useParams } from 'react-router-dom'

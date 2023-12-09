@@ -44,6 +44,10 @@ const Game = () => {
     explain: "",
     read: "",
   });
+  // Luve2D関連
+  const modelPath = '/Live2dModel/slime/silme.model3.json';
+  const childRef = useRef<any>(null);
+  const playRush = () => {childRef.current.rush()};
 
   const [resinfo, setResinfo] = useState<quiz[]>([]);//結果の情報を格納
   const [quizChoice, setChoice] = useState<string[]>([]);
@@ -197,9 +201,8 @@ const Game = () => {
       if (dataV !== null && quizNow.answer && quizNow.choices) {
         console.log(dataV);
         if (quizNow.answer === quizNow.choices[Number(dataV)]) {
-          setNowNum(nowNum + 1);
           correctAction();
-          playRush();
+          setNowNum(nowNum + 1);
         } else {
           failedAction();
         }
@@ -235,7 +238,7 @@ const Game = () => {
   }
 
   useEffect(() => {//問題が10問終わったらクリア
-    if(nowNum == 10){//クリア
+    if(nowNum == 3){//クリア
       //showClearModalの表示
       setGameStatus([true, true]);
       setTimeout(() => {
@@ -255,11 +258,6 @@ const Game = () => {
         }, 4000);
     }
   }, [nowNum]);
-
-  // Luve2D関連
-  const modelPath = '/Live2dModel/slime/silme.model3.json';
-  const childRef = useRef<any>(null);
-  const playRush = () => {childRef.current.rush()};
 
   return (
       <>

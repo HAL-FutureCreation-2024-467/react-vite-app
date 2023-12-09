@@ -30,7 +30,7 @@ const Live2d = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
       currentModel = await Live2DModel.from(ModelPath, { autoInteract: false });    
 
       // モデルの初期化
-      currentModel.scale.set(0.4); // モデルの大きさ
+      currentModel.scale.set(0.6); // モデルの大きさ
       currentModel.anchor.set(0.5, 0.5); // モデルのアンカー位置
       
       // Live2Dモデルを配置
@@ -65,18 +65,15 @@ const Live2d = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
     main();
   }, [ModelPath]);
 
-    const slash = () => {app.stage.children[0].internalModel.motionManager.startMotion("Slash",0,2);};
-    const second = () => {app.stage.children[0].internalModel.motionManager.startMotion("Second",0,2);};
-    const three = () => {app.stage.children[0].internalModel.motionManager.startMotion("Three",0,2);};
-    const final = () => {app.stage.children[0].internalModel.motionManager.startMotion("Final",0,2);};
+    const slash = () => { app.stage.children[0].internalModel.motionManager.startMotion("Slash",0,2); };
+    const second = () => { app.stage.children[0].internalModel.motionManager.startMotion("Second",0,2); };
+    const three = () => { app.stage.children[0].internalModel.motionManager.startMotion("Three",0,2); };
+    const final = () => { app.stage.children[0].internalModel.motionManager.startMotion("Final",0,2); };
+    const rush = () => { app.stage.children[0].internalModel.motionManager.startMotion("RushCharge",0,2); };
     // 親コンポーネントが呼び出せるようにする
     useImperativeHandle(ref, () => ({
-      slash,
-      second,
-      three,
-      final,
-      ...live2dRef.current
-    }), [slash, second, three, final, live2dRef]);
+      rush,
+    }));
     return (
         <>
         <div className="live2d-canvas-wrap" ref={live2dwrapRef}>

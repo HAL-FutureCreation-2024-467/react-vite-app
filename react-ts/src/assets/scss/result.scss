@@ -59,14 +59,20 @@
         height: 18px;
         position: absolute;
     }
-    .rankProgress_bar_inner{  
+    .progress-bar-container {
         width: 100%;
-        background-color:  grey;
-    }
-    .rankProgress_bar_inner_active{
-        width: 80%;
-        background-color: blue;
-    }
+        background-color: #ddd;
+        height: 20px;
+        margin-bottom: 10px;
+        overflow: hidden;
+        border-radius: 12px;
+      }
+      
+      .progress-bar {
+        height: 100%;
+        background-color: #4caf50;
+        border-radius: 12px;
+      }
 }
 
 .item_box{
@@ -124,27 +130,28 @@
             text-align: left;
         }
         .quiz_result_expl{
-            margin: 2% 0px 2% 24px;
+            margin: 2% 0px 2% 0px;
             font-size: 12px;
             font-weight: bold;
             color: #333;
-            width: 36%;
+            width: 52%;
             text-align: left;
             .quiz_result_text_problem{
-                font-size: 16px;
+                font-size: 12px;
                 font-weight: bold;
                 color: #333;
                 width: 100%;
                 text-align: left;
             }
             .quiz_result_text_exp{
-                font-size: 14px;
+                font-size: 12px;
                 font-weight: bold;
                 color: #333;
                 width: 100%;
                 text-align: left;
                 //改行も許可
                 white-space: wrap;
+                overflow-wrap: normal;
             }
         }
         .quiz_result_button{
@@ -203,3 +210,4 @@
 .quiz_result_row{
     display: flex;
 }
+
