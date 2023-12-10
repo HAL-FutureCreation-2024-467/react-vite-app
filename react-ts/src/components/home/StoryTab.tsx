@@ -11,7 +11,7 @@ const StoryTab: React.FC = () => {
   // const [StoryDB, setStoryDB] = useState<{chapter: number,paragraph: string}[] | null>(null);
   const [StoryDB, setStoryDB] = useState<StoryParagraph[]>();
 
-  const navigate  = useNavigate()
+  const navigate = useNavigate()
   const storyButton = (chapters: number | null, paragraphs: string | null) => {
     console.log(chapters, paragraphs);
     navigate("/story/" + chapters + "/" + paragraphs);
@@ -25,12 +25,12 @@ const StoryTab: React.FC = () => {
         const { data, error: storyError } = await supabase
           .from('paragraph')
           .select();
-    
+
         if (storyError) {
           console.error("データの取得に失敗しました", storyError);
           return;
         }
-        if(data != null){
+        if (data != null) {
           setStoryDB(data);
           console.log(StoryDB);
         }
@@ -42,22 +42,22 @@ const StoryTab: React.FC = () => {
   }, []); // 空の依存配列を渡して、初回のレンダリング時にのみ実行するようにします
 
   return (
-      <div>
-        {
-          StoryDB ? 
+    <div>
+      <h3>メインストーリー</h3>
+      {
+        StoryDB ?
           (Array.isArray(StoryDB) && StoryDB.map(
             (stage, index) => (
               <button key={index} onClick={() => storyButton(stage.chapter, stage.paragraph)}>
                 {stage.chapter} - {stage.paragraph}
-              </button>))):
-         (() => {
-          console.log("取得できなかった");
-          return <div></div>;
-        })()
+              </button>))) :
+          (() => {
+            console.log("取得できなかった");
+            return <div></div>;
+          })()
       }
-        
-      </div>
-      
+      <h3>キャラクターストーリー</h3>
+    </div>
   );
 }
 
