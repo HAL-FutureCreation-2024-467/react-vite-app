@@ -45,7 +45,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
     return canvas.getContext('2d');
   };
 
-  const OnClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const OnClick = (e: any) => {
     if (e.button !== 0) { return; }
     const canvas: any = canvasRef.current;
     const rect: IRect = canvas.getBoundingClientRect();
@@ -55,23 +55,46 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
     Draw(x, y);
   }
 
-  const OnMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const OnMove = (e: any) => {
     if (e.buttons !== 1) { return; }
     const canvas: any = canvasRef.current;
     const rect: IRect = canvas.getBoundingClientRect();
     const x = (e.clientX - rect.left);
     const y = (e.clientY - rect.top);
-
     Draw(x, y);
     Xarr.push(x);
     Yarr.push(y);
   }
 
-  const DrawEnd = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const DrawEnd = (e:any) => {
     mouseX = null;
     mouseY = null;
     recognize();
     //
+  }
+
+  //touch event
+  const onTouchStart = (e: any) => {
+    e.preventDefault();
+    const rect: IRect = canvas.getBoundingClientRect();
+    const x = ~~(e.touches[0].clientX - rect.left);
+    const y = ~~(e.touches[0].clientY - rect.top);
+    Draw(x, y);
+  }
+
+  const onTouchMove = (e: any) => {
+    e.preventDefault();
+    const rect: IRect = canvas.getBoundingClientRect();
+    const x = ~~(e.touches[0].clientX - rect.left);
+    const y = ~~(e.touches[0].clientY - rect.top);
+    Draw(x, y);
+  }
+
+  const onTouchEnd = (e: any) => {
+    e.preventDefault();
+    mouseX = null;
+    mouseY = null;
+    recognize();
   }
 
   const Draw = (x: number, y: number) => {
@@ -209,6 +232,9 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
         onMouseDown={OnClick}
         onMouseMove={OnMove}
         onMouseUp={DrawEnd}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
         // onMouseLeave={DrawEnd}
         // onMouseOut={DrawEnd}
 
@@ -220,6 +246,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>((props, ref) => {
           backgroundColor: 'transparent',
           position: 'absolute', // 絶対位置
           zIndex: 1, // 上に配置
+          touchAction: 'pinch-zoom', // タッチ操作を無効にする;
         }}
     />
 
