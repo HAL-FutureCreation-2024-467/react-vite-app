@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from "../../supabaseClient";
 import { useNavigate } from 'react-router-dom';
-import { StoryParagraph } from '../../types/tables';
+import { ProfileStoryStateType, StoryParagraph } from '../../types/tables';
 
 
-const StoryTab: React.FC = () => {
+const StoryTab: React.FC = (props :any) => {
 
   // const [chapters, setChapters] = useState<{ chapter: number }[]>();
   // const [paragraphs, setParagraphs] = useState<{ paragraph: string }[]>();
   // const [StoryDB, setStoryDB] = useState<{chapter: number,paragraph: string}[] | null>(null);
   const [StoryDB, setStoryDB] = useState<StoryParagraph[]>();
+  const [storyState, setStoryState] = useState<ProfileStoryStateType | null>(null)
 
   const navigate = useNavigate()
   const storyButton = (chapters: number | null, paragraphs: string | null) => {
@@ -39,7 +40,12 @@ const StoryTab: React.FC = () => {
       }
     };
     fetchData();
+    setStoryState(props.storyState)
   }, []); // 空の依存配列を渡して、初回のレンダリング時にのみ実行するようにします
+
+  useEffect(()=>{
+    console.log(storyState)
+  })
 
   return (
     <div>

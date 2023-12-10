@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState} from "react";
 import { supabase } from "../supabaseClient";
 import { Session } from "@supabase/supabase-js";
-import { ProfileType,ProfileGameStateType } from "../types/tables";
+import { ProfileType, ProfileGameStateType, ProfileStoryStateType } from "../types/tables";
 import QuizTab from "../components/home/QuizTab";
 import StoryTab from "../components/home/StoryTab";
 import HomeModal from "../components/home/HomeModal";
@@ -14,6 +14,7 @@ const Home = () => {
   const [quizSelectMode,setQuizSelectMode] = useState<string | null>(null)
   const [quizDfText,setQuizDfText] = useState<string | null>(null)
   const [gameState, setGameState] = useState<ProfileGameStateType | null>(null)
+  const [storyState, setStoryState] = useState<ProfileStoryStateType | null>(null)
   const [showTab, setShowTab] = useState<{ [key: string]: boolean }>({
     'story': false,
     'home': true,
@@ -75,6 +76,7 @@ const Home = () => {
         } else {
           setUser(profiles[0])
           setGameState(profiles[0]["game_state"])
+          setStoryState(profiles[0]["story_state"])
         }
       }
     }
@@ -82,7 +84,6 @@ const Home = () => {
     if(tab === 'story' || tab === 'quiz'){
       setTab(tab)
     }
-
   }, [sessions])
 
   useEffect(() => {
@@ -294,7 +295,9 @@ const calculateLevel = (EXP: number | null) => {
             ) : showTab['story'] ? (
               <>
                 <h1>ストーリー</h1>
-                <StoryTab />
+                <StoryTab
+                storyState={storyState}
+                />
               </>
             ) : null}
             </div>
