@@ -5,6 +5,7 @@ import { Link, useNavigate, useLocation, useParams } from 'react-router-dom'
 import { QuizClassType, QuizRankType } from '../types/tables'
 import CanComp from "../components/game/canvas";
 import Live2DModule from '../components/Live2D/Live2d-slime';
+import { read } from "fs";
 
 interface Quiz {
   question: string | null;
@@ -96,7 +97,8 @@ const Game = () => {
           question: quizRank[nowNum].problem,
           answer: quizRank[nowNum].write,
           choices: [],
-          explain: quizRank[nowNum].expl
+          explain: quizRank[nowNum].expl,
+          read: quizRank[nowNum].read
         }),
         setShowQuiz(true),
         setShowChoice(true)

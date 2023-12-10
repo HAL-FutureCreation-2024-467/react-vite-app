@@ -6,13 +6,14 @@ import { QuizClassType, QuizRankType } from '../types/tables'
 import CanComp from "../components/game/canvas";
 import Timer from "../components/game/timer";
 import { motion } from "framer-motion";
-
+import Live2DModule from '../components/Live2D/Live2d-slime';
 
 interface Quiz {
   question: string | null;
   answer: string | null;
   choices: string[] | null;
   explain: string | null;
+  read : string | null;
 }
 
 export interface quiz {//受け渡し用
@@ -30,6 +31,10 @@ const Game = () => {
   //['ゲームが終わっているか','クリア=> true, 失敗=> false']
   const [gameStatus, setGameStatus] = useState<boolean[]>([false, false, false]);
   const getImage = (filePath: string): string => {return new URL(`../assets/${filePath}`, import.meta.url).href;};
+  // Luve2D関連
+  const modelPath = '/Live2dModel/slime/silme.model3.json';
+  const childRef = useRef<any>(null);
+  const playRush = () => {childRef.current.rush()};
 
   useEffect(() => {
     // 一定間隔でTimerコンポーネント内のtimesを取得してログに出力する例
@@ -73,20 +78,13 @@ const Game = () => {
     answer: "答え",
     choices: ["", "", ""],
     explain: "",
+    read: "",
   });
   const [quizChoice, setChoice] = useState<string[]>([]);
   const [lifeNow, setLifeNow] = useState<number>(3);
   //回答した問題を格納する配列 型はquiz
-  const [quizRes, setQuizRes] = useState<quiz[]>([
-    {
-      write: '日本',//書き
-      read : 'にほん',//読み
-      problem: 'にほん海側',//問題
-      expl: 'Japan の日本語訳Japan の日本語訳',//解説
-      correct: true,//正解かどうか
-    },
-  ]);
-  
+  const [resinfo, setResinfo] = useState<quiz[]>([]);//結果の情報を格納
+  const [clearNum, setClrearNum] = useState<number>(0);//クリアした問題数を格納
 
   if(mode == "rank"){
 
@@ -117,7 +115,8 @@ const Game = () => {
           question: quizRank[nowNum].problem,
           answer: quizRank[nowNum].write,
           choices: tmpChoice,
-          explain: quizRank[nowNum].expl
+          explain: quizRank[nowNum].expl,
+          read: quizRank[nowNum].read
         })
         setShowChoice(true);
       }
@@ -133,6 +132,7 @@ const Game = () => {
           answer: quizRank[nowNum].write,
           choices: [],
           explain: quizRank[nowNum].expl,
+          read: quizRank[nowNum].read
         }),
         setShowQuiz(true),
         setShowChoice(true)
@@ -159,7 +159,8 @@ const Game = () => {
           question: quizClass[nowNum].problem,
           answer: quizClass[nowNum].write,
           choices: tmpChoice,
-          explain: quizClass[nowNum].expl
+          explain: quizClass[nowNum].expl,
+          read: quizClass[nowNum].read
         })
         setShowChoice(true);
       }
@@ -174,6 +175,7 @@ const Game = () => {
           answer: quizClass[nowNum].write,
           choices: [],
           explain: quizClass[nowNum].expl,
+          read: quizClass[nowNum].read
         }),
         setShowQuiz(true),
         setShowChoice(true)
@@ -202,7 +204,7 @@ const Game = () => {
 
   const clearChildCanvas = () => {//canvasのクリア
     if (childCanvasRef.current && childCanvasRef.current.clearCanvas) {
-      childCanvasRef.current.clearCanvas();
+      (childCanvasRef.current as any).clearCanvas();
       setShowChoice(false);
     }
   };
@@ -222,51 +224,56 @@ const Game = () => {
   const [alert, setAlert] = useState("LEVEL UP");
   const [showlevel, setLevel] = useState(true);
 
-  const jg = (e : any) => {//正誤判定
+  // 正誤判定 --------------------------------------
+  const jg = (e : any) => {
     if (quizNow.answer, quizNow.choices) {
       const dataV = e.target.closest('[data-v]')?.getAttribute('data-v');
-      
+      setShowCanvasText(false);
+      clearChildCanvas();
       if (dataV !== null && quizNow.answer && quizNow.choices) {
         console.log(dataV);
-    
         if (quizNow.answer === quizNow.choices[Number(dataV)]) {
-          maruAct();
-          clearChildCanvas();
+          correctAction();
+          setNowNum(nowNum + 1);
+          setClrearNum(clearNum + 1);
         } else {
-          batuAct();
-          clearChildCanvas();
+          failedAction();
+          setLifeNow(lifeNow-1);
         }
       }
     }    
   }
-    
-  useEffect(() => {//Lifeが0になったらゲームオーバー
-    if(lifeNow == 2){//残機なしでゲームオーバー
-      //showFaildModalの表示
-      setGameStatus([true, false, false]);
-      //2秒後にリザルト画面へ
-      setTimeout(() => {
-        Navigate('/result' ,
-          { state: 
-            { 
-              gamemode: "test",
-              type: false, 
-              result : {
-                mode : mode,
-                grade : grade,
-                clearNum: nowNum == 0 ? nowNum : nowNum-1,
-                content : quizRes,
-              }
-            },
-          }); 
-      }, 4000);
-    }
-  }, [lifeNow]);
+  
+  const failedAction = () => {
+    setTimeout(() => {
+  
+    }, 1000);
+    setResinfo([...resinfo, {
+      write: quizNow.answer as string,
+      read : quizNow.read as string,
+      problem: quizNow.question as string,
+      expl: quizNow.explain as string,
+      correct: false
+    }]);
+  }
+
+  const correctAction = () => {
+    // setTimeout(() => {
+  
+    // }, 1000);
+    setResinfo([...resinfo, {
+      write: quizNow.answer as string,
+      read : quizNow.read as string,
+      problem: quizNow.question as string,
+      expl: quizNow.explain as string,
+      correct: true
+    }]);
+  }
 
   useEffect(() => {//問題が10問終わったらクリア
-    if(nowNum == 1){//クリア
+    if(nowNum == 3){//クリア
       //showClearModalの表示
-      setGameStatus([true, true, false]);
+      setGameStatus([true, true]);
       setTimeout(() => {
         Navigate('/result' ,
           { state: 
@@ -276,34 +283,58 @@ const Game = () => {
               result : {
                 mode : mode,
                 grade : grade,
-                clearNum: nowNum == 0 ? nowNum : nowNum-1,
-                content : quizRes,
+                clearNum: clearNum,
+                content: resinfo,
               }
             },
-          }); 
+          });
         }, 4000);
     }
   }, [nowNum]);
 
+    
+  useEffect(() => {//Lifeが0になったらゲームオーバー
+    if(lifeNow == 0){//残機なしでゲームオーバー
+      //showFaildModalの表示
+      setGameStatus([true, false, false]);
+      //2秒後にリザルト画面へ
+      setTimeout(() => {
+        Navigate('/result' ,
+        { state: 
+          { 
+            gamemode: "test",
+            type: true, 
+            result : {
+              mode : mode,
+              grade : grade,
+              clearNum: clearNum,
+              content: resinfo,
+            }
+          },
+        });
+      }, 4000);
+    }
+  }, [lifeNow]);
+
   useEffect(() => {//時間切れでゲームオーバー
-    timerRef.current && timerRef.current.times == 0 ? 
+    timerRef.current && (timerRef.current as { times: number }).times == 1 ? 
     (
       setGameStatus([true, false, true]),
       setTimeout(() => {
         Navigate('/result' ,
-          { state: 
-            { 
-              gamemode: "test",
-              type: false, 
-              result : {
-                mode : mode,
-                grade : grade,
-                clearNum: nowNum == 0 ? nowNum : nowNum-1,
-                content : quizRes,
-              }
-            },
-          }); 
-        }, 4000)
+        { state: 
+          { 
+            gamemode: "test",
+            type: true, 
+            result : {
+              mode : mode,
+              grade : grade,
+              clearNum: nowNum,
+              content: resinfo,
+            }
+          },
+        });
+      }, 4000)
     ) : null;
   })
   
@@ -312,29 +343,6 @@ const Game = () => {
     //2秒後にアラートを消す
     setTimeout(() => {setAlert("");}, 2000);
   }
-
-  const batuAct = () => {
-    setBatu(false);
-    setTimeout(() => {
-      setLifeNow(lifeNow - 1);
-    }, 1100);
-  };
-
-  const maruAct = () => {//問題数によって演出を実行
-    setMaru(false);
-    // if (quizNow == 1) {
-    //   alertAlert("FINAL");
-    // }
-    setTimeout(() => {//正解問題数を増やを
-      setQuizNow((quizNow) => quizNow + 1);
-    }, 1100);
-
-    setTimeout(() => {setMaru(true);}, 1800);
-  };
-
-  
-    // 判定関連ここまで
-
 
   return (
       <>
@@ -381,7 +389,7 @@ const Game = () => {
             <h2>{alert}</h2>
           </div>
         </div>
-
+        <Live2DModule ref={childRef} modelPath={modelPath as string} />
         {/* ランダムに取得した問題を出す */}
         { showQuiz ? (
           <div className="q-wrap">
