@@ -76,6 +76,15 @@ const QuizTab = (props : any) => {
     fetchCategory();
   }, [classLevel, rankLevel])
   
+useEffect(()=>{
+  if(props.showQuiz){
+    setClassLevel("")
+    setRankLevel("")
+    props.setShowQuiz(false)
+  }
+  console.log('bbb')
+},props.showQUiz)
+
   const getButtonLabel = (stage: EpisodeData) => {
     const matchingClass = grades.find((grade) => grade.rank === stage.class);
     const matchingRank = grades.find((grade) => grade.rank === stage.rank);

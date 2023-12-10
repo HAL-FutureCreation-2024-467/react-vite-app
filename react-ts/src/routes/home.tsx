@@ -19,6 +19,7 @@ const Home = () => {
     'home': true,
     'quiz': false,
   })
+  const [showQuiz,setShowQuiz] = useState(false);
   const homeTab = document.getElementById('homeTab');
   const quizTab = document.getElementById('quizTab');
   const storyTab = document.getElementById('storyTab');
@@ -51,10 +52,12 @@ const Home = () => {
       updatedTabs[key] = key === tabName;
     });
     setShowTab(updatedTabs);
-    if(quizSelectMode && !showTab['quiz']){
-      setQuizSelectMode("")
+    if(showTab['quiz']){
+      //setQuizSelectMode("")
+      setShowQuiz(true)
+      console.log("aaa")
     }
-    //setQuizSelectMode("")
+    setQuizSelectMode("")
     setshowF(false);
     setShowModal(false);
     setMenu('line_menu.png');
@@ -284,6 +287,8 @@ const calculateLevel = (EXP: number | null) => {
                 setFlagMode={setFlagMode}
                 setFlagGrade={setFlagGrade}
                 gameState={gameState}
+                showQuiz={showQuiz}
+                setShowQuiz={setShowQuiz}
                 />
               </>
             ) : showTab['story'] ? (
