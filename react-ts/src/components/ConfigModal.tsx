@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../../src/assets/scss/index.scss"
 import SignIn from "./auth/SingIn";
 import SignUp from "./auth/SingUp";
 import { supabase } from "../supabaseClient";
@@ -63,23 +64,16 @@ const Modal = (props:  any) => {
             )
           ):( 
             <div id="overlay" className="modalBack">
-              <div id="modalContent" className="modalContainer">
-                    <div>
-                      <p>ユーザー登録</p>
-                    </div>
+              <div id="modalContent" className="homeModalContainer">
+                      <h3>ユーザー登録</h3>
                     <hr />
-                    <div>
                       <p>登録すると、進行状態を保存できます</p>
-                    </div>
-                    <div className="modalBtn">
-                      <button onClick={props.onNologin}>登録せずに進む</button>
-                    </div>
-                    <div className="modalBtn">
-                      <button onClick={props.toggleSign}>ログイン</button>
-                    </div>
-                    <div>
-                      <button onClick={props.closeModal}>閉じる</button>
-                    </div>
+
+                      <div className="modalBtns">
+                         <button onClick={props.onNologin} className="modalBtn">登録せずにはじめる</button>
+                          <button onClick={props.toggleSign}  className="modalBtn">ログイン</button>
+                      </div>
+                      
                 </div>
             </div> 
           )

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "../../src/assets/scss/style.scss";
 import "../../src/assets/scss/home.scss";
+import "../../src/assets/scss/index.scss"
 import Modal from "../components/ConfigModal";
 import { supabase } from "../supabaseClient";
 import { Session } from "@supabase/supabase-js";
@@ -79,6 +80,7 @@ function App() {
           <div className={"black"}></div>
           <section className={"home-wrap"}>
             <div className={showConfigModal ? "overlay-add" : "overlay"}>
+              <div className="title-modal">
               <Modal 
                 setUserName={setUserName} 
                 onNologin={onNologin}
@@ -88,6 +90,7 @@ function App() {
                 closeModal={toggleModal}
                 info={{showConfigModal , showNo, showLogin, toggleInUp, username}}
               />
+              </div>
             </div>
             <div
               className="home-btn"

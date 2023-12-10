@@ -52,3 +52,53 @@
     position: absolute !important;
     right: 0 !important;   
 }
+
+//ConfigModal.tsx
+.modalBack{
+
+    .homeModalContainer{
+        background: white;
+        padding : 10px;
+        border-radius: 3px;
+        height: 380px;
+        width: 380px;
+        
+        hr{
+            font-size: 10px;
+        }
+        h3{
+            font-size: 20px;
+            color: #333;
+            margin-top: -5%;
+        }
+        p{
+            font-size: 15px;
+            color: #333;
+            padding: 5px 0px 60px 0px;
+        }
+
+        .modalBtns{
+            display: flex;
+            flex-direction: column; /* 縦方向に並べる */
+            align-items: center; /* 中央に寄せる */
+            justify-content: center; /* 中央に寄せる（縦方向） */
+
+            .modalBtn{
+                font-size: 18px;
+                color: #111;
+                justify-content: center;
+                text-align: center;
+                display: block;
+                height: 50px;
+                width: 300px;
+                margin-bottom: 60px;
+                background-color: white;
+                border: 1px solid black;
+            }
+        }
+      }
+}
+
+
+
+  
