@@ -55,6 +55,22 @@ img {
   background-size:cover;
 }
 
+.mozi_wrap{
+  background: #fff;
+  box-shadow: 0 0 30px 3px rgba(110, 90, 70, 0.7);
+  width: 20vw;
+  min-width: 500px;
+  max-width: 800px;
+  margin: 0 auto;
+  min-height: 660px;
+  max-height: 780px;
+  position: relative;
+  // background-image: url(@assets/sougen.jpg);
+  overflow: hidden;
+  background-position:center center;
+  background-repeat: no-repeat;
+  background-size:cover;
+}
 .Result {
   background: #fff;
   box-shadow: 0 0 30px 3px rgba(110, 90, 70, 0.7);

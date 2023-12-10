@@ -257,7 +257,8 @@ const calculateLevel = (EXP: number | null) => {
             <div className="TabSection">
             {showTab['home'] ? (
               <div className="live2dWidget" onClick={toggleF}>
-                <Live2DModule ref={childRef} modelPath={modelPath as string} />
+                {/* <Live2DModule ref={childRef} modelPath={modelPath as string} /> */}
+                <img src="/img/sinken.png" alt="" className="sinken" />
                 <div className={showF ? "fukidashi show" : "fukidashi"}>
                   {/* showクラスの付与 メッセージのランダム性を持たせる */}
                   <div>

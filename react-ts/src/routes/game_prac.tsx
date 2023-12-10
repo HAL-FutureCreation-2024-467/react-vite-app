@@ -5,8 +5,7 @@ import { Link, useNavigate, useLocation, useParams } from 'react-router-dom'
 import { QuizClassType, QuizRankType } from '../types/tables'
 import CanComp from "../components/game/canvas";
 import Live2DModule from '../components/Live2D/Live2d-slime';
-import { read } from "fs";
-
+import '/img/sinken.png'
 interface Quiz {
   question: string | null;
   answer: string | null;
@@ -285,7 +284,8 @@ const Game = () => {
             </div>
             ) : null}
         </div>
-        <Live2DModule ref={childRef} modelPath={modelPath as string} />
+        {/* <Live2DModule ref={childRef} modelPath={modelPath as string} /> */}
+        <img src="/img/sinken.png" alt="" className="sinken" />
         {/* ランダムに取得した問題を出す */}
         { showQuiz ? (
           <div className="q-wrap">

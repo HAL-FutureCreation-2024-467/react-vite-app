@@ -67,7 +67,16 @@ button:focus-visible {
   }
 }
 /*Levelアイコン*/
-
+.sinken{
+  max-height: 700px;
+  max-width: fit-content;
+  margin: 0 auto;
+  position: absolute;
+  top: 45px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
 
 /*ユーザー情報とアイテム欄*/
 
