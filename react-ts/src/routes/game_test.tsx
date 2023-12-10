@@ -239,6 +239,7 @@ const Game = () => {
         } else {
           failedAction();
           setLifeNow(lifeNow-1);
+          setNowNum(nowNum + 1);
         }
       }
     }    
@@ -352,7 +353,7 @@ const Game = () => {
         <div className="num-wrap">
           {question.map((v, i) => {
             return (
-              <div className={i < nowNum ? "num num-add" : "num"} key={v}>
+              <div className={i < clearNum ? "num num-add" : "num"} key={v}>
                 {i + 1}
               </div>
             );
