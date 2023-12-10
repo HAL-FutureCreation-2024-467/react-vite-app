@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
 import { Session } from "@supabase/supabase-js";
-import { ProfileType } from "../types/tables";
+import { ProfileType, ProfileGameStateType } from "../types/tables";
 import { Json } from "../types/database";
 import "../assets/scss/result.scss";
 import RankCm from "../components/result/RankComponent";
@@ -18,6 +18,7 @@ const Result = () => {
         // 更新したい情報を指定
         exp: 2000,
       });
+    const [gameState, setGameState] = useState<ProfileGameStateType | null>(null)
 
     const jg = useLocation().state.type || true;
     const gamemode = useLocation().state.gamemode;
@@ -53,12 +54,52 @@ const Result = () => {
             } else {
               console.log("データの取得に成功しました", profiles);
               setUser(profiles[0])
+              setGameState(profiles[0]["game_state"])
             }
           }
         }
+        // const setupState = async () => {
+        //   if (sessions?.user.id &&clnum == 0 && gameState) {
+        //     const { error } = await supabase
+        //       .from('profiles')
+        //       .update({game_state:gameState})
+        //       .eq('id', sessions.user.id)
+        //     if (error) {
+        //       console.error("データの更新に失敗しました", error);
+        //     } else {
+        //       console.log("データの更新に成功しました", );
+        //     }
+        //   }
+        // }
         setupUser()
+        
+          // gameState["clear"][grade][gamemode] = true;
+          // console.log(gameState)
       }, [sessions])
       
+      useEffect(() => {
+          if(clnum == 10 && gameState){
+            gameState["clear"][grade][gamemode] = true;
+            console.log(gameState)
+            setupState()
+          }
+      },[clnum,gameState])
+
+       const setupState = async () => {
+          if (sessions?.user.id &&clnum == 0 && gameState) {
+            const { error } = await supabase
+              .from('profiles')
+              .update({game_state:gameState})
+              .eq('id', sessions.user.id)
+            if (error) {
+              console.error("データの更新に失敗しました", error);
+            } else {
+              console.log("データの更新に成功しました", );
+            }
+          }
+        }
+
+
       const updateProfile = async (newInfo : Json) => {
         try {
             if (sessions?.user.id) {
@@ -149,8 +190,15 @@ const Result = () => {
               setRankDiff(diff);
               setNextExp(ExpRequired(rank + 1));  
             }}
+        
+        
+        
     }, [user, rank]);
 
+
+    useEffect(()=>{
+
+    })
     return (
         <div className="Result">
           <div className="result_title" style={{textAlign:"center"}}>
