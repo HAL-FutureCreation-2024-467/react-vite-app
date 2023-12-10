@@ -58,23 +58,7 @@ const Result = () => {
             }
           }
         }
-        // const setupState = async () => {
-        //   if (sessions?.user.id &&clnum == 0 && gameState) {
-        //     const { error } = await supabase
-        //       .from('profiles')
-        //       .update({game_state:gameState})
-        //       .eq('id', sessions.user.id)
-        //     if (error) {
-        //       console.error("データの更新に失敗しました", error);
-        //     } else {
-        //       console.log("データの更新に成功しました", );
-        //     }
-        //   }
-        // }
         setupUser()
-        
-          // gameState["clear"][grade][gamemode] = true;
-          // console.log(gameState)
       }, [sessions])
       
       useEffect(() => {

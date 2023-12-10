@@ -31,7 +31,6 @@ const QuizTab = (props : any) => {
     setGrade(value)
     props.setQuizSelectMode(value)
     setGameState(props.gameState)
-    //console.log(rank)
     if (value == 'class') {
       setClassLevel(rank)
       setTABLE_NAME('quiz_class_epi')
@@ -41,11 +40,9 @@ const QuizTab = (props : any) => {
     }
   };
   const gameButton = (episodes: number | null, quizclass: string | null, grade: string | null) => {
-    //console.log(episodes, quizclass)
     navigate(`/game/practice/${grade}/${quizclass}/${episodes}`);
   };
   const gameTest = (grade: string | null, rank: string | null) => {
-    //console.log(episodes, quizclass)
     navigate(`/game/test/${grade}/${rank}`);
   };
 
@@ -75,14 +72,14 @@ const QuizTab = (props : any) => {
     }
     fetchCategory();
   }, [classLevel, rankLevel])
-  
+
+
 useEffect(()=>{
   if(props.showQuiz){
     setClassLevel("")
     setRankLevel("")
     props.setShowQuiz(false)
   }
-  console.log('bbb')
 },props.showQUiz)
 
   const getButtonLabel = (stage: EpisodeData) => {
