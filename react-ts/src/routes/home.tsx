@@ -39,17 +39,22 @@ const Home = () => {
       setSession(session)
     })
   }, [])
+
   useEffect(()=>{
     setFlagMode(mode)
     setFlagGrade(grade)
   },[location])
+
   const setTab = (tabName: string) => {
     const updatedTabs: { [key: string]: boolean } = {};
     Object.keys(showTab).forEach((key) => {
       updatedTabs[key] = key === tabName;
     });
     setShowTab(updatedTabs);
-    setQuizSelectMode("")
+    if(quizSelectMode && !showTab['quiz']){
+      setQuizSelectMode("")
+    }
+    //setQuizSelectMode("")
     setshowF(false);
     setShowModal(false);
     setMenu('line_menu.png');
