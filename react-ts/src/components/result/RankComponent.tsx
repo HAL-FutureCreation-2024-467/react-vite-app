@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ProfileType } from "../../types/tables";
 import { Tooltip } from 'react-tooltip'
 import { CountUp } from 'countup.js'
-import ProgressBar from './ProgressBar';
+import ProgressBar from './progressBar';
 
 
 export interface RankCmProps {
