@@ -21,6 +21,7 @@ const StoryTab: React.FC = (props :any) => {
   const [showConfigModal, setShowModal] = useState(false);
 const [chapterNumber,setChapterNumber] = useState<number>();
 const [paragraphNumber,setParagraphNumber] = useState<number>();
+const [indexNumber,setIndexNumber] = useState<number>();
 const [EXP,setEXP] = useState<number>();
   useEffect(() => {
     const fetchData = async () => {
@@ -54,7 +55,8 @@ const [EXP,setEXP] = useState<number>();
 
   const toggleModal = (index : number,paragraph : number, chapter : number) => {
     setShowModal(!showConfigModal)
-    setChapterNumber(index)
+    setIndexNumber(index)
+    setChapterNumber(chapter)
     setParagraphNumber(paragraph)
     setEXP(storyState["release"]["chapter"]["paragraph"][chapter]["exp"])
     console.log(EXP)
@@ -84,6 +86,7 @@ const [EXP,setEXP] = useState<number>();
                 paragraphNumber={paragraphNumber}
                 user={user}
                 EXP={EXP}
+                indexNumber={indexNumber}
               />
       </div>
       <h3>キャラクターストーリー</h3>

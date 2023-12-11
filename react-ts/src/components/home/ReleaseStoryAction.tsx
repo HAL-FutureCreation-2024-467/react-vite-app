@@ -6,9 +6,9 @@ import { supabase } from "../../supabaseClient";
 
 const ReleaseStoryAction = (props :any) => {
     const [storyState, setStoryState] = useState<ProfileStoryStateType | null>(props.storyState)
-    const releaseStory = (index : number) => {
+    const releaseStory = (index : number, chapter:number) => {
         if(props.user?.exp > props.EXP){
-            storyState["release"]["chapter"]["paragraph"][props.chapterNumber]["story"][index] = true
+            storyState["release"]["chapter"]["paragraph"][chapter]["story"][index] = true
             console.log("aaa")
         }
         console.log(props.user.exp)
@@ -45,7 +45,7 @@ const ReleaseStoryAction = (props :any) => {
                         </h2>
                         <p className="c-card_text">{props?.content}</p>
                         <div className="c-card_btn">
-                                    <button onClick={() => confirm("記憶のカケラを消費してストーリーを解放？") ? releaseStory(props.chapterNumber) : alert("消費せずにもどります")}>解放する</button>
+                                    <button onClick={() => confirm("記憶のカケラを消費してストーリーを解放？") ? releaseStory(props.indexNumber,props.chapterNumber) : alert("消費せずにもどります")}>解放する</button>
                                     <button onClick={() => props.setShowModal(false)}>解放せずに戻る</button>                     
                         </div>
                     </div>
