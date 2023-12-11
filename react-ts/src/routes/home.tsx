@@ -297,6 +297,7 @@ const calculateLevel = (EXP: number | null) => {
                 <h1>ストーリー</h1>
                 <StoryTab
                 storyState={storyState}
+                user={user}
                 />
               </>
             ) : null}
