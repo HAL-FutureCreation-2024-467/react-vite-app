@@ -52,11 +52,11 @@ const [EXP,setEXP] = useState<number>();
     console.log(EXP)
   })
 
-  const toggleModal = (index : number,paragraph : number) => {
+  const toggleModal = (index : number,paragraph : number, chapter : number) => {
     setShowModal(!showConfigModal)
     setChapterNumber(index)
     setParagraphNumber(paragraph)
-    setEXP(storyState["release"]["chapter"]["paragraph"][index]["exp"])
+    setEXP(storyState["release"]["chapter"]["paragraph"][chapter]["exp"])
     console.log(EXP)
   };
 
@@ -67,8 +67,9 @@ const [EXP,setEXP] = useState<number>();
         StoryDB ?
           (Array.isArray(StoryDB) && StoryDB.map(
             (stage, index) => (
-              <button key={index} onClick={storyState["release"]["chapter"]["paragraph"]["1"]["story"][index] ? () => storyButton(stage.chapter, stage.paragraph) :  () => toggleModal(index,stage.paragraph)}>
+              <button key={index} onClick={storyState["release"]["chapter"]["paragraph"]["1"]["story"][index] ? () => storyButton(stage.chapter, stage.paragraph) :  () => toggleModal(index,stage.paragraph, stage.chapter)}>
                 {stage.chapter} - {stage.paragraph}
+                {console.log("")}
               </button>))) :
           (() => {
             console.log("取得できなかった");

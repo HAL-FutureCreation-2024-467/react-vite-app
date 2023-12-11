@@ -8,7 +8,7 @@ const ReleaseStoryAction = (props :any) => {
     const [storyState, setStoryState] = useState<ProfileStoryStateType | null>(props.storyState)
     const releaseStory = (index : number) => {
         if(props.user?.exp > props.EXP){
-            storyState["release"]["chapter"]["paragraph"][props.paragraphNumber]["story"][index] = true
+            storyState["release"]["chapter"]["paragraph"][props.chapterNumber]["story"][index] = true
             console.log("aaa")
         }
         console.log(props.user.exp)
